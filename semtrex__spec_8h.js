@@ -1,18 +1,11 @@
 var semtrex__spec_8h =
 [
-    [ "spec_state_equal", "semtrex__spec_8h.html#ae852e5a4f4f9a9528e4cd2a1f598752f", null ],
-    [ "sX", "semtrex__spec_8h.html#a1a187264a98e40c3fefd4087f99a1444", null ],
-    [ "sYt", "semtrex__spec_8h.html#abf9cd2a667cb74fb48fb9bb9f4a2af99", null ],
-    [ "__stx_dump", "semtrex__spec_8h.html#ab0cfdfadbefe4950ee8f79b18b8d0431", null ],
     [ "__stxcv", "group__semtrex.html#ga5e4a8396bf0b927fb440bc207ff44b32", null ],
     [ "_makeTestSemtrex1", "semtrex__spec_8h.html#ac7e1d121cd53bb1e77f43f641c4fba1e", null ],
     [ "_makeTestTree1", "semtrex__spec_8h.html#a7319c4016ac2ac46a0b8c90f0c449f50", null ],
-    [ "_stx_dump", "semtrex__spec_8h.html#a6b385164cc7908e7b731aab328da0028", null ],
     [ "_stxSetup", "semtrex__spec_8h.html#a4cd83e26eec8d882877a158316c4d0cf", null ],
     [ "newvl", "semtrex__spec_8h.html#aa347b822204f7aa122900f85fd6af934", null ],
-    [ "stx_dump", "semtrex__spec_8h.html#a368fe614ab0b40e39cedffdf6c0c3fb9", null ],
     [ "testEmbodyFromMatch", "semtrex__spec_8h.html#ab1eac2ceb41f0c65a8e1f1c597760315", null ],
-    [ "testMakeFA", "semtrex__spec_8h.html#ac33db115df704039cb3616173ad51947", null ],
     [ "testMatchAny", "semtrex__spec_8h.html#a291ea400f341d965d559faaddcb7efa3", null ],
     [ "testMatchDescend", "semtrex__spec_8h.html#acd553184870adf750b021f96cb0c2c27", null ],
     [ "testMatchExcept", "semtrex__spec_8h.html#aac8d79a08dc1790cb5bfd18db1db7224", null ],

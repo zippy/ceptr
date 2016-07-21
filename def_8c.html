@@ -92,7 +92,7 @@ $(document).ready(function(){initNavTree('def_8c.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -113,10 +113,12 @@ $(document).ready(function(){initNavTree('def_8c.html','');});
 <code>#include &quot;<a class="el" href="stream_8h_source.html">stream.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="def_8h_source.html">def.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="semtrex_8h_source.html">semtrex.h</a>&quot;</code><br />
+<code>#include &quot;ansicolor.h&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for def.c:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="def_8c__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="def_8c__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div>
 <p><a href="def_8c_source.html">Go to the source code of this file.</a></p>
@@ -130,6 +132,9 @@ Include dependency graph for def.c:</div>
 <tr class="memitem:ad5be22a5bd16c6abb74f4887c35cac4c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad5be22a5bd16c6abb74f4887c35cac4c"></a>
 char&#160;</td><td class="memItemRight" valign="bottom"><b>__d_extra_buf</b> [100]</td></tr>
 <tr class="separator:ad5be22a5bd16c6abb74f4887c35cac4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a165818fcd58b61a7030c7a3aec91677e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a165818fcd58b61a7030c7a3aec91677e"></a>
+<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>G_cursor</b> = NULL</td></tr>
+<tr class="separator:a165818fcd58b61a7030c7a3aec91677e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gabcf3213518bfa365ca05298f802d0dd7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gabcf3213518bfa365ca05298f802d0dd7"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>semeq</b> (<a class="el" href="structSemanticID.html">SemanticID</a> s1, <a class="el" href="structSemanticID.html">SemanticID</a> s2)</td></tr>
 <tr class="separator:gabcf3213518bfa365ca05298f802d0dd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -178,6 +183,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__d_tsig</b> (<a clas
 <tr class="separator:gad9a468887d0dc74ab76ad59a39aa423e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad328204a09fa7f68a65080044a9b5109"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSemanticID.html">Protocol</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__def.html#gad328204a09fa7f68a65080044a9b5109">_d_define_protocol</a> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structT.html">T</a> *def, Context c)</td></tr>
 <tr class="separator:gad328204a09fa7f68a65080044a9b5109"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80d71715e1d37b50bfb05ffe52fdc580"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a80d71715e1d37b50bfb05ffe52fdc580"></a>
+<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>__d_build_def_semtrex</b> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structT.html">T</a> *def, <a class="el" href="structT.html">T</a> *stx)</td></tr>
+<tr class="separator:a80d71715e1d37b50bfb05ffe52fdc580"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga15d66273ad66f17580a90a30c90b8f07"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__def.html#ga15d66273ad66f17580a90a30c90b8f07">_d_build_def_semtrex</a> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structSemanticID.html">Symbol</a> s, <a class="el" href="structT.html">T</a> *parent)</td></tr>
 <tr class="separator:ga15d66273ad66f17580a90a30c90b8f07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga02d58ad9f7ac4482d99e0ef31e119b3a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__def.html#ga02d58ad9f7ac4482d99e0ef31e119b3a">_d_define_receptor</a> (<a class="el" href="structSemTable.html">SemTable</a> *sem, char *label, <a class="el" href="structT.html">T</a> *definitions, Context c)</td></tr>
@@ -208,7 +216,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>__t_dump</b> (<a cl
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="def_8c.html">def.c</a></li>
-    <li class="footer">Generated on Sat Apr 16 2016 17:00:50 for ceptr by
+    <li class="footer">Generated on Thu Jul 21 2016 10:13:08 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

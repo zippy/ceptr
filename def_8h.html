@@ -92,7 +92,7 @@ $(document).ready(function(){initNavTree('def_8h.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -105,7 +105,8 @@ $(document).ready(function(){initNavTree('def_8h.html','');});
   <div class="summary">
 <a href="#define-members">Macros</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">def.h File Reference<div class="ingroups"><a class="el" href="group__def.html">Symbol and Structure Definition</a></div></div>  </div>
 </div><!--header-->
@@ -123,7 +124,8 @@ Include dependency graph for def.h:</div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="def_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="def_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div>
 <p><a href="def_8h_source.html">Go to the source code of this file.</a></p>
@@ -207,10 +209,14 @@ Enumerations</h2></td></tr>
 <tr class="memitem:ga0411cd49bb5b71852cecd93bcbf0ca2d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga0411cd49bb5b71852cecd93bcbf0ca2d"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>EnvelopeSignalUUIDIdx</b> =1
  }</td></tr>
 <tr class="separator:ga0411cd49bb5b71852cecd93bcbf0ca2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gabed82baf7f470b522273a3e37c24c600"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gabed82baf7f470b522273a3e37c24c600"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>PendingResponseUUIDIdx</b> =1, 
+<tr class="memitem:gabed82baf7f470b522273a3e37c24c600"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gabed82baf7f470b522273a3e37c24c600"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <br />
+&#160;&#160;<b>PendingResponseUUIDIdx</b> =1, 
 <b>PendingResponseCarrierIdx</b>, 
 <b>PendingResponseWakeupIdx</b>, 
-<b>PendingResponseEndCondsIdx</b>
+<b>PendingResponseEndCondsIdx</b>, 
+<br />
+&#160;&#160;<b>PendingResponseConversationIdentIdx</b>
+<br />
  }</td></tr>
 <tr class="separator:gabed82baf7f470b522273a3e37c24c600"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab04a0655cd1e3bcac5e8f48c18df1a57"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gab04a0655cd1e3bcac5e8f48c18df1a57"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>WakeupReferenceProcessIdentIdx</b> =1, 
@@ -268,7 +274,11 @@ Enumerations</h2></td></tr>
 <b>SymbolDefStructureIdx</b>
  }</td></tr>
 <tr class="separator:ga16af7b253440dadd46a80a4b9fddba4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaba01db17f4a2bfbc3db60dc172972a25"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaba01db17f4a2bfbc3db60dc172972a25"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <br />
+<tr class="memitem:gaba01db17f4a2bfbc3db60dc172972a25"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaba01db17f4a2bfbc3db60dc172972a25"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>StructureDefLabelIdx</b> =1, 
+<b>StructureDefDefIdx</b>
+ }</td></tr>
+<tr class="separator:gaba01db17f4a2bfbc3db60dc172972a25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaaf105ae5beaca1dee30ae54530691fce"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaaf105ae5beaca1dee30ae54530691fce"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <br />
 &#160;&#160;<b>ProcessDefNameIdx</b> =1, 
 <b>ProcessDefIntentionIdx</b>, 
 <b>ProcessDefCodeIdx</b>, 
@@ -277,67 +287,73 @@ Enumerations</h2></td></tr>
 &#160;&#160;<b>ProcessDefLinkIdx</b>
 <br />
  }</td></tr>
-<tr class="separator:gaba01db17f4a2bfbc3db60dc172972a25"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaaf105ae5beaca1dee30ae54530691fce"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaaf105ae5beaca1dee30ae54530691fce"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>SignatureOutputSigIdx</b> =1
- }</td></tr>
 <tr class="separator:gaaf105ae5beaca1dee30ae54530691fce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga80155586fa275b28773c9b203f52caba"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga80155586fa275b28773c9b203f52caba"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>InputSigLabelIdx</b> =1, 
+<tr class="memitem:ga80155586fa275b28773c9b203f52caba"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga80155586fa275b28773c9b203f52caba"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>SignatureOutputSigIdx</b> =1
+ }</td></tr>
+<tr class="separator:ga80155586fa275b28773c9b203f52caba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6b7b47dd702d9e331586d485013fd1ea"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga6b7b47dd702d9e331586d485013fd1ea"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>InputSigLabelIdx</b> =1, 
 <b>InputSigSemVariantsIdx</b>, 
 <b>InputSigOptionalIdx</b>
  }</td></tr>
-<tr class="separator:ga80155586fa275b28773c9b203f52caba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6b7b47dd702d9e331586d485013fd1ea"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga6b7b47dd702d9e331586d485013fd1ea"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>ProtocolDefNameIdx</b> =1, 
-<b>ProtocolDefSemanticsIdx</b>
- }</td></tr>
 <tr class="separator:ga6b7b47dd702d9e331586d485013fd1ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf9bdc3014f3d54c426b6d2df10de4960"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaf9bdc3014f3d54c426b6d2df10de4960"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>RuntreeCodeIdx</b> =1, 
+<tr class="memitem:gaf9bdc3014f3d54c426b6d2df10de4960"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaf9bdc3014f3d54c426b6d2df10de4960"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>ProtocolDefNameIdx</b> =1, 
+<b>ProtocolDefSemanticsIdx</b>, 
+<b>ProtocolDefOptionalsIdx</b>
+ }</td></tr>
+<tr class="separator:gaf9bdc3014f3d54c426b6d2df10de4960"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadb49720dc49f7d4e4cf9adbf2948e409"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gadb49720dc49f7d4e4cf9adbf2948e409"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>RuntreeCodeIdx</b> =1, 
 <b>RunTreeParamsIdx</b>, 
 <b>RunTreeErrorCodeIdx</b>, 
 <b>RunTreeErrorParamsIdx</b>
  }</td></tr>
-<tr class="separator:gaf9bdc3014f3d54c426b6d2df10de4960"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gadb49720dc49f7d4e4cf9adbf2948e409"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gadb49720dc49f7d4e4cf9adbf2948e409"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>ResolutionWhichIdx</b> =1
- }</td></tr>
 <tr class="separator:gadb49720dc49f7d4e4cf9adbf2948e409"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaae05225933a42f81e7c4a9fb286596f9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaae05225933a42f81e7c4a9fb286596f9"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>ConnectionWhichIdx</b> =1
+<tr class="memitem:gaae05225933a42f81e7c4a9fb286596f9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaae05225933a42f81e7c4a9fb286596f9"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>ResolutionWhichIdx</b> =1
  }</td></tr>
 <tr class="separator:gaae05225933a42f81e7c4a9fb286596f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga39fca1837c5ce7715cbf571669660c13"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga39fca1837c5ce7715cbf571669660c13"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>SemtrexMatchSymbolIdx</b> =1, 
+<tr class="memitem:ga39fca1837c5ce7715cbf571669660c13"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga39fca1837c5ce7715cbf571669660c13"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>ConnectionWhichIdx</b> =1
+ }</td></tr>
+<tr class="separator:ga39fca1837c5ce7715cbf571669660c13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaaf8fd5f0e57d456151c951e0f3715fc4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaaf8fd5f0e57d456151c951e0f3715fc4"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>SemtrexMatchSymbolIdx</b> =1, 
 <b>SemtrexMatchPathIdx</b>, 
 <b>SemtrexMatchSibsIdx</b>
  }</td></tr>
-<tr class="separator:ga39fca1837c5ce7715cbf571669660c13"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaaf8fd5f0e57d456151c951e0f3715fc4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaaf8fd5f0e57d456151c951e0f3715fc4"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>InclusionPnameIdx</b> =1
- }</td></tr>
 <tr class="separator:gaaf8fd5f0e57d456151c951e0f3715fc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga94798fdadfbf49a7c658ace669a1d310"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga94798fdadfbf49a7c658ace669a1d310"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>SemanticMapSemanticRefIdx</b> =1, 
-<b>SemanticMapReplacementValIdx</b>
+<tr class="memitem:ga94798fdadfbf49a7c658ace669a1d310"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga94798fdadfbf49a7c658ace669a1d310"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>InclusionPnameIdx</b> =1
  }</td></tr>
 <tr class="separator:ga94798fdadfbf49a7c658ace669a1d310"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae4d5251432e1a9e6803c0240cc492e18"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gae4d5251432e1a9e6803c0240cc492e18"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>SlotSemanticRefIdx</b> =1, 
-<b>SlotValueOfIdx</b>
+<tr class="memitem:gae4d5251432e1a9e6803c0240cc492e18"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gae4d5251432e1a9e6803c0240cc492e18"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>SemanticMapSemanticRefIdx</b> =1, 
+<b>SemanticMapReplacementValIdx</b>
  }</td></tr>
 <tr class="separator:gae4d5251432e1a9e6803c0240cc492e18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7ff5f2dff38e7639981794c43dc9167b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga7ff5f2dff38e7639981794c43dc9167b"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>ParameterReferenceIdx</b> =1, 
-<b>ParameterResultIdx</b> =2
+<tr class="memitem:ga7ff5f2dff38e7639981794c43dc9167b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga7ff5f2dff38e7639981794c43dc9167b"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>SlotSemanticRefIdx</b> =1, 
+<b>SlotValueOfIdx</b>
  }</td></tr>
 <tr class="separator:ga7ff5f2dff38e7639981794c43dc9167b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaabfcbcb5ac86a1edac4035264bc7d2b8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaabfcbcb5ac86a1edac4035264bc7d2b8"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>InstanceStoreInstancesIdx</b> =1, 
-<b>InstanceStoreTokensIdx</b> =2
+<tr class="memitem:gaabfcbcb5ac86a1edac4035264bc7d2b8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaabfcbcb5ac86a1edac4035264bc7d2b8"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>ParameterReferenceIdx</b> =1, 
+<b>ParameterResultIdx</b> =2
  }</td></tr>
 <tr class="separator:gaabfcbcb5ac86a1edac4035264bc7d2b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5d76b81b0ad4c19007a781d4edb8181f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga5d76b81b0ad4c19007a781d4edb8181f"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>InstanceTokensLastTokenIdx</b> =1
+<tr class="memitem:ga5d76b81b0ad4c19007a781d4edb8181f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga5d76b81b0ad4c19007a781d4edb8181f"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>InstanceStoreInstancesIdx</b> =1, 
+<b>InstanceStoreTokensIdx</b> =2
  }</td></tr>
 <tr class="separator:ga5d76b81b0ad4c19007a781d4edb8181f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaac34dfe6c6b73b43a4656c9dce041034"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaac34dfe6c6b73b43a4656c9dce041034"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>ConversationIdentIdx</b> =1, 
-<b>ConversationUntilIdx</b>, 
-<b>ConversationWakeupIdx</b>
+<tr class="memitem:gaac34dfe6c6b73b43a4656c9dce041034"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaac34dfe6c6b73b43a4656c9dce041034"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>InstanceTokensLastTokenIdx</b> =1
  }</td></tr>
 <tr class="separator:gaac34dfe6c6b73b43a4656c9dce041034"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0ed680fdb405e7195d9f14032851eebb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga0ed680fdb405e7195d9f14032851eebb"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>NO_INDENT</b> =0, 
-<b>INDENT</b> =-1
+<tr class="memitem:ga0ed680fdb405e7195d9f14032851eebb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga0ed680fdb405e7195d9f14032851eebb"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>ConversationIdentIdx</b> =1, 
+<b>ConversationUntilIdx</b>, 
+<b>ConversationConversationsIdx</b>, 
+<b>ConversationWakeupIdx</b>
  }</td></tr>
 <tr class="separator:ga0ed680fdb405e7195d9f14032851eebb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0944a4353780132eeab7b06e3e42291d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga0944a4353780132eeab7b06e3e42291d"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>ConversationIdentUUIDIdx</b> =1, 
+<b>ConversationIdentOptionalsIdx</b>
+ }</td></tr>
+<tr class="separator:ga0944a4353780132eeab7b06e3e42291d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4790f45dcc812c1b00184a2edccdddf5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga4790f45dcc812c1b00184a2edccdddf5"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>NO_INDENT</b> =0, 
+<b>INDENT</b> =-1
+ }</td></tr>
+<tr class="separator:ga4790f45dcc812c1b00184a2edccdddf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -403,12 +419,18 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_indent_line</b> (i
 <tr class="memitem:ga013e8b908c1ee5e1e0270e896d057712"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga013e8b908c1ee5e1e0270e896d057712"></a>
 char *&#160;</td><td class="memItemRight" valign="bottom"><b>__t_dump</b> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structT.html">T</a> *t, int level, char *buf)</td></tr>
 <tr class="separator:ga013e8b908c1ee5e1e0270e896d057712"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5ccb057498c54090bb65ba72f1876489"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga5ccb057498c54090bb65ba72f1876489"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>def_sys</b> ()</td></tr>
-<tr class="separator:ga5ccb057498c54090bb65ba72f1876489"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7ce90bc0d2880d34c8df6f7bfdac0ac7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga7ce90bc0d2880d34c8df6f7bfdac0ac7"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>sys_free</b> ()</td></tr>
-<tr class="separator:ga7ce90bc0d2880d34c8df6f7bfdac0ac7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9b1be8037c86be6f90a1ed4181ab565f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga9b1be8037c86be6f90a1ed4181ab565f"></a>
+<a class="el" href="structSemTable.html">SemTable</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>def_sys</b> ()</td></tr>
+<tr class="separator:ga9b1be8037c86be6f90a1ed4181ab565f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga73c2e639418106c55b0c853be6822ecb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga73c2e639418106c55b0c853be6822ecb"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>sys_free</b> (<a class="el" href="structSemTable.html">SemTable</a> *sem)</td></tr>
+<tr class="separator:ga73c2e639418106c55b0c853be6822ecb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:ga165818fcd58b61a7030c7a3aec91677e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga165818fcd58b61a7030c7a3aec91677e"></a>
+<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>G_cursor</b></td></tr>
+<tr class="separator:ga165818fcd58b61a7030c7a3aec91677e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>header file for symbol and structure definition functions </p>
@@ -421,7 +443,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>sys_free</b> ()</td><
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="def_8h.html">def.h</a></li>
-    <li class="footer">Generated on Sat Apr 16 2016 17:00:50 for ceptr by
+    <li class="footer">Generated on Thu Jul 21 2016 10:13:08 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

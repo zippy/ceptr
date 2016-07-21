@@ -92,7 +92,7 @@ $(document).ready(function(){initNavTree('http__example_8h_source.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -126,447 +126,441 @@ $(document).ready(function(){initNavTree('http__example_8h_source.html','');});
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="comment">// confirm that we built the request right!</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;     <a class="code" href="structT.html">T</a> *stx = <a class="code" href="group__def.html#ga15d66273ad66f17580a90a30c90b8f07">_d_build_def_semtrex</a>(G_sem,HTTP_REQUEST,0);</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;     <span class="keywordflow">if</span> (!<a class="code" href="group__semtrex.html#ga8e580d7393964e5df55e92aebf587e3f">_t_match</a>(stx,t)) {raise_error(<span class="stringliteral">&quot;BAD HTTP_REQUEST semtrex&quot;</span>);}</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;     <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(stx);</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keywordflow">return</span> t;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;}</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="http__example_8h.html#a5476caaca538a030a6770bc99a42f372">   46</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="http__example_8h.html#a5476caaca538a030a6770bc99a42f372">_makeTestHTTPResponseProcess</a>(<a class="code" href="structReceptor.html">Receptor</a> *r,<a class="code" href="structT.html">T</a> **paramsP,<a class="code" href="structSemanticID.html">Process</a> *pP) {</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="comment">// the action simply responds back with the method that was originally sent</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="comment">// this test should be made more real... but for now it responds back with a ping</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="comment">// like message that contains what the first path segment was</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <a class="code" href="structT.html">T</a> *resp = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(RESPOND);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    _t_news(resp,CARRIER,HTTP_RESPONSE);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordtype">int</span> pt1[] = {2,1,TREE_PATH_TERMINATOR};</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    _t_new(resp,PARAM_REF,pt1,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)*3);</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;     <span class="comment">//   puts(t2s(stx));</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;     <span class="comment">//  puts(t2s(t));</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;     <span class="comment">//    stx = _t_parse(G_sem,0,&quot;(SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:HTTP_REQUEST) (SEMTREX_SEQUENCE (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:HTTP_REQUEST_LINE)) (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:HTTP_REQUEST_HEADERS) (SEMTREX_SEQUENCE (SEMTREX_ZERO_OR_MORE (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:CONTENT_ENCODING))))) (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:HTTP_REQUEST_BODY))))&quot;);</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;     <span class="keywordflow">if</span> (!<a class="code" href="group__semtrex.html#ga8e580d7393964e5df55e92aebf587e3f">_t_match</a>(stx,t)) {raise_error(<span class="stringliteral">&quot;BAD HTTP_REQUEST semtrex&quot;</span>);}</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;     <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(stx);</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;     <span class="comment">// all our examples are expecting the HTTP_REQUEST_LINE</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;     <a class="code" href="structT.html">T</a> *c =  <a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(t,1);</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;     <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;     <span class="keywordflow">return</span> c;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;}</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="http__example_8h.html#a5476caaca538a030a6770bc99a42f372">   51</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="http__example_8h.html#a5476caaca538a030a6770bc99a42f372">_makeTestHTTPResponseProcess</a>(<a class="code" href="structReceptor.html">Receptor</a> *r,<a class="code" href="structT.html">T</a> **paramsP,<a class="code" href="structSemanticID.html">Process</a> *pP) {</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="comment">// the action simply responds back with the method that was originally sent</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="comment">// this test should be made more real... but for now it responds back with a ping</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="comment">// like message that contains what the first path segment was</span></div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <a class="code" href="structSemanticID.html">Process</a> p = <a class="code" href="group__receptor.html#ga6bb73d41388d17428e5735ad9cbe5917">_r_define_process</a>(r,resp,<span class="stringliteral">&quot;code path ping&quot;</span>,<span class="stringliteral">&quot;respond with the value of the first parameter&quot;</span>,NULL,NULL);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    *pP = p;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <a class="code" href="structT.html">T</a> *params = <a class="code" href="group__tree.html#gaebfc497f04bdfbfd3a241771b146bebc">_t_build</a>(G_sem,0,</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                         PARAMS,</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                         HTTP_RESPONSE,</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                         HTTP_RESPONSE_STATUS,STATUS_VALUE,200,STATUS_TEXT,<span class="stringliteral">&quot;OK&quot;</span>,NULL_SYMBOL,</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                         HTTP_HEADERS,</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                         CONTENT_TYPE,MEDIA_TYPE_IDENT,TEXT_MEDIA_TYPE,MEDIA_SUBTYPE_IDENT,CEPTR_TEXT_MEDIA_SUBTYPE,NULL_SYMBOL,NULL_SYMBOL,</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                         HTTP_RESPONSE_BODY,</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                         SLOT,USAGE,HTTP_REQUEST_PATH_SEGMENT,NULL_SYMBOL,</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                         NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                         );</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="comment">/*     _t_new_root(PARAMS); */</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="comment">/* T *http_resp = _t_newr(params,HTTP_RESPONSE); */</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="comment">/* _t_new(http_resp,HTTP_RESPONSE_CONTENT_TYPE,&quot;CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT&quot;,38); */</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="comment">/* T *s = _t_newr(http_resp,SLOT); */</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="comment">/* _t_news(s,USAGE,HTTP_REQUEST_PATH_SEGMENT); */</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    *paramsP = params;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;}</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="http__example_8h.html#aab25be2feb3ef9f92c3bd1cecace8168">   80</a></span>&#160;<span class="keywordtype">char</span> *<a class="code" href="http__example_8h.html#aab25be2feb3ef9f92c3bd1cecace8168">G_stxs</a> = <span class="stringliteral">&quot;/ASCII_CHARS/&lt;HTTP_REQUEST:&lt;HTTP_REQUEST_METHOD:ASCII_CHAR!=&#39; &#39;+&gt;,ASCII_CHAR=&#39; &#39;,&lt;HTTP_REQUEST_PATH:&lt;HTTP_REQUEST_PATH_SEGMENTS:(ASCII_CHAR=&#39;/&#39;,&lt;HTTP_REQUEST_PATH_SEGMENT:ASCII_CHAR!={&#39;/&#39;,&#39;?&#39;,&#39; &#39;}*&gt;)+&gt;&gt;,(ASCII_CHAR=&#39;?&#39;,&lt;HTTP_REQUEST_PATH_QUERY:&lt;HTTP_REQUEST_PATH_QUERY_PARAMS:(&lt;HTTP_REQUEST_PATH_QUERY_PARAM:&lt;PARAM_KEY:ASCII_CHAR!={&#39;&amp;&#39;,&#39; &#39;,&#39;=&#39;}+&gt;,ASCII_CHAR=&#39;=&#39;,&lt;PARAM_VALUE:ASCII_CHAR!={&#39;&amp;&#39;,&#39; &#39;}*&gt;&gt;,ASCII_CHAR=&#39;&amp;&#39;?)+&gt;+&gt;)?,ASCII_CHAR=&#39; &#39;,ASCII_CHAR=&#39;H&#39;,ASCII_CHAR=&#39;T&#39;,ASCII_CHAR=&#39;T&#39;,ASCII_CHAR=&#39;P&#39;,ASCII_CHAR=&#39;/&#39;,&lt;HTTP_REQUEST_VERSION:&lt;VERSION_MAJOR:ASCII_CHAR=&#39;0&#39;&gt;,ASCII_CHAR=&#39;.&#39;,&lt;VERSION_MINOR:ASCII_CHAR=&#39;9&#39;&gt;&gt;&gt;&quot;</span>;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="http__example_8h.html#af05800edd63bd301c2f47a5e846e2642">   86</a></span>&#160;<a class="code" href="structT.html">T</a> *<a class="code" href="http__example_8h.html#af05800edd63bd301c2f47a5e846e2642">_makeHTTPRequestSemtrex</a>() {</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <a class="code" href="structT.html">T</a> *t = <a class="code" href="group__semtrex.html#gabe49b12bfb8785a10bf088c4ebe60db4">parseSemtrex</a>(G_sem,<a class="code" href="http__example_8h.html#aab25be2feb3ef9f92c3bd1cecace8168">G_stxs</a>);</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keywordflow">return</span> t;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <a class="code" href="structT.html">T</a> *stx= <a class="code" href="group__semtrex.html#ga12e70dc3d5fde33655e8731ad3bdd935">_sl</a>(0,ASCII_CHARS);</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    t = _t_news(stx,SEMTREX_GROUP,HTTP_REQUEST);</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <a class="code" href="structT.html">T</a> *sq = _t_newr(t,SEMTREX_SEQUENCE);</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    t = _t_news(sq,SEMTREX_GROUP,HTTP_REQUEST_METHOD);</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    t = _t_newr(t,SEMTREX_ONE_OR_MORE);</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    __stxcvm(t,1,1,<span class="charliteral">&#39; &#39;</span>);  </div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    __stxcv(sq,<span class="charliteral">&#39; &#39;</span>);</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    t = _t_news(sq,SEMTREX_GROUP,HTTP_REQUEST_PATH);</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <a class="code" href="structT.html">T</a> *sqq = _t_newr(t,SEMTREX_SEQUENCE);</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    t = _t_news(sqq,SEMTREX_GROUP,HTTP_REQUEST_PATH_SEGMENTS);</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    t = _t_newr(t,SEMTREX_ONE_OR_MORE);</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    t = _t_newr(t,SEMTREX_SEQUENCE);</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    __stxcv(t,<span class="charliteral">&#39;/&#39;</span>);</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    t = _t_news(t,SEMTREX_GROUP,HTTP_REQUEST_PATH_SEGMENT);</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    t = _t_newr(t,SEMTREX_ZERO_OR_MORE);</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    __stxcvm(t,1,3,<span class="charliteral">&#39;/&#39;</span>,<span class="charliteral">&#39;?&#39;</span>,<span class="charliteral">&#39; &#39;</span>);</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <span class="comment">/* t = _t_news(sq,SEMTREX_GROUP,HTTP_REQUEST_PATH_FILE); */</span></div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="comment">/* T *f = _t_newr(t,SEMTREX_SEQUENCE); */</span></div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <span class="comment">/* t = _t_news(f,SEMTREX_GROUP,FILE_NAME); */</span></div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="comment">/* t = _t_newr(t,SEMTREX_ONE_OR_MORE); */</span></div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="comment">/* __stxcvm(t,1,2,&#39;?&#39;,&#39; &#39;); */</span></div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="comment">/* t = _t_newr(f,SEMTREX_ZERO_OR_ONE); */</span></div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="comment">/* t = _t_newr(t,SEMTREX_SEQUENCE); */</span></div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="comment">/* __stxcv(t,&#39;.&#39;); */</span></div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <span class="comment">/* t = _t_news(t,SEMTREX_GROUP,FILE_EXTENSION); */</span></div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <span class="comment">/* t = _t_newr(t,SEMTREX_ONE_OR_MORE); */</span></div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    <span class="comment">/* __stxcvm(t,1,2,&#39;?&#39;,&#39; &#39;); */</span></div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    t = _t_newr(sq,SEMTREX_ZERO_OR_ONE);</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    t = _t_newr(t,SEMTREX_SEQUENCE);</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    __stxcv(t,<span class="charliteral">&#39;?&#39;</span>);</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <a class="code" href="structT.html">T</a> *f;</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    t = _t_news(t,SEMTREX_GROUP,HTTP_REQUEST_PATH_QUERY);</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    t = _t_newr(t,SEMTREX_ONE_OR_MORE);</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    t = _t_news(t,SEMTREX_GROUP,HTTP_REQUEST_PATH_QUERY_PARAMS);</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    t = _t_newr(t,SEMTREX_ONE_OR_MORE);</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    <a class="code" href="structT.html">T</a> *qps = _t_newr(t,SEMTREX_SEQUENCE);</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    t = _t_news(qps,SEMTREX_GROUP,HTTP_REQUEST_PATH_QUERY_PARAM);</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    f = _t_newr(t,SEMTREX_SEQUENCE);</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    t = _t_news(f,SEMTREX_GROUP,PARAM_KEY);</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <a class="code" href="structT.html">T</a> *resp = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(RESPOND);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    _t_news(resp,CARRIER,HTTP_RESPONSE);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordtype">int</span> pt1[] = {2,1,TREE_PATH_TERMINATOR};</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    _t_new(resp,PARAM_REF,pt1,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)*3);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <a class="code" href="structSemanticID.html">Process</a> p = <a class="code" href="group__receptor.html#ga6bb73d41388d17428e5735ad9cbe5917">_r_define_process</a>(r,resp,<span class="stringliteral">&quot;code path ping&quot;</span>,<span class="stringliteral">&quot;respond with the value of the first parameter&quot;</span>,NULL,NULL);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    *pP = p;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <a class="code" href="structT.html">T</a> *params = <a class="code" href="group__tree.html#gaebfc497f04bdfbfd3a241771b146bebc">_t_build</a>(G_sem,0,</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                         PARAMS,</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                         HTTP_RESPONSE,</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                         HTTP_RESPONSE_STATUS,STATUS_VALUE,200,STATUS_TEXT,<span class="stringliteral">&quot;OK&quot;</span>,NULL_SYMBOL,</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                         HTTP_HEADERS,</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                         CONTENT_TYPE,MEDIA_TYPE_IDENT,TEXT_MEDIA_TYPE,MEDIA_SUBTYPE_IDENT,CEPTR_TEXT_MEDIA_SUBTYPE,NULL_SYMBOL,NULL_SYMBOL,</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                         HTTP_RESPONSE_BODY,</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                         SLOT,USAGE,HTTP_REQUEST_PATH_SEGMENT,NULL_SYMBOL,</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                         NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                         );</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="comment">/*     _t_new_root(PARAMS); */</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="comment">/* T *http_resp = _t_newr(params,HTTP_RESPONSE); */</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="comment">/* _t_new(http_resp,HTTP_RESPONSE_CONTENT_TYPE,&quot;CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT&quot;,38); */</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="comment">/* T *s = _t_newr(http_resp,SLOT); */</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="comment">/* _t_news(s,USAGE,HTTP_REQUEST_PATH_SEGMENT); */</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    *paramsP = params;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;}</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
+<div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="http__example_8h.html#aab25be2feb3ef9f92c3bd1cecace8168">   85</a></span>&#160;<span class="keywordtype">char</span> *<a class="code" href="http__example_8h.html#aab25be2feb3ef9f92c3bd1cecace8168">G_stxs</a> = <span class="stringliteral">&quot;/ASCII_CHARS/&lt;HTTP_REQUEST:&lt;HTTP_REQUEST_METHOD:ASCII_CHAR!=&#39; &#39;+&gt;,ASCII_CHAR=&#39; &#39;,&lt;HTTP_REQUEST_PATH:&lt;HTTP_REQUEST_PATH_SEGMENTS:(ASCII_CHAR=&#39;/&#39;,&lt;HTTP_REQUEST_PATH_SEGMENT:ASCII_CHAR!={&#39;/&#39;,&#39;?&#39;,&#39; &#39;}*&gt;)+&gt;&gt;,(ASCII_CHAR=&#39;?&#39;,&lt;HTTP_REQUEST_PATH_QUERY:&lt;HTTP_REQUEST_PATH_QUERY_PARAMS:(&lt;HTTP_REQUEST_PATH_QUERY_PARAM:&lt;PARAM_KEY:ASCII_CHAR!={&#39;&amp;&#39;,&#39; &#39;,&#39;=&#39;}+&gt;,ASCII_CHAR=&#39;=&#39;,&lt;PARAM_VALUE:ASCII_CHAR!={&#39;&amp;&#39;,&#39; &#39;}*&gt;&gt;,ASCII_CHAR=&#39;&amp;&#39;?)+&gt;+&gt;)?,ASCII_CHAR=&#39; &#39;,ASCII_CHAR=&#39;H&#39;,ASCII_CHAR=&#39;T&#39;,ASCII_CHAR=&#39;T&#39;,ASCII_CHAR=&#39;P&#39;,ASCII_CHAR=&#39;/&#39;,&lt;HTTP_REQUEST_VERSION:&lt;VERSION_MAJOR:ASCII_CHAR=&#39;0&#39;&gt;,ASCII_CHAR=&#39;.&#39;,&lt;VERSION_MINOR:ASCII_CHAR=&#39;9&#39;&gt;&gt;&gt;&quot;</span>;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="http__example_8h.html#af05800edd63bd301c2f47a5e846e2642">   91</a></span>&#160;<a class="code" href="structT.html">T</a> *<a class="code" href="http__example_8h.html#af05800edd63bd301c2f47a5e846e2642">_makeHTTPRequestSemtrex</a>() {</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <a class="code" href="structT.html">T</a> *t = <a class="code" href="group__semtrex.html#gabe49b12bfb8785a10bf088c4ebe60db4">parseSemtrex</a>(G_sem,<a class="code" href="http__example_8h.html#aab25be2feb3ef9f92c3bd1cecace8168">G_stxs</a>);</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keywordflow">return</span> t;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <a class="code" href="structT.html">T</a> *stx= <a class="code" href="group__semtrex.html#ga12e70dc3d5fde33655e8731ad3bdd935">_sl</a>(0,ASCII_CHARS);</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    t = _t_news(stx,SEMTREX_GROUP,HTTP_REQUEST);</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <a class="code" href="structT.html">T</a> *sq = _t_newr(t,SEMTREX_SEQUENCE);</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    t = _t_news(sq,SEMTREX_GROUP,HTTP_REQUEST_METHOD);</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    t = _t_newr(t,SEMTREX_ONE_OR_MORE);</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    __stxcvm(t,1,1,<span class="charliteral">&#39; &#39;</span>);  </div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    __stxcv(sq,<span class="charliteral">&#39; &#39;</span>);</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    t = _t_news(sq,SEMTREX_GROUP,HTTP_REQUEST_PATH);</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <a class="code" href="structT.html">T</a> *sqq = _t_newr(t,SEMTREX_SEQUENCE);</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    t = _t_news(sqq,SEMTREX_GROUP,HTTP_REQUEST_PATH_SEGMENTS);</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    t = _t_newr(t,SEMTREX_ONE_OR_MORE);</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    t = _t_newr(t,SEMTREX_SEQUENCE);</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    __stxcv(t,<span class="charliteral">&#39;/&#39;</span>);</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    t = _t_news(t,SEMTREX_GROUP,HTTP_REQUEST_PATH_SEGMENT);</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    t = _t_newr(t,SEMTREX_ZERO_OR_MORE);</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    __stxcvm(t,1,3,<span class="charliteral">&#39;/&#39;</span>,<span class="charliteral">&#39;?&#39;</span>,<span class="charliteral">&#39; &#39;</span>);</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    <span class="comment">/* t = _t_news(sq,SEMTREX_GROUP,HTTP_REQUEST_PATH_FILE); */</span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="comment">/* T *f = _t_newr(t,SEMTREX_SEQUENCE); */</span></div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="comment">/* t = _t_news(f,SEMTREX_GROUP,FILE_NAME); */</span></div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="comment">/* t = _t_newr(t,SEMTREX_ONE_OR_MORE); */</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <span class="comment">/* __stxcvm(t,1,2,&#39;?&#39;,&#39; &#39;); */</span></div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    <span class="comment">/* t = _t_newr(f,SEMTREX_ZERO_OR_ONE); */</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <span class="comment">/* t = _t_newr(t,SEMTREX_SEQUENCE); */</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <span class="comment">/* __stxcv(t,&#39;.&#39;); */</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <span class="comment">/* t = _t_news(t,SEMTREX_GROUP,FILE_EXTENSION); */</span></div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="comment">/* t = _t_newr(t,SEMTREX_ONE_OR_MORE); */</span></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <span class="comment">/* __stxcvm(t,1,2,&#39;?&#39;,&#39; &#39;); */</span></div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    t = _t_newr(sq,SEMTREX_ZERO_OR_ONE);</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    t = _t_newr(t,SEMTREX_SEQUENCE);</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    __stxcv(t,<span class="charliteral">&#39;?&#39;</span>);</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    <a class="code" href="structT.html">T</a> *f;</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    t = _t_news(t,SEMTREX_GROUP,HTTP_REQUEST_PATH_QUERY);</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    t = _t_newr(t,SEMTREX_ONE_OR_MORE);</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    t = _t_news(t,SEMTREX_GROUP,HTTP_REQUEST_PATH_QUERY_PARAMS);</div>
 <div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    t = _t_newr(t,SEMTREX_ONE_OR_MORE);</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    __stxcvm(t,1,3,<span class="charliteral">&#39;&amp;&#39;</span>,<span class="charliteral">&#39; &#39;</span>,<span class="charliteral">&#39;=&#39;</span>);</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    __stxcv(f,<span class="charliteral">&#39;=&#39;</span>);</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    t = _t_news(f,SEMTREX_GROUP,PARAM_VALUE);</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    t = _t_newr(t,SEMTREX_ZERO_OR_MORE);</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    __stxcvm(t,1,2,<span class="charliteral">&#39;&amp;&#39;</span>,<span class="charliteral">&#39; &#39;</span>);</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    t = _t_newr(qps,SEMTREX_ZERO_OR_ONE);</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    __stxcv(t,<span class="charliteral">&#39;&amp;&#39;</span>);</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    __stxcv(sq,<span class="charliteral">&#39; &#39;</span>);</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    <a class="code" href="structT.html">T</a> *qps = _t_newr(t,SEMTREX_SEQUENCE);</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    t = _t_news(qps,SEMTREX_GROUP,HTTP_REQUEST_PATH_QUERY_PARAM);</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    f = _t_newr(t,SEMTREX_SEQUENCE);</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    t = _t_news(f,SEMTREX_GROUP,PARAM_KEY);</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    t = _t_newr(t,SEMTREX_ONE_OR_MORE);</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    __stxcvm(t,1,3,<span class="charliteral">&#39;&amp;&#39;</span>,<span class="charliteral">&#39; &#39;</span>,<span class="charliteral">&#39;=&#39;</span>);</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    __stxcv(f,<span class="charliteral">&#39;=&#39;</span>);</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    t = _t_news(f,SEMTREX_GROUP,PARAM_VALUE);</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    t = _t_newr(t,SEMTREX_ZERO_OR_MORE);</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    __stxcvm(t,1,2,<span class="charliteral">&#39;&amp;&#39;</span>,<span class="charliteral">&#39; &#39;</span>);</div>
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    __stxcv(sq,<span class="charliteral">&#39;H&#39;</span>);</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    __stxcv(sq,<span class="charliteral">&#39;T&#39;</span>);</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    __stxcv(sq,<span class="charliteral">&#39;T&#39;</span>);</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    __stxcv(sq,<span class="charliteral">&#39;P&#39;</span>);</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    __stxcv(sq,<span class="charliteral">&#39;/&#39;</span>);</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    t = _t_news(sq,SEMTREX_GROUP,HTTP_REQUEST_VERSION);</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    t = _t_newr(t,SEMTREX_SEQUENCE);</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    f = _t_news(t,SEMTREX_GROUP,VERSION_MAJOR);</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    __stxcv(f,<span class="charliteral">&#39;0&#39;</span>);</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    __stxcv(t,<span class="charliteral">&#39;.&#39;</span>);</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    f = _t_news(t,SEMTREX_GROUP,VERSION_MINOR);</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    __stxcv(f,<span class="charliteral">&#39;9&#39;</span>);</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    <span class="keywordflow">return</span> stx;</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;}</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<a class="code" href="structT.html">T</a> *makeDeltaAdd(<a class="code" href="structT.html">T</a> *src,<a class="code" href="structT.html">T</a> *t) {</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <span class="keywordtype">int</span> *path = <a class="code" href="group__tree.html#gae4c9b743462f0a3808c9f02c3bf33da8">_t_get_path</a>(src);</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <a class="code" href="structT.html">T</a> *d = makeDelta(TREE_DELTA_ADD,path,t,0);</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    free(path);</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    <span class="keywordflow">return</span> d;</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;}</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> getTag(<span class="keywordtype">char</span> *otag,<a class="code" href="structSemanticID.html">Symbol</a> tag_sym[],<span class="keywordtype">char</span> *tag_str[]) {</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    <a class="code" href="structSemanticID.html">Symbol</a> ts = NULL_SYMBOL;</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <span class="keywordtype">int</span> i;</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    <span class="keywordflow">for</span>(i=0;i&lt;15;i++) {</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    <span class="keywordflow">if</span> (!strcicmp(otag,tag_str[i])) {ts = tag_sym[i];<span class="keywordflow">break</span>;}</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    }</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    <span class="keywordflow">if</span> (semeq(ts,NULL_SYMBOL)) {raise_error(<span class="stringliteral">&quot;invalid tag: %s&quot;</span>,otag);}</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    <span class="keywordflow">return</span> ts;</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;}</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;<a class="code" href="structT.html">T</a> *parseHTML(<span class="keywordtype">char</span> *html) {</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    <a class="code" href="structSemanticID.html">Symbol</a> G_tag_sym[] = {HTML_HTML,HTML_HEAD,HTML_TITLE,HTML_BODY,HTML_DIV,HTML_P,HTML_A,HTML_B,HTML_UL,HTML_OL,HTML_LI,HTML_SPAN,HTML_H1,HTML_H2,HTML_H3,HTML_H4,HTML_FORM};</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    <span class="keywordtype">char</span> *G_tag_str[] ={<span class="stringliteral">&quot;html&quot;</span>,<span class="stringliteral">&quot;head&quot;</span>,<span class="stringliteral">&quot;title&quot;</span>,<span class="stringliteral">&quot;body&quot;</span>,<span class="stringliteral">&quot;div&quot;</span>,<span class="stringliteral">&quot;p&quot;</span>,<span class="stringliteral">&quot;a&quot;</span>,<span class="stringliteral">&quot;b&quot;</span>,<span class="stringliteral">&quot;ul&quot;</span>,<span class="stringliteral">&quot;ol&quot;</span>,<span class="stringliteral">&quot;li&quot;</span>,<span class="stringliteral">&quot;span&quot;</span>,<span class="stringliteral">&quot;h1&quot;</span>,<span class="stringliteral">&quot;h2&quot;</span>,<span class="stringliteral">&quot;h3&quot;</span>,<span class="stringliteral">&quot;h4&quot;</span>,<span class="stringliteral">&quot;form&quot;</span>};</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    t = _t_newr(qps,SEMTREX_ZERO_OR_ONE);</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    __stxcv(t,<span class="charliteral">&#39;&amp;&#39;</span>);</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    __stxcv(sq,<span class="charliteral">&#39; &#39;</span>);</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    __stxcv(sq,<span class="charliteral">&#39;H&#39;</span>);</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    __stxcv(sq,<span class="charliteral">&#39;T&#39;</span>);</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    __stxcv(sq,<span class="charliteral">&#39;T&#39;</span>);</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    __stxcv(sq,<span class="charliteral">&#39;P&#39;</span>);</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    __stxcv(sq,<span class="charliteral">&#39;/&#39;</span>);</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    t = _t_news(sq,SEMTREX_GROUP,HTTP_REQUEST_VERSION);</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    t = _t_newr(t,SEMTREX_SEQUENCE);</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    f = _t_news(t,SEMTREX_GROUP,VERSION_MAJOR);</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    __stxcv(f,<span class="charliteral">&#39;0&#39;</span>);</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    __stxcv(t,<span class="charliteral">&#39;.&#39;</span>);</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    f = _t_news(t,SEMTREX_GROUP,VERSION_MINOR);</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    __stxcv(f,<span class="charliteral">&#39;9&#39;</span>);</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <span class="keywordflow">return</span> stx;</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;}</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<a class="code" href="structT.html">T</a> *makeDeltaAdd(<a class="code" href="structT.html">T</a> *src,<a class="code" href="structT.html">T</a> *t) {</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    <span class="keywordtype">int</span> *path = <a class="code" href="group__tree.html#gae4c9b743462f0a3808c9f02c3bf33da8">_t_get_path</a>(src);</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    <a class="code" href="structT.html">T</a> *d = makeDelta(TREE_DELTA_ADD,path,t,0);</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    free(path);</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <span class="keywordflow">return</span> d;</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;}</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> getTag(<span class="keywordtype">char</span> *otag,<a class="code" href="structSemanticID.html">Symbol</a> tag_sym[],<span class="keywordtype">char</span> *tag_str[]) {</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    <a class="code" href="structSemanticID.html">Symbol</a> ts = NULL_SYMBOL;</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    <span class="keywordtype">int</span> i;</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    <span class="keywordflow">for</span>(i=0;i&lt;15;i++) {</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    <span class="keywordflow">if</span> (!strcicmp(otag,tag_str[i])) {ts = tag_sym[i];<span class="keywordflow">break</span>;}</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    }</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    <span class="keywordflow">if</span> (semeq(ts,NULL_SYMBOL)) {raise_error(<span class="stringliteral">&quot;invalid tag: %s&quot;</span>,otag);}</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    <span class="keywordflow">return</span> ts;</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;}</div>
 <div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    <a class="code" href="structSemanticID.html">Symbol</a> G_stag_sym[] = {HTML_IMG,HTML_INPUT,HTML_BUTTON};</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    <span class="keywordtype">char</span> *G_stag_str[] ={<span class="stringliteral">&quot;img&quot;</span>,<span class="stringliteral">&quot;input&quot;</span>,<span class="stringliteral">&quot;button&quot;</span>};</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <a class="code" href="structT.html">T</a> *t,*h = <a class="code" href="group__semtrex.html#gad46a0cafec3ba9ca1500ecd6f8984238">makeASCIITree</a>(html);</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;<a class="code" href="structT.html">T</a> *parseHTML(<span class="keywordtype">char</span> *html) {</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    <a class="code" href="structSemanticID.html">Symbol</a> G_tag_sym[] = {HTML_HTML,HTML_HEAD,HTML_TITLE,HTML_BODY,HTML_DIV,HTML_P,HTML_A,HTML_B,HTML_UL,HTML_OL,HTML_LI,HTML_SPAN,HTML_H1,HTML_H2,HTML_H3,HTML_H4,HTML_FORM};</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <span class="keywordtype">char</span> *G_tag_str[] ={<span class="stringliteral">&quot;html&quot;</span>,<span class="stringliteral">&quot;head&quot;</span>,<span class="stringliteral">&quot;title&quot;</span>,<span class="stringliteral">&quot;body&quot;</span>,<span class="stringliteral">&quot;div&quot;</span>,<span class="stringliteral">&quot;p&quot;</span>,<span class="stringliteral">&quot;a&quot;</span>,<span class="stringliteral">&quot;b&quot;</span>,<span class="stringliteral">&quot;ul&quot;</span>,<span class="stringliteral">&quot;ol&quot;</span>,<span class="stringliteral">&quot;li&quot;</span>,<span class="stringliteral">&quot;span&quot;</span>,<span class="stringliteral">&quot;h1&quot;</span>,<span class="stringliteral">&quot;h2&quot;</span>,<span class="stringliteral">&quot;h3&quot;</span>,<span class="stringliteral">&quot;h4&quot;</span>,<span class="stringliteral">&quot;form&quot;</span>};</div>
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    <span class="comment">// build the token stream out of an ascii stream</span></div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    <span class="comment">// PATTERN</span></div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    <a class="code" href="structT.html">T</a> *s;</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    <span class="keywordtype">char</span> *stx = <span class="stringliteral">&quot;/ASCII_CHARS/&lt;HTML_TOKENS:(ASCII_CHAR=&#39;&lt;&#39;,&lt;HTML_TOK_TAG_SELFCLOSE:ASCII_CHAR!={&#39;&gt;&#39;,&#39; &#39;}+&gt;,&lt;HTML_ATTRIBUTES:(ASCII_CHAR=&#39; &#39;,&lt;HTML_ATTRIBUTE:&lt;PARAM_KEY:ASCII_CHAR!={&#39;&gt;&#39;,&#39; &#39;,&#39;=&#39;}+&gt;,ASCII_CHAR=&#39;=&#39;,ASCII_CHAR=&#39;\&quot;&#39;,&lt;PARAM_VALUE:ASCII_CHAR!=&#39;\&quot;&#39;+&gt;,ASCII_CHAR=&#39;\&quot;&#39;&gt;)*&gt;,ASCII_CHAR=&#39;/&#39;,ASCII_CHAR=&#39;&gt;&#39;|ASCII_CHAR=&#39;&lt;&#39;,ASCII_CHAR=&#39;/&#39;,&lt;HTML_TOK_TAG_CLOSE:ASCII_CHAR!=&#39;&gt;&#39;+&gt;,ASCII_CHAR=&#39;&gt;&#39;|ASCII_CHAR=&#39;&lt;&#39;,&lt;HTML_TOK_TAG_OPEN:ASCII_CHAR!={&#39;&gt;&#39;,&#39; &#39;}+&gt;,&lt;HTML_ATTRIBUTES:(ASCII_CHAR=&#39; &#39;,&lt;HTML_ATTRIBUTE:&lt;PARAM_KEY:ASCII_CHAR!={&#39;&gt;&#39;,&#39; &#39;,&#39;=&#39;}+&gt;,ASCII_CHAR=&#39;=&#39;,ASCII_CHAR=&#39;\&quot;&#39;,&lt;PARAM_VALUE:ASCII_CHAR!=&#39;\&quot;&#39;+&gt;,ASCII_CHAR=&#39;\&quot;&#39;&gt;)*&gt;,ASCII_CHAR=&#39;&gt;&#39;|&lt;HTML_TEXT:ASCII_CHAR!=&#39;&lt;&#39;+&gt;)+&gt;&quot;</span>;</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    s = <a class="code" href="group__semtrex.html#gabe49b12bfb8785a10bf088c4ebe60db4">parseSemtrex</a>(G_sem,stx);</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    <span class="keywordtype">int</span> fnc = 0;</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    wjson(G_sem,s,<span class="stringliteral">&quot;htmlparse&quot;</span>,-1);</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    wjson(G_sem,h,<span class="stringliteral">&quot;htmlascii&quot;</span>,-1);</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    <a class="code" href="structT.html">T</a> *results,*tokens;</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="group__semtrex.html#ga27540c8e1822da3160a0cc4717df410f">_t_matchr</a>(s,h,&amp;results)) {</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    tokens = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(HTML_TOKENS);</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    <span class="keywordtype">int</span> i,m = <a class="code" href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a>(results);</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    wjson(G_sem,tokens,<span class="stringliteral">&quot;html&quot;</span>,fnc++);</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    <a class="code" href="structT.html">T</a> *delta,*src;</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    <span class="keywordflow">for</span>(i=4;i&lt;=m;i++) {</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        <a class="code" href="structT.html">T</a> *c = <a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(results,i);</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        <a class="code" href="structT.html">T</a> *sn = <a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(c,1);</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        <a class="code" href="structSemanticID.html">Symbol</a> ts = *(<a class="code" href="structSemanticID.html">Symbol</a> *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(sn);</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;        <span class="keywordflow">if</span> (semeq(ts,HTML_ATTRIBUTES)) {</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;        <a class="code" href="structT.html">T</a> *a = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(HTML_ATTRIBUTES);</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;        <span class="keywordtype">int</span> j,ac = <a class="code" href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a>(c);</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;        <span class="keywordflow">for</span>(j=4;j&lt;=ac;j++) {</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;            <a class="code" href="structT.html">T</a> *attr = _t_newr(a,HTML_ATTRIBUTE);</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;            <a class="code" href="structT.html">T</a> *at = <a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(c,j);</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;            <a class="code" href="structT.html">T</a> *m = <a class="code" href="group__semtrex.html#gada90f89374f4577e3ac8819e500a97a7">_t_get_match</a>(at,PARAM_KEY);</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;            <a class="code" href="group__semtrex.html#ga4ff0c2f907a002cce83813f17b6481d5">asciiT_tos</a>(h,m,attr,PARAM_KEY);</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;            m = <a class="code" href="group__semtrex.html#gada90f89374f4577e3ac8819e500a97a7">_t_get_match</a>(at,PARAM_VALUE);</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;            <a class="code" href="group__semtrex.html#ga4ff0c2f907a002cce83813f17b6481d5">asciiT_tos</a>(h,m,attr,PARAM_VALUE);</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;        }</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;        <span class="comment">// we can just add the attribute directly to the previous token which will be the open tag tokens</span></div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        src = <a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(tokens,<a class="code" href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a>(tokens));</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;        delta = a;</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;        <a class="code" href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a>(src,a);</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    <a class="code" href="structSemanticID.html">Symbol</a> G_stag_sym[] = {HTML_IMG,HTML_INPUT,HTML_BUTTON};</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    <span class="keywordtype">char</span> *G_stag_str[] ={<span class="stringliteral">&quot;img&quot;</span>,<span class="stringliteral">&quot;input&quot;</span>,<span class="stringliteral">&quot;button&quot;</span>};</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    <a class="code" href="structT.html">T</a> *t,*h = <a class="code" href="group__semtrex.html#gad46a0cafec3ba9ca1500ecd6f8984238">makeASCIITree</a>(html);</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    <span class="comment">// build the token stream out of an ascii stream</span></div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    <span class="comment">// PATTERN</span></div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    <a class="code" href="structT.html">T</a> *s;</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    <span class="keywordtype">char</span> *stx = <span class="stringliteral">&quot;/ASCII_CHARS/&lt;HTML_TOKENS:(ASCII_CHAR=&#39;&lt;&#39;,&lt;HTML_TOK_TAG_SELFCLOSE:ASCII_CHAR!={&#39;&gt;&#39;,&#39; &#39;}+&gt;,&lt;HTML_ATTRIBUTES:(ASCII_CHAR=&#39; &#39;,&lt;HTML_ATTRIBUTE:&lt;PARAM_KEY:ASCII_CHAR!={&#39;&gt;&#39;,&#39; &#39;,&#39;=&#39;}+&gt;,ASCII_CHAR=&#39;=&#39;,ASCII_CHAR=&#39;\&quot;&#39;,&lt;PARAM_VALUE:ASCII_CHAR!=&#39;\&quot;&#39;+&gt;,ASCII_CHAR=&#39;\&quot;&#39;&gt;)*&gt;,ASCII_CHAR=&#39;/&#39;,ASCII_CHAR=&#39;&gt;&#39;|ASCII_CHAR=&#39;&lt;&#39;,ASCII_CHAR=&#39;/&#39;,&lt;HTML_TOK_TAG_CLOSE:ASCII_CHAR!=&#39;&gt;&#39;+&gt;,ASCII_CHAR=&#39;&gt;&#39;|ASCII_CHAR=&#39;&lt;&#39;,&lt;HTML_TOK_TAG_OPEN:ASCII_CHAR!={&#39;&gt;&#39;,&#39; &#39;}+&gt;,&lt;HTML_ATTRIBUTES:(ASCII_CHAR=&#39; &#39;,&lt;HTML_ATTRIBUTE:&lt;PARAM_KEY:ASCII_CHAR!={&#39;&gt;&#39;,&#39; &#39;,&#39;=&#39;}+&gt;,ASCII_CHAR=&#39;=&#39;,ASCII_CHAR=&#39;\&quot;&#39;,&lt;PARAM_VALUE:ASCII_CHAR!=&#39;\&quot;&#39;+&gt;,ASCII_CHAR=&#39;\&quot;&#39;&gt;)*&gt;,ASCII_CHAR=&#39;&gt;&#39;|&lt;HTML_TEXT:ASCII_CHAR!=&#39;&lt;&#39;+&gt;)+&gt;&quot;</span>;</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    s = <a class="code" href="group__semtrex.html#gabe49b12bfb8785a10bf088c4ebe60db4">parseSemtrex</a>(G_sem,stx);</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    <span class="keywordtype">int</span> fnc = 0;</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    wjson(G_sem,s,<span class="stringliteral">&quot;htmlparse&quot;</span>,-1);</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    wjson(G_sem,h,<span class="stringliteral">&quot;htmlascii&quot;</span>,-1);</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    <a class="code" href="structT.html">T</a> *results,*tokens;</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="group__semtrex.html#ga27540c8e1822da3160a0cc4717df410f">_t_matchr</a>(s,h,&amp;results)) {</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    tokens = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(HTML_TOKENS);</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    <span class="keywordtype">int</span> i,m = <a class="code" href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a>(results);</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    wjson(G_sem,tokens,<span class="stringliteral">&quot;html&quot;</span>,fnc++);</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    <a class="code" href="structT.html">T</a> *delta,*src;</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    <span class="keywordflow">for</span>(i=4;i&lt;=m;i++) {</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;        <a class="code" href="structT.html">T</a> *c = <a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(results,i);</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;        <a class="code" href="structT.html">T</a> *sn = <a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(c,1);</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        <a class="code" href="structSemanticID.html">Symbol</a> ts = *(<a class="code" href="structSemanticID.html">Symbol</a> *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(sn);</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;        <span class="keywordflow">if</span> (semeq(ts,HTML_ATTRIBUTES)) {</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;        <a class="code" href="structT.html">T</a> *a = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(HTML_ATTRIBUTES);</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        <span class="keywordtype">int</span> j,ac = <a class="code" href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a>(c);</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;        <span class="keywordflow">for</span>(j=4;j&lt;=ac;j++) {</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;            <a class="code" href="structT.html">T</a> *attr = _t_newr(a,HTML_ATTRIBUTE);</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;            <a class="code" href="structT.html">T</a> *at = <a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(c,j);</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;            <a class="code" href="structT.html">T</a> *m = <a class="code" href="group__semtrex.html#gada90f89374f4577e3ac8819e500a97a7">_t_get_match</a>(at,PARAM_KEY);</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;            <a class="code" href="group__semtrex.html#ga4ff0c2f907a002cce83813f17b6481d5">asciiT_tos</a>(h,m,attr,PARAM_KEY);</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;            m = <a class="code" href="group__semtrex.html#gada90f89374f4577e3ac8819e500a97a7">_t_get_match</a>(at,PARAM_VALUE);</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;            <a class="code" href="group__semtrex.html#ga4ff0c2f907a002cce83813f17b6481d5">asciiT_tos</a>(h,m,attr,PARAM_VALUE);</div>
 <div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        }</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;        <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;        src = tokens;</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        delta = <a class="code" href="group__semtrex.html#ga4ff0c2f907a002cce83813f17b6481d5">asciiT_tos</a>(h,c,tokens,ts);</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;        }</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        delta = makeDeltaAdd(src,delta);</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        wjson(G_sem,delta,<span class="stringliteral">&quot;html&quot;</span>,fnc++);</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;        <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(delta);</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    }</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(results);</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(s);</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    s = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(SEMTREX_WALK);</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    <span class="comment">//  T *st = _t_newr(sq,SEMTREX_ZERO_OR_MORE);</span></div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    <span class="comment">//  _t_newr(st,SEMTREX_SYMBOL_ANY);</span></div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    <a class="code" href="structT.html">T</a> *g =  _t_news(s,SEMTREX_GROUP,HTML_TAG);</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    <a class="code" href="structT.html">T</a> *sq = _t_newr(g,SEMTREX_SEQUENCE);</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    <a class="code" href="group__semtrex.html#ga12e70dc3d5fde33655e8731ad3bdd935">_sl</a>(sq,HTML_TOK_TAG_OPEN);</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    g = _t_news(sq,SEMTREX_GROUP,HTML_CONTENT);</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    <a class="code" href="structT.html">T</a>* st = _t_newr(g,SEMTREX_ZERO_OR_MORE);</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    <a class="code" href="group__semtrex.html#gabbe3a3359feb3be7f9dd5b7fbbbb74ed">__sl</a>(st,1,2,HTML_TOK_TAG_OPEN,HTML_TOK_TAG_CLOSE);</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    <a class="code" href="group__semtrex.html#ga12e70dc3d5fde33655e8731ad3bdd935">_sl</a>(sq,HTML_TOK_TAG_CLOSE);</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    <span class="comment">//  stx = &quot;%&lt;HTML_TAG:HTML_TOK_TAG_OPEN,!{HTML_TOK_TAG_OPEN,HTML_TOK_TAG_CLOSE},HTML_TOK_TAG_CLOSE&gt;&quot;;</span></div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    <span class="comment">//s = parseSemtrex(d,stx);</span></div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    <span class="comment">//  return tokens;</span></div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    <span class="keywordflow">while</span> (<a class="code" href="group__semtrex.html#ga27540c8e1822da3160a0cc4717df410f">_t_matchr</a>(s,tokens,&amp;results)) {</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        <a class="code" href="structT.html">T</a> *m = <a class="code" href="group__semtrex.html#gada90f89374f4577e3ac8819e500a97a7">_t_get_match</a>(results,HTML_TAG);</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;        <span class="keywordtype">int</span> *path = <a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(<a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(m,2));</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        <span class="keywordtype">int</span> count = *(<span class="keywordtype">int</span> *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(<a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(results,3));</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;        <a class="code" href="structT.html">T</a> *ot = <a class="code" href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a>(tokens,path);</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;        path[<a class="code" href="group__tree.html#ga55270b512ed52ffe5a938a793fa5cd7f">_t_path_depth</a>(path)-1] += count-1;</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;        <a class="code" href="structT.html">T</a> *ct = <a class="code" href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a>(tokens,path);</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;        <span class="keywordtype">char</span> *otag = <a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(ot);</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;        <span class="keywordtype">char</span> *ctag = <a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(ct);</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;        <span class="keywordflow">if</span> (strcmp(otag,ctag)) {raise_error(<span class="stringliteral">&quot;Mismatched tags %s,%s&quot;</span>,otag,ctag)};</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;        <a class="code" href="structSemanticID.html">Symbol</a> ts = getTag(otag,G_tag_sym,G_tag_str);</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;        path[<a class="code" href="group__tree.html#ga55270b512ed52ffe5a938a793fa5cd7f">_t_path_depth</a>(path)-1] -= count-1;</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        <a class="code" href="structT.html">T</a> *content = wrap(tokens,results,HTML_CONTENT,HTML_TAG);</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;        <a class="code" href="structT.html">T</a> *attributes = <a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(content,1);</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;        <a class="code" href="group__tree.html#gad6597b652983165f6b2993211a598ad4">__t_morph</a>(content,HTML_CONTENT,0,0,0);</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;        <a class="code" href="structT.html">T</a> *p = <a class="code" href="group__tree.html#ga18ca0b633cdd6b8f2d3d0f2598c4a933">_t_parent</a>(content);</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;        <a class="code" href="group__tree.html#gad718449607421d4b572315be630cbf75">_t_detach_by_ptr</a>(p,content);</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;        <a class="code" href="structT.html">T</a> *tag = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(ts);</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;        <a class="code" href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a>(tag,attributes);</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;        <a class="code" href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a>(tag,content);</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;        <a class="code" href="group__tree.html#ga96de3ae222902beccffa3c26ef1ef40a">_t_insert_at</a>(tokens,path,tag);</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;        delta = makeDelta(TREE_DELTA_REPLACE,path,tag,count);</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;        wjson(G_sem,delta,<span class="stringliteral">&quot;html&quot;</span>,fnc++);</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;        <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(delta);</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;        <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(results);</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    }</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(s);</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    s = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(SEMTREX_WALK);</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    g = _t_news(s,SEMTREX_GROUP,HTML_TAG);</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;    <a class="code" href="group__semtrex.html#ga12e70dc3d5fde33655e8731ad3bdd935">_sl</a>(g,HTML_TOK_TAG_SELFCLOSE);</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    <span class="keywordflow">while</span> (<a class="code" href="group__semtrex.html#ga27540c8e1822da3160a0cc4717df410f">_t_matchr</a>(s,tokens,&amp;results)) {</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        <a class="code" href="structT.html">T</a> *m = <a class="code" href="group__semtrex.html#gada90f89374f4577e3ac8819e500a97a7">_t_get_match</a>(results,HTML_TAG);</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;        <span class="keywordtype">int</span> *path = <a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(<a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(m,2));</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;        <a class="code" href="structT.html">T</a> *t = <a class="code" href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a>(tokens,path);</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;        <span class="keywordtype">char</span> *otag = <a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(t);</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;        <a class="code" href="structSemanticID.html">Symbol</a> ts = getTag(otag,G_stag_sym,G_stag_str);</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;        <a class="code" href="group__tree.html#gad6597b652983165f6b2993211a598ad4">__t_morph</a>(t,ts,0,0,0);</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;        _t_newr(t,HTML_CONTENT);</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;        delta = makeDelta(TREE_DELTA_REPLACE,path,t,1);</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;        wjson(G_sem,delta,<span class="stringliteral">&quot;html&quot;</span>,fnc++);</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;        <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(delta);</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;        <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(results);</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    }</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(s);</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    results = <a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(tokens,1);</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(tokens);</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(h);</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    <span class="keywordflow">return</span> results;</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    }</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;    raise_error(<span class="stringliteral">&quot;HTML doesn&#39;t match&quot;</span>);</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;}</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;<span class="keywordtype">void</span> testHTTPparseHTML() {</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    <a class="code" href="structT.html">T</a> *t = parseHTML(<span class="stringliteral">&quot;&lt;html&gt;&lt;body&gt;&lt;div&gt;Hello &lt;b&gt;world!&lt;/b&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;&quot;</span>);</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    spec_is_str_equal(t2s(t),<span class="stringliteral">&quot;(HTML_HTML (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_BODY (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_DIV (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_TEXT:Hello ) (HTML_B (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_TEXT:world!)))))))))&quot;</span>);</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;        <span class="comment">// we can just add the attribute directly to the previous token which will be the open tag tokens</span></div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;        src = <a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(tokens,<a class="code" href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a>(tokens));</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        delta = a;</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;        <a class="code" href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a>(src,a);</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        }</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;        src = tokens;</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        delta = <a class="code" href="group__semtrex.html#ga4ff0c2f907a002cce83813f17b6481d5">asciiT_tos</a>(h,c,tokens,ts);</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        }</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;        delta = makeDeltaAdd(src,delta);</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        wjson(G_sem,delta,<span class="stringliteral">&quot;html&quot;</span>,fnc++);</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;        <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(delta);</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    }</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(results);</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(s);</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    s = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(SEMTREX_WALK);</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    <span class="comment">//  T *st = _t_newr(sq,SEMTREX_ZERO_OR_MORE);</span></div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    <span class="comment">//  _t_newr(st,SEMTREX_SYMBOL_ANY);</span></div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    <a class="code" href="structT.html">T</a> *g =  _t_news(s,SEMTREX_GROUP,HTML_TAG);</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    <a class="code" href="structT.html">T</a> *sq = _t_newr(g,SEMTREX_SEQUENCE);</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    <a class="code" href="group__semtrex.html#ga12e70dc3d5fde33655e8731ad3bdd935">_sl</a>(sq,HTML_TOK_TAG_OPEN);</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    g = _t_news(sq,SEMTREX_GROUP,HTML_CONTENT);</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    <a class="code" href="structT.html">T</a>* st = _t_newr(g,SEMTREX_ZERO_OR_MORE);</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    <a class="code" href="group__semtrex.html#gabbe3a3359feb3be7f9dd5b7fbbbb74ed">__sl</a>(st,1,2,HTML_TOK_TAG_OPEN,HTML_TOK_TAG_CLOSE);</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    <a class="code" href="group__semtrex.html#ga12e70dc3d5fde33655e8731ad3bdd935">_sl</a>(sq,HTML_TOK_TAG_CLOSE);</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;    <span class="comment">//  stx = &quot;%&lt;HTML_TAG:HTML_TOK_TAG_OPEN,!{HTML_TOK_TAG_OPEN,HTML_TOK_TAG_CLOSE},HTML_TOK_TAG_CLOSE&gt;&quot;;</span></div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;    <span class="comment">//s = parseSemtrex(d,stx);</span></div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;    <span class="comment">//  return tokens;</span></div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    <span class="keywordflow">while</span> (<a class="code" href="group__semtrex.html#ga27540c8e1822da3160a0cc4717df410f">_t_matchr</a>(s,tokens,&amp;results)) {</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;        <a class="code" href="structT.html">T</a> *m = <a class="code" href="group__semtrex.html#gada90f89374f4577e3ac8819e500a97a7">_t_get_match</a>(results,HTML_TAG);</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;        <span class="keywordtype">int</span> *path = <a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(<a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(m,2));</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;        <span class="keywordtype">int</span> count = *(<span class="keywordtype">int</span> *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(<a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(results,3));</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;        <a class="code" href="structT.html">T</a> *ot = <a class="code" href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a>(tokens,path);</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;        path[<a class="code" href="group__tree.html#ga55270b512ed52ffe5a938a793fa5cd7f">_t_path_depth</a>(path)-1] += count-1;</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;        <a class="code" href="structT.html">T</a> *ct = <a class="code" href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a>(tokens,path);</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;        <span class="keywordtype">char</span> *otag = <a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(ot);</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        <span class="keywordtype">char</span> *ctag = <a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(ct);</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;        <span class="keywordflow">if</span> (strcmp(otag,ctag)) {raise_error(<span class="stringliteral">&quot;Mismatched tags %s,%s&quot;</span>,otag,ctag)};</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;        <a class="code" href="structSemanticID.html">Symbol</a> ts = getTag(otag,G_tag_sym,G_tag_str);</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;        path[<a class="code" href="group__tree.html#ga55270b512ed52ffe5a938a793fa5cd7f">_t_path_depth</a>(path)-1] -= count-1;</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;        <a class="code" href="structT.html">T</a> *content = wrap(tokens,results,HTML_CONTENT,HTML_TAG);</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;        <a class="code" href="structT.html">T</a> *attributes = <a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(content,1);</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;        <a class="code" href="group__tree.html#gad6597b652983165f6b2993211a598ad4">__t_morph</a>(content,HTML_CONTENT,0,0,0);</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;        <a class="code" href="structT.html">T</a> *p = <a class="code" href="group__tree.html#ga18ca0b633cdd6b8f2d3d0f2598c4a933">_t_parent</a>(content);</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;        <a class="code" href="group__tree.html#gad718449607421d4b572315be630cbf75">_t_detach_by_ptr</a>(p,content);</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;        <a class="code" href="structT.html">T</a> *tag = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(ts);</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;        <a class="code" href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a>(tag,attributes);</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;        <a class="code" href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a>(tag,content);</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;        <a class="code" href="group__tree.html#ga96de3ae222902beccffa3c26ef1ef40a">_t_insert_at</a>(tokens,path,tag);</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;        delta = makeDelta(TREE_DELTA_REPLACE,path,tag,count);</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;        wjson(G_sem,delta,<span class="stringliteral">&quot;html&quot;</span>,fnc++);</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;        <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(delta);</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;        <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(results);</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;    }</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(s);</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    s = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(SEMTREX_WALK);</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    g = _t_news(s,SEMTREX_GROUP,HTML_TAG);</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;    <a class="code" href="group__semtrex.html#ga12e70dc3d5fde33655e8731ad3bdd935">_sl</a>(g,HTML_TOK_TAG_SELFCLOSE);</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;    <span class="keywordflow">while</span> (<a class="code" href="group__semtrex.html#ga27540c8e1822da3160a0cc4717df410f">_t_matchr</a>(s,tokens,&amp;results)) {</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;        <a class="code" href="structT.html">T</a> *m = <a class="code" href="group__semtrex.html#gada90f89374f4577e3ac8819e500a97a7">_t_get_match</a>(results,HTML_TAG);</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;        <span class="keywordtype">int</span> *path = <a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(<a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(m,2));</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;        <a class="code" href="structT.html">T</a> *t = <a class="code" href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a>(tokens,path);</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;        <span class="keywordtype">char</span> *otag = <a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(t);</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;        <a class="code" href="structSemanticID.html">Symbol</a> ts = getTag(otag,G_stag_sym,G_stag_str);</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;        <a class="code" href="group__tree.html#gad6597b652983165f6b2993211a598ad4">__t_morph</a>(t,ts,0,0,0);</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;        _t_newr(t,HTML_CONTENT);</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;        delta = makeDelta(TREE_DELTA_REPLACE,path,t,1);</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;        wjson(G_sem,delta,<span class="stringliteral">&quot;html&quot;</span>,fnc++);</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;        <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(delta);</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;        <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(results);</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    }</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(s);</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;    results = <a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(tokens,1);</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(tokens);</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(h);</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;    <span class="keywordflow">return</span> results;</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    }</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    raise_error(<span class="stringliteral">&quot;HTML doesn&#39;t match&quot;</span>);</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;}</div>
 <div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;}</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;<a class="code" href="structReceptor.html">Receptor</a> *makeHTTP(<a class="code" href="structVMHost.html">VMHost</a> *v,<a class="code" href="structSemanticID.html">Process</a> handler) {</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;    <a class="code" href="structSemTable.html">SemTable</a> *sem = v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>-&gt;<a class="code" href="structReceptor.html#a4bb9ce729b6b85fb99326e9df7b23cbd">sem</a>;</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;    <a class="code" href="structSemanticID.html">Symbol</a> http = <a class="code" href="group__def.html#ga02d58ad9f7ac4482d99e0ef31e119b3a">_d_define_receptor</a>(sem,<span class="stringliteral">&quot;http server&quot;</span>,__r_make_definitions(),DEV_COMPOSITORY_CONTEXT);</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    <a class="code" href="structReceptor.html">Receptor</a> *r = <a class="code" href="group__receptor.html#ga9f66f2aaba88463a6e1f238a367a33f9">_r_new</a>(sem,http);</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;    <a class="code" href="structXaddr.html">Xaddr</a> httpx = _v_new_receptor(v,v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,http,r);</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;    <a class="code" href="structT.html">T</a> *bindings = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(PROTOCOL_BINDINGS);</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;    <a class="code" href="structT.html">T</a> *res = _t_newr(bindings,RESOLUTION);</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;    <a class="code" href="structT.html">T</a> *w = _t_newr(res,WHICH_RECEPTOR);</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;    _t_news(w,ROLE,HTTP_SERVER);</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;    __r_make_addr(w,ACTUAL_RECEPTOR,r-&gt;<a class="code" href="structReceptor.html#afeea3c89b6853516cd4c4d8e9d885174">addr</a>);</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    res = _t_newr(bindings,RESOLUTION);</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;    w = _t_newr(res,WHICH_PROCESS);</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;    _t_news(w,GOAL,HTTP_RESPONSE_HANDLER);</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;    _t_news(w,ACTUAL_PROCESS,handler);</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;<span class="keywordtype">void</span> testHTTPparseHTML() {</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;    <a class="code" href="structT.html">T</a> *t = parseHTML(<span class="stringliteral">&quot;&lt;html&gt;&lt;body&gt;&lt;div&gt;Hello &lt;b&gt;world!&lt;/b&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;&quot;</span>);</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;    spec_is_str_equal(t2s(t),<span class="stringliteral">&quot;(HTML_HTML (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_BODY (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_DIV (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_TEXT:Hello ) (HTML_B (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_TEXT:world!)))))))))&quot;</span>);</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;}</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;<span class="comment">//Host: fish.com\n\n</span></div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;<span class="keywordtype">void</span> *_httptester(<span class="keywordtype">void</span> *arg) {</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;    <span class="keywordtype">char</span> *result = doSys(<span class="stringliteral">&quot;echo &#39;GET /path/to/file.ext HTTP/0.9&#39; | nc localhost 8888&quot;</span>);</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;    spec_is_str_equal(result,<span class="stringliteral">&quot;HTTP/1.1 200 OK\nContent-Type: text/ceptr\n\nsuper cept\n314159\n&quot;</span>);</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;    free(result);</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;    G_done = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    pthread_exit(NULL);</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;}</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;<span class="keywordtype">void</span> testHTTPedgeReceptor() {</div>
 <div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;    <a class="code" href="group__accumulator.html#ga46ff4d16575a21f8c7d02fa754ac6d2f">_o_express_role</a>(r,HTTP,HTTP_SERVER,HTTP_ASPECT,bindings);</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(bindings);</div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;    <a class="code" href="group__vmhost.html#ga53694170e5452b8062ec405e6a9a3f60">_v_activate</a>(v,httpx);</div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;    <span class="keywordflow">return</span> r;</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;}</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;    <span class="comment">//setup vmhost instance</span></div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;    <a class="code" href="structVMHost.html">VMHost</a> *v = G_vm = <a class="code" href="group__vmhost.html#gab6fbe5683628fb0d62a966316ced938d">_v_new</a>();</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;    <a class="code" href="structSemTable.html">SemTable</a> *gsem = G_sem;</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;    G_sem = v-&gt;<a class="code" href="structVMHost.html#a0718944e7f9d848d3b96f704ea0f0252">sem</a>;</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;    <span class="comment">//    _v_instantiate_builtins(G_vm);</span></div>
 <div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;<span class="keywordtype">void</span> testHTTPprotocol() {</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;    <a class="code" href="structT.html">T</a> *http = _sem_get_def(G_sem,HTTP);</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;    <a class="code" href="structSemanticID.html">Symbol</a> HTTP;</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;    _sem_get_by_label(G_sem,<span class="stringliteral">&quot;HTTP&quot;</span>,&amp;HTTP);</div>
 <div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;</div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;    <span class="comment">// check the HTTP protocol definition</span></div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;    spec_is_str_equal(t2s(http),<span class="stringliteral">&quot;(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:HTTP)) (PROTOCOL_SEMANTICS (GOAL:HTTP_RESPONSE_HANDLER)) (INCLUSION (PNAME:REQUESTING) (LINKAGE (WHICH_ROLE (ROLE:REQUESTER) (ROLE:HTTP_CLIENT))) (LINKAGE (WHICH_ROLE (ROLE:RESPONDER) (ROLE:HTTP_SERVER))) (RESOLUTION (WHICH_SYMBOL (USAGE:REQUEST_DATA) (ACTUAL_SYMBOL:HTTP_REQUEST))) (RESOLUTION (WHICH_SYMBOL (USAGE:RESPONSE_DATA) (ACTUAL_SYMBOL:HTTP_RESPONSE))) (RESOLUTION (WHICH_SYMBOL (USAGE:CHANNEL) (ACTUAL_SYMBOL:HTTP_ASPECT))) (RESOLUTION (WHICH_PROCESS (GOAL:RESPONSE_HANDLER) (ACTUAL_PROCESS:httpresp)))))&quot;</span>);</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;    <a class="code" href="structT.html">T</a> *sem_map = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(SEMANTIC_MAP);</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;    <a class="code" href="structT.html">T</a> *t = <a class="code" href="group__accumulator.html#gad059bbd58bb0f8532009f1f575f196bd">_o_unwrap</a>(G_sem,http,sem_map);</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;    <span class="comment">// and also check how it gets unwrapped because it&#39;s defined in terms of REQUESTING</span></div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;    <span class="comment">// @todo, how come HTTP_SERVER and the two handler goals aren&#39;t added to the semantics?</span></div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;    spec_is_str_equal(t2s(t),<span class="stringliteral">&quot;(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:HTTP)) (PROTOCOL_SEMANTICS (GOAL:HTTP_RESPONSE_HANDLER) (ROLE:HTTP_CLIENT)) (backnforth (INITIATE (ROLE:HTTP_CLIENT) (DESTINATION (ROLE:HTTP_SERVER)) (ACTION:send_request)) (EXPECT (ROLE:HTTP_SERVER) (SOURCE (ROLE:HTTP_CLIENT)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:HTTP_REQUEST))) (ACTION:send_response))))&quot;</span>);</div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;</div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;    <span class="comment">// the unwrapping should build up a semantic map</span></div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;    spec_is_str_equal(t2s(sem_map),<span class="stringliteral">&quot;(SEMANTIC_MAP (SEMANTIC_LINK (ROLE:REQUESTER) (REPLACEMENT_VALUE (ROLE:HTTP_CLIENT))) (SEMANTIC_LINK (ROLE:RESPONDER) (REPLACEMENT_VALUE (ROLE:HTTP_SERVER))) (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:HTTP_REQUEST))) (SEMANTIC_LINK (USAGE:RESPONSE_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:HTTP_RESPONSE))) (SEMANTIC_LINK (USAGE:CHANNEL) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:HTTP_ASPECT))) (SEMANTIC_LINK (GOAL:RESPONSE_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:httpresp))))&quot;</span>);</div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(sem_map);</div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;</div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;    <a class="code" href="structVMHost.html">VMHost</a> *v = G_vm = <a class="code" href="group__vmhost.html#gab6fbe5683628fb0d62a966316ced938d">_v_new</a>();</div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;    <a class="code" href="structSemTable.html">SemTable</a> *gsem = G_sem;</div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;    G_sem = v-&gt;<a class="code" href="structVMHost.html#a0718944e7f9d848d3b96f704ea0f0252">sem</a>;</div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;</div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;    <a class="code" href="group__vmhost.html#ga74a1f49de857467af1613bb0e71b0963">_v_instantiate_builtins</a>(G_vm);</div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;</div>
-<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;    <span class="comment">//debug_enable(D_STREAM+D_SIGNALS+D_TREE+D_PROTOCOL);</span></div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;    <a class="code" href="structReceptor.html">Receptor</a> *r = makeHTTP(v,fill_i_am);</div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;</div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;    FILE *rs,*ws;</div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;    <span class="keywordtype">char</span> buffer[] = <span class="stringliteral">&quot;GET /path/to/file.ext?name=joe&amp;age=30 HTTP/0.9\n&quot;</span>;</div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;</div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;    rs = fmemopen(buffer, strlen (buffer), <span class="stringliteral">&quot;r&quot;</span>);</div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;    <a class="code" href="structStream.html">Stream</a> *reader_stream = _st_new_unix_stream(rs,1);</div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;</div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;    <span class="keywordtype">char</span> *output_data;</div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;    <span class="keywordtype">size_t</span> size;</div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;    ws = open_memstream(&amp;output_data,&amp;size);</div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;    <a class="code" href="structStream.html">Stream</a> *writer_stream = _st_new_unix_stream(ws,0);</div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;</div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;    <a class="code" href="structReceptor.html">Receptor</a> *er = _r_makeStreamEdgeReceptor(v-&gt;<a class="code" href="structVMHost.html#a0718944e7f9d848d3b96f704ea0f0252">sem</a>);</div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;    <a class="code" href="structXaddr.html">Xaddr</a> edge = _v_new_receptor(v,v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,STREAM_EDGE,er);</div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;    _r_addWriter(er,writer_stream,DEFAULT_ASPECT);</div>
-<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;    _r_addReader(er,reader_stream,er-&gt;<a class="code" href="structReceptor.html#afeea3c89b6853516cd4c4d8e9d885174">addr</a>,HTTP_ASPECT,parse_line,ASCII_CHARS,<span class="keyword">false</span>);</div>
-<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;    <a class="code" href="group__vmhost.html#ga53694170e5452b8062ec405e6a9a3f60">_v_activate</a>(v,edge);</div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;</div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;    <a class="code" href="structT.html">T</a> *bindings = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(PROTOCOL_BINDINGS);</div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;    <a class="code" href="structT.html">T</a> *res = _t_newr(bindings,RESOLUTION);</div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;    <a class="code" href="structT.html">T</a> *w = _t_newr(res,WHICH_RECEPTOR);</div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;    _t_news(w,ROLE,HTTP_REQUEST_PARSER);</div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;    __r_make_addr(w,ACTUAL_RECEPTOR,er-&gt;<a class="code" href="structReceptor.html#afeea3c89b6853516cd4c4d8e9d885174">addr</a>);</div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;    res = _t_newr(bindings,RESOLUTION);</div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;    w = _t_newr(res,WHICH_RECEPTOR);</div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;    _t_news(w,ROLE,LINE_SENDER);</div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;    __r_make_addr(w,ACTUAL_RECEPTOR,er-&gt;<a class="code" href="structReceptor.html#afeea3c89b6853516cd4c4d8e9d885174">addr</a>);</div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;    res = _t_newr(bindings,RESOLUTION);</div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;    w = _t_newr(res,WHICH_RECEPTOR);</div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;    _t_news(w,ROLE,HTTP_SERVER);</div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;    __r_make_addr(w,ACTUAL_RECEPTOR,r-&gt;<a class="code" href="structReceptor.html#afeea3c89b6853516cd4c4d8e9d885174">addr</a>);</div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;    <a class="code" href="group__accumulator.html#ga46ff4d16575a21f8c7d02fa754ac6d2f">_o_express_role</a>(er,PARSE_HTTP_REQUEST_FROM_LINE,HTTP_REQUEST_PARSER,HTTP_ASPECT,bindings);</div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(bindings);</div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;</div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;    <span class="comment">//debug_enable(D_TRANSCODE+D_STEP+D_STREAM);</span></div>
-<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;    _v_start_vmhost(G_vm);</div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;    sleep(1);</div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;    debug_disable(D_STREAM+D_SIGNALS+D_TREE+D_PROTOCOL);</div>
-<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;    debug_disable(D_TRANSCODE+D_REDUCE+D_REDUCEV);</div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;    spec_is_true(output_data != 0); <span class="comment">// protect against seg-faults when nothing was written to the stream...</span></div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;    <span class="keywordflow">if</span> (output_data != 0) {</div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;        spec_is_str_equal(output_data,<span class="stringliteral">&quot;HTTP/1.1 200 OK\nContent-Type: text/ceptr\n\nsuper cept\n314159\n&quot;</span>);</div>
-<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;    }</div>
-<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;    __r_kill(G_vm-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>);</div>
-<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;</div>
-<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;    _v_join_thread(&amp;G_vm-&gt;clock_thread);</div>
-<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;    _v_join_thread(&amp;G_vm-&gt;vm_thread);</div>
-<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;</div>
-<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;    <a class="code" href="stream_8c.html#abe8d8f68050d4ac4122baf7976a9e609">_st_free</a>(reader_stream);</div>
-<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;    <a class="code" href="stream_8c.html#abe8d8f68050d4ac4122baf7976a9e609">_st_free</a>(writer_stream);</div>
-<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;    free(output_data);</div>
-<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;    <a class="code" href="group__vmhost.html#ga44e0f6d62e38448bfa058f287cc463eb">_v_free</a>(v);</div>
-<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;    G_vm = NULL;</div>
-<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;    G_sem = gsem;</div>
-<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;</div>
-<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;}</div>
-<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;</div>
-<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;<span class="keywordtype">void</span> testHTTP() {</div>
-<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;    testHTTPparseHTML();</div>
-<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;    testHTTPprotocol();</div>
-<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;}</div>
-<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;</div>
-<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;<span class="comment">//</span></div>
-<div class="ttc" id="group__tree_html_ga25dd0f385044ffbcc7c215ea80fa00b4"><div class="ttname"><a href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a></div><div class="ttdeci">T * _t_new_root(Symbol symbol)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00159">tree.c:159</a></div></div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;    <a class="code" href="structT.html">T</a> *http_def = _sem_get_def(G_sem,HTTP);</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;    <span class="comment">// check the HTTP protocol definition</span></div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;    spec_is_str_equal(t2s(http_def),<span class="stringliteral">&quot;(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:HTTP)) (PROTOCOL_SEMANTICS (GOAL:HTTP_REQUEST_HANDLER)) (INCLUSION (PNAME:REQUESTING) (LINKAGE (WHICH_ROLE (ROLE:REQUESTER) (ROLE:HTTP_CLIENT))) (LINKAGE (WHICH_ROLE (ROLE:RESPONDER) (ROLE:HTTP_SERVER))) (RESOLUTION (WHICH_SYMBOL (USAGE:REQUEST_TYPE) (ACTUAL_SYMBOL:HTTP_REQUEST))) (RESOLUTION (WHICH_SYMBOL (USAGE:RESPONSE_TYPE) (ACTUAL_SYMBOL:HTTP_RESPONSE))) (RESOLUTION (WHICH_SYMBOL (USAGE:CHANNEL) (ACTUAL_SYMBOL:HTTP_ASPECT))) (RESOLUTION (WHICH_PROCESS (GOAL:REQUEST_HANDLER) (ACTUAL_PROCESS:httpresp)))))&quot;</span>);</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;    <a class="code" href="structT.html">T</a> *sem_map = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(SEMANTIC_MAP);</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;    <a class="code" href="structT.html">T</a> *t = <a class="code" href="group__accumulator.html#gad059bbd58bb0f8532009f1f575f196bd">_o_unwrap</a>(G_sem,http_def,sem_map);</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;    <span class="comment">// and also check how it gets unwrapped because it&#39;s defined in terms of REQUESTING</span></div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;    <span class="comment">// @todo, how come HTTP_SERVER and the two handler goals aren&#39;t added to the semantics?</span></div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;    spec_is_str_equal(t2s(t),<span class="stringliteral">&quot;(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:HTTP)) (PROTOCOL_SEMANTICS (GOAL:HTTP_REQUEST_HANDLER) (ROLE:HTTP_CLIENT) (USAGE:RESPONSE_HANDLER_PARAMETERS)) (PROTOCOL_DEFAULTS (SEMANTIC_LINK (USAGE:RESPONSE_HANDLER_PARAMETERS) (REPLACEMENT_VALUE (NULL_SYMBOL)))) (backnforth (INITIATE (ROLE:HTTP_CLIENT) (DESTINATION (ROLE:HTTP_SERVER)) (ACTION:send_request)) (EXPECT (ROLE:HTTP_SERVER) (SOURCE (ROLE:HTTP_CLIENT)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:HTTP_REQUEST))) (ACTION:send_response))))&quot;</span>);</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;</div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;    <span class="comment">// the unwrapping should build up a semantic map</span></div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;    spec_is_str_equal(t2s(sem_map),<span class="stringliteral">&quot;(SEMANTIC_MAP (SEMANTIC_LINK (ROLE:REQUESTER) (REPLACEMENT_VALUE (ROLE:HTTP_CLIENT))) (SEMANTIC_LINK (ROLE:RESPONDER) (REPLACEMENT_VALUE (ROLE:HTTP_SERVER))) (SEMANTIC_LINK (USAGE:REQUEST_TYPE) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:HTTP_REQUEST))) (SEMANTIC_LINK (USAGE:RESPONSE_TYPE) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:HTTP_RESPONSE))) (SEMANTIC_LINK (USAGE:CHANNEL) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:HTTP_ASPECT))) (SEMANTIC_LINK (GOAL:REQUEST_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:httpresp))))&quot;</span>);</div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(sem_map);</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;    <span class="comment">// create empty edge receptor</span></div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;    <a class="code" href="structReceptor.html">Receptor</a> *r = _r_makeStreamEdgeReceptor(v-&gt;<a class="code" href="structVMHost.html#a0718944e7f9d848d3b96f704ea0f0252">sem</a>);</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;    <span class="comment">// instantiate it in the vmhost</span></div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;    <a class="code" href="structXaddr.html">Xaddr</a> edge = _v_new_receptor(v,v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,STREAM_EDGE,r);</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;    <span class="comment">// set up a socket listener that will transcode ascii to HTTP_REQUEST and send all the received requests to an HTTP aspect on the same receptor</span></div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;    <a class="code" href="structT.html">T</a> *code = <a class="code" href="group__tree.html#ga749a1b6c40a2fd3d36dc0f3e7f6bb6af">_t_parse</a>(r-&gt;<a class="code" href="structReceptor.html#a4bb9ce729b6b85fb99326e9df7b23cbd">sem</a>,0,<span class="stringliteral">&quot;(CONVERSE (SCOPE (ITERATE (PARAMS) (STREAM_ALIVE (PARAM_REF:/2/1)) (INITIATE_PROTOCOL (PNAME:HTTP) (WHICH_INTERACTION:backnforth) (PROTOCOL_BINDINGS (RESOLUTION (WHICH_RECEPTOR (ROLE:HTTP_CLIENT) %)) (RESOLUTION (WHICH_RECEPTOR (ROLE:HTTP_SERVER) %)) (RESOLUTION (WHICH_PROCESS (GOAL:RESPONSE_HANDLER) (ACTUAL_PROCESS:echo2stream))) (RESOLUTION (WHICH_USAGE (USAGE:RESPONSE_HANDLER_PARAMETERS) (ACTUAL_VALUE (PARAM_REF:/2/1)))) (RESOLUTION (WHICH_VALUE (ACTUAL_SYMBOL:HTTP_REQUEST) (ACTUAL_VALUE (STREAM_READ (PARAM_REF:/2/1) (RESULT_SYMBOL:HTTP_REQUEST)))))) ) ) (STREAM_CLOSE (PARAM_REF:/2/1))) (BOOLEAN:1))&quot;</span>,__r_make_addr(0,ACTUAL_RECEPTOR,r-&gt;<a class="code" href="structReceptor.html#afeea3c89b6853516cd4c4d8e9d885174">addr</a>),__r_make_addr(0,ACTUAL_RECEPTOR,r-&gt;<a class="code" href="structReceptor.html#afeea3c89b6853516cd4c4d8e9d885174">addr</a>));</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;    <span class="comment">// add an error handler that just completes the iteration</span></div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;    <a class="code" href="structT.html">T</a> *err_handler = <a class="code" href="group__tree.html#ga749a1b6c40a2fd3d36dc0f3e7f6bb6af">_t_parse</a>(r-&gt;<a class="code" href="structReceptor.html#a4bb9ce729b6b85fb99326e9df7b23cbd">sem</a>,0,<span class="stringliteral">&quot;(CONTINUE (POP_PATH (PARAM_REF:/4/1/1) (RESULT_SYMBOL:CONTINUE_LOCATION) (POP_COUNT:5)) (CONTINUE_VALUE (BOOLEAN:0)))&quot;</span>);</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;    <a class="code" href="structSocketListener.html">SocketListener</a> *l = _r_addListener(r,8888,code,0,err_handler,DELIM_LF);</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;    <a class="code" href="group__vmhost.html#ga53694170e5452b8062ec405e6a9a3f60">_v_activate</a>(v,edge);</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;    <a class="code" href="structT.html">T</a> *bindings = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(PROTOCOL_BINDINGS);</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;    <a class="code" href="structT.html">T</a> *res = _t_newr(bindings,RESOLUTION);</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;    <a class="code" href="structT.html">T</a> *w = _t_newr(res,WHICH_RECEPTOR);</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;    _t_news(w,ROLE,HTTP_SERVER);</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;    __r_make_addr(w,ACTUAL_RECEPTOR,r-&gt;<a class="code" href="structReceptor.html#afeea3c89b6853516cd4c4d8e9d885174">addr</a>);</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;    res = _t_newr(bindings,RESOLUTION);</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;    w = _t_newr(res,WHICH_PROCESS);</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;    _t_news(w,GOAL,HTTP_REQUEST_HANDLER);</div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;    _t_news(w,ACTUAL_PROCESS,fill_i_am);</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;    <a class="code" href="group__accumulator.html#ga46ff4d16575a21f8c7d02fa754ac6d2f">_o_express_role</a>(r,HTTP,HTTP_SERVER,HTTP_ASPECT,bindings);</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(bindings);</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;    <span class="comment">//    debug_enable(D_TRANSCODE+D_STEP+D_STREAM);</span></div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;    <span class="comment">//debug_enable(D_SIGNALS+D_STEP+D_STREAM);</span></div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;    _v_start_vmhost(G_vm);</div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;    G_done = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;    pthread_t <a class="code" href="structthread.html">thread</a>;</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;    <span class="keywordtype">int</span> rc;</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;    rc = pthread_create(&amp;thread,0,_httptester,NULL);</div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;    <span class="keywordflow">if</span> (rc){</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;        raise_error(<span class="stringliteral">&quot;ERROR; return code from pthread_create() is %d\n&quot;</span>, rc);</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;    }</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;    pthread_detach(thread);</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;    <span class="keywordflow">if</span> (rc){</div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;        raise_error(<span class="stringliteral">&quot;Error detaching tester thread; return code from pthread_detach() is %d\n&quot;</span>, rc);</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;    }</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;    <span class="keywordflow">while</span>(!G_done) sleepms(1);</div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;    sleepms(1);</div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;    debug_disable(D_STREAM+D_SIGNALS+D_TREE+D_PROTOCOL);</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;    debug_disable(D_TRANSCODE+D_REDUCE+D_REDUCEV+D_STEP);</div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;</div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;    <span class="comment">//spec_is_str_equal(t2s(r-&gt;flux),&quot;&quot;);</span></div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;    <span class="comment">// cleanup vmhost instance</span></div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;    __r_kill(G_vm-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>);</div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;    <span class="comment">//    _v_join_thread(&amp;G_vm-&gt;clock_thread);</span></div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;    _v_join_thread(&amp;G_vm-&gt;vm_thread);</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;</div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;    <a class="code" href="group__vmhost.html#ga44e0f6d62e38448bfa058f287cc463eb">_v_free</a>(v);</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;    G_vm = NULL;</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;    G_sem = gsem;</div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;</div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;}</div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;<span class="keywordtype">void</span> testHTTP() {</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;    testHTTPparseHTML();</div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;    testHTTPedgeReceptor();</div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;}</div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;</div>
+<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;<span class="comment">//</span></div>
+<div class="ttc" id="group__tree_html_ga25dd0f385044ffbcc7c215ea80fa00b4"><div class="ttname"><a href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a></div><div class="ttdeci">T * _t_new_root(Symbol symbol)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00160">tree.c:160</a></div></div>
 <div class="ttc" id="structT_html"><div class="ttname"><a href="structT.html">T</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00114">ceptr_types.h:114</a></div></div>
-<div class="ttc" id="structStream_html"><div class="ttname"><a href="structStream.html">Stream</a></div><div class="ttdef"><b>Definition:</b> <a href="stream_8h_source.html#l00030">stream.h:30</a></div></div>
-<div class="ttc" id="group__semtrex_html_ga4ff0c2f907a002cce83813f17b6481d5"><div class="ttname"><a href="group__semtrex.html#ga4ff0c2f907a002cce83813f17b6481d5">asciiT_tos</a></div><div class="ttdeci">T * asciiT_tos(T *asciiT, T *match, T *t, Symbol s)</div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8c_source.html#l01158">semtrex.c:1158</a></div></div>
-<div class="ttc" id="group__tree_html_gaf019d190c9623de809d006e309a441af"><div class="ttname"><a href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a></div><div class="ttdeci">T * _t_get(T *t, int *p)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l01410">tree.c:1410</a></div></div>
-<div class="ttc" id="http__example_8h_html_af05800edd63bd301c2f47a5e846e2642"><div class="ttname"><a href="http__example_8h.html#af05800edd63bd301c2f47a5e846e2642">_makeHTTPRequestSemtrex</a></div><div class="ttdeci">T * _makeHTTPRequestSemtrex()</div><div class="ttdef"><b>Definition:</b> <a href="http__example_8h_source.html#l00086">http_example.h:86</a></div></div>
+<div class="ttc" id="group__semtrex_html_ga4ff0c2f907a002cce83813f17b6481d5"><div class="ttname"><a href="group__semtrex.html#ga4ff0c2f907a002cce83813f17b6481d5">asciiT_tos</a></div><div class="ttdeci">T * asciiT_tos(T *asciiT, T *match, T *t, Symbol s)</div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8c_source.html#l01261">semtrex.c:1261</a></div></div>
+<div class="ttc" id="group__tree_html_gaf019d190c9623de809d006e309a441af"><div class="ttname"><a href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a></div><div class="ttdeci">T * _t_get(T *t, int *p)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l01441">tree.c:1441</a></div></div>
+<div class="ttc" id="http__example_8h_html_af05800edd63bd301c2f47a5e846e2642"><div class="ttname"><a href="http__example_8h.html#af05800edd63bd301c2f47a5e846e2642">_makeHTTPRequestSemtrex</a></div><div class="ttdeci">T * _makeHTTPRequestSemtrex()</div><div class="ttdef"><b>Definition:</b> <a href="http__example_8h_source.html#l00091">http_example.h:91</a></div></div>
 <div class="ttc" id="spec__utils_8h_html"><div class="ttname"><a href="spec__utils_8h.html">spec_utils.h</a></div></div>
-<div class="ttc" id="group__tree_html_ga403644d86c835ceae71dc7af0356900f"><div class="ttname"><a href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a></div><div class="ttdeci">T * _t_detach_by_idx(T *t, int i)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00277">tree.c:277</a></div></div>
-<div class="ttc" id="group__tree_html_ga55270b512ed52ffe5a938a793fa5cd7f"><div class="ttname"><a href="group__tree.html#ga55270b512ed52ffe5a938a793fa5cd7f">_t_path_depth</a></div><div class="ttdeci">int _t_path_depth(int *p)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l01334">tree.c:1334</a></div></div>
-<div class="ttc" id="group__tree_html_gae4c9b743462f0a3808c9f02c3bf33da8"><div class="ttname"><a href="group__tree.html#gae4c9b743462f0a3808c9f02c3bf33da8">_t_get_path</a></div><div class="ttdeci">int * _t_get_path(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l01353">tree.c:1353</a></div></div>
-<div class="ttc" id="group__vmhost_html_ga74a1f49de857467af1613bb0e71b0963"><div class="ttname"><a href="group__vmhost.html#ga74a1f49de857467af1613bb0e71b0963">_v_instantiate_builtins</a></div><div class="ttdeci">void _v_instantiate_builtins(VMHost *v)</div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8c_source.html#l00323">vmhost.c:323</a></div></div>
-<div class="ttc" id="group__def_html_ga02d58ad9f7ac4482d99e0ef31e119b3a"><div class="ttname"><a href="group__def.html#ga02d58ad9f7ac4482d99e0ef31e119b3a">_d_define_receptor</a></div><div class="ttdeci">SemanticID _d_define_receptor(SemTable *sem, char *label, T *definitions, Context c)</div><div class="ttdef"><b>Definition:</b> <a href="def_8c_source.html#l00404">def.c:404</a></div></div>
-<div class="ttc" id="group__tree_html_ga7535eb2963c6cf5fc78cb14287581f92"><div class="ttname"><a href="group__tree.html#ga7535eb2963c6cf5fc78cb14287581f92">_t_clone</a></div><div class="ttdeci">T * _t_clone(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00588">tree.c:588</a></div></div>
-<div class="ttc" id="group__semtrex_html_gabbe3a3359feb3be7f9dd5b7fbbbb74ed"><div class="ttname"><a href="group__semtrex.html#gabbe3a3359feb3be7f9dd5b7fbbbb74ed">__sl</a></div><div class="ttdeci">T * __sl(T *p, bool not, int count,...)</div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8c_source.html#l01176">semtrex.c:1176</a></div></div>
-<div class="ttc" id="group__tree_html_ga07dd808fabd8a722b417f2f5e5ca132b"><div class="ttname"><a href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a></div><div class="ttdeci">T * _t_child(T *t, int i)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l01220">tree.c:1220</a></div></div>
-<div class="ttc" id="group__semtrex_html_gad46a0cafec3ba9ca1500ecd6f8984238"><div class="ttname"><a href="group__semtrex.html#gad46a0cafec3ba9ca1500ecd6f8984238">makeASCIITree</a></div><div class="ttdeci">T * makeASCIITree(char *c)</div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8c_source.html#l01103">semtrex.c:1103</a></div></div>
-<div class="ttc" id="group__def_html_ga15d66273ad66f17580a90a30c90b8f07"><div class="ttname"><a href="group__def.html#ga15d66273ad66f17580a90a30c90b8f07">_d_build_def_semtrex</a></div><div class="ttdeci">T * _d_build_def_semtrex(SemTable *sem, Symbol s, T *parent)</div><div class="ttdef"><b>Definition:</b> <a href="def_8c_source.html#l00374">def.c:374</a></div></div>
-<div class="ttc" id="group__tree_html_ga96de3ae222902beccffa3c26ef1ef40a"><div class="ttname"><a href="group__tree.html#ga96de3ae222902beccffa3c26ef1ef40a">_t_insert_at</a></div><div class="ttdeci">void _t_insert_at(T *t, int *path, T *i)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00437">tree.c:437</a></div></div>
-<div class="ttc" id="group__vmhost_html_ga44e0f6d62e38448bfa058f287cc463eb"><div class="ttname"><a href="group__vmhost.html#ga44e0f6d62e38448bfa058f287cc463eb">_v_free</a></div><div class="ttdeci">void _v_free(VMHost *v)</div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8c_source.html#l00070">vmhost.c:70</a></div></div>
-<div class="ttc" id="structReceptor_html_afeea3c89b6853516cd4c4d8e9d885174"><div class="ttname"><a href="structReceptor.html#afeea3c89b6853516cd4c4d8e9d885174">Receptor::addr</a></div><div class="ttdeci">ReceptorAddress addr</div><div class="ttdoc">the address by which to get messages to this receptor instance </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00239">ceptr_types.h:239</a></div></div>
+<div class="ttc" id="group__tree_html_ga403644d86c835ceae71dc7af0356900f"><div class="ttname"><a href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a></div><div class="ttdeci">T * _t_detach_by_idx(T *t, int i)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00278">tree.c:278</a></div></div>
+<div class="ttc" id="group__tree_html_ga55270b512ed52ffe5a938a793fa5cd7f"><div class="ttname"><a href="group__tree.html#ga55270b512ed52ffe5a938a793fa5cd7f">_t_path_depth</a></div><div class="ttdeci">int _t_path_depth(int *p)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l01365">tree.c:1365</a></div></div>
+<div class="ttc" id="group__tree_html_gae4c9b743462f0a3808c9f02c3bf33da8"><div class="ttname"><a href="group__tree.html#gae4c9b743462f0a3808c9f02c3bf33da8">_t_get_path</a></div><div class="ttdeci">int * _t_get_path(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l01384">tree.c:1384</a></div></div>
+<div class="ttc" id="group__tree_html_ga7535eb2963c6cf5fc78cb14287581f92"><div class="ttname"><a href="group__tree.html#ga7535eb2963c6cf5fc78cb14287581f92">_t_clone</a></div><div class="ttdeci">T * _t_clone(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00589">tree.c:589</a></div></div>
+<div class="ttc" id="group__semtrex_html_gabbe3a3359feb3be7f9dd5b7fbbbb74ed"><div class="ttname"><a href="group__semtrex.html#gabbe3a3359feb3be7f9dd5b7fbbbb74ed">__sl</a></div><div class="ttdeci">T * __sl(T *p, bool not, int count,...)</div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8c_source.html#l01279">semtrex.c:1279</a></div></div>
+<div class="ttc" id="group__tree_html_ga07dd808fabd8a722b417f2f5e5ca132b"><div class="ttname"><a href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a></div><div class="ttdeci">T * _t_child(T *t, int i)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l01251">tree.c:1251</a></div></div>
+<div class="ttc" id="group__semtrex_html_gad46a0cafec3ba9ca1500ecd6f8984238"><div class="ttname"><a href="group__semtrex.html#gad46a0cafec3ba9ca1500ecd6f8984238">makeASCIITree</a></div><div class="ttdeci">T * makeASCIITree(char *c)</div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8c_source.html#l01206">semtrex.c:1206</a></div></div>
+<div class="ttc" id="group__def_html_ga15d66273ad66f17580a90a30c90b8f07"><div class="ttname"><a href="group__def.html#ga15d66273ad66f17580a90a30c90b8f07">_d_build_def_semtrex</a></div><div class="ttdeci">T * _d_build_def_semtrex(SemTable *sem, Symbol s, T *parent)</div><div class="ttdef"><b>Definition:</b> <a href="def_8c_source.html#l00433">def.c:433</a></div></div>
+<div class="ttc" id="group__tree_html_ga96de3ae222902beccffa3c26ef1ef40a"><div class="ttname"><a href="group__tree.html#ga96de3ae222902beccffa3c26ef1ef40a">_t_insert_at</a></div><div class="ttdeci">void _t_insert_at(T *t, int *path, T *i)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00438">tree.c:438</a></div></div>
+<div class="ttc" id="group__vmhost_html_ga44e0f6d62e38448bfa058f287cc463eb"><div class="ttname"><a href="group__vmhost.html#ga44e0f6d62e38448bfa058f287cc463eb">_v_free</a></div><div class="ttdeci">void _v_free(VMHost *v)</div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8c_source.html#l00071">vmhost.c:71</a></div></div>
+<div class="ttc" id="structReceptor_html_afeea3c89b6853516cd4c4d8e9d885174"><div class="ttname"><a href="structReceptor.html#afeea3c89b6853516cd4c4d8e9d885174">Receptor::addr</a></div><div class="ttdeci">ReceptorAddress addr</div><div class="ttdoc">the address by which to get messages to this receptor instance </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00241">ceptr_types.h:241</a></div></div>
+<div class="ttc" id="structthread_html"><div class="ttname"><a href="structthread.html">thread</a></div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8h_source.html#l00020">vmhost.h:20</a></div></div>
 <div class="ttc" id="group__vmhost_html_gab6fbe5683628fb0d62a966316ced938d"><div class="ttname"><a href="group__vmhost.html#gab6fbe5683628fb0d62a966316ced938d">_v_new</a></div><div class="ttdeci">VMHost * _v_new()</div><div class="ttdoc">Creates a new virtual machine host. </div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8c_source.html#l00041">vmhost.c:41</a></div></div>
-<div class="ttc" id="group__semtrex_html_ga8e580d7393964e5df55e92aebf587e3f"><div class="ttname"><a href="group__semtrex.html#ga8e580d7393964e5df55e92aebf587e3f">_t_match</a></div><div class="ttdeci">int _t_match(T *semtrex, T *t)</div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8c_source.html#l00706">semtrex.c:706</a></div></div>
-<div class="ttc" id="group__tree_html_gac9278e540a0d63526b60cc0591283a62"><div class="ttname"><a href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a></div><div class="ttdeci">void * _t_surface(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l01184">tree.c:1184</a></div></div>
-<div class="ttc" id="group__accumulator_html_gad059bbd58bb0f8532009f1f575f196bd"><div class="ttname"><a href="group__accumulator.html#gad059bbd58bb0f8532009f1f575f196bd">_o_unwrap</a></div><div class="ttdeci">T * _o_unwrap(SemTable *sem, T *def, T *sem_map)</div><div class="ttdef"><b>Definition:</b> <a href="protocol_8c_source.html#l00235">protocol.c:235</a></div></div>
-<div class="ttc" id="group__semtrex_html_gada90f89374f4577e3ac8819e500a97a7"><div class="ttname"><a href="group__semtrex.html#gada90f89374f4577e3ac8819e500a97a7">_t_get_match</a></div><div class="ttdeci">T * _t_get_match(T *match, Symbol group)</div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8c_source.html#l00745">semtrex.c:745</a></div></div>
-<div class="ttc" id="group__vmhost_html_ga53694170e5452b8062ec405e6a9a3f60"><div class="ttname"><a href="group__vmhost.html#ga53694170e5452b8062ec405e6a9a3f60">_v_activate</a></div><div class="ttdeci">void _v_activate(VMHost *v, Xaddr x)</div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8c_source.html#l00171">vmhost.c:171</a></div></div>
-<div class="ttc" id="group__receptor_html_ga9f66f2aaba88463a6e1f238a367a33f9"><div class="ttname"><a href="group__receptor.html#ga9f66f2aaba88463a6e1f238a367a33f9">_r_new</a></div><div class="ttdeci">Receptor * _r_new(SemTable *sem, SemanticID r)</div><div class="ttdoc">Creates a new receptor. </div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00088">receptor.c:88</a></div></div>
+<div class="ttc" id="group__semtrex_html_ga8e580d7393964e5df55e92aebf587e3f"><div class="ttname"><a href="group__semtrex.html#ga8e580d7393964e5df55e92aebf587e3f">_t_match</a></div><div class="ttdeci">int _t_match(T *semtrex, T *t)</div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8c_source.html#l00809">semtrex.c:809</a></div></div>
+<div class="ttc" id="group__tree_html_gac9278e540a0d63526b60cc0591283a62"><div class="ttname"><a href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a></div><div class="ttdeci">void * _t_surface(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l01215">tree.c:1215</a></div></div>
+<div class="ttc" id="group__accumulator_html_gad059bbd58bb0f8532009f1f575f196bd"><div class="ttname"><a href="group__accumulator.html#gad059bbd58bb0f8532009f1f575f196bd">_o_unwrap</a></div><div class="ttdeci">T * _o_unwrap(SemTable *sem, T *def, T *sem_map)</div><div class="ttdef"><b>Definition:</b> <a href="protocol_8c_source.html#l00262">protocol.c:262</a></div></div>
+<div class="ttc" id="group__semtrex_html_gada90f89374f4577e3ac8819e500a97a7"><div class="ttname"><a href="group__semtrex.html#gada90f89374f4577e3ac8819e500a97a7">_t_get_match</a></div><div class="ttdeci">T * _t_get_match(T *match, Symbol group)</div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8c_source.html#l00848">semtrex.c:848</a></div></div>
+<div class="ttc" id="group__vmhost_html_ga53694170e5452b8062ec405e6a9a3f60"><div class="ttname"><a href="group__vmhost.html#ga53694170e5452b8062ec405e6a9a3f60">_v_activate</a></div><div class="ttdeci">void _v_activate(VMHost *v, Xaddr x)</div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8c_source.html#l00172">vmhost.c:172</a></div></div>
 <div class="ttc" id="structVMHost_html_a0718944e7f9d848d3b96f704ea0f0252"><div class="ttname"><a href="structVMHost.html#a0718944e7f9d848d3b96f704ea0f0252">VMHost::sem</a></div><div class="ttdeci">SemTable * sem</div><div class="ttdoc">Semantic Table for definitions on this host. </div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8h_source.html#l00044">vmhost.h:44</a></div></div>
-<div class="ttc" id="http__example_8h_html_a5476caaca538a030a6770bc99a42f372"><div class="ttname"><a href="http__example_8h.html#a5476caaca538a030a6770bc99a42f372">_makeTestHTTPResponseProcess</a></div><div class="ttdeci">void _makeTestHTTPResponseProcess(Receptor *r, T **paramsP, Process *pP)</div><div class="ttdoc">[makeTestHTTPRequestTree] </div><div class="ttdef"><b>Definition:</b> <a href="http__example_8h_source.html#l00046">http_example.h:46</a></div></div>
-<div class="ttc" id="group__tree_html_ga18ca0b633cdd6b8f2d3d0f2598c4a933"><div class="ttname"><a href="group__tree.html#ga18ca0b633cdd6b8f2d3d0f2598c4a933">_t_parent</a></div><div class="ttdeci">T * _t_parent(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l01231">tree.c:1231</a></div></div>
-<div class="ttc" id="structSemTable_html"><div class="ttname"><a href="structSemTable.html">SemTable</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00221">ceptr_types.h:221</a></div></div>
-<div class="ttc" id="stream_8c_html_abe8d8f68050d4ac4122baf7976a9e609"><div class="ttname"><a href="stream_8c.html#abe8d8f68050d4ac4122baf7976a9e609">_st_free</a></div><div class="ttdeci">void _st_free(Stream *st)</div><div class="ttdef"><b>Definition:</b> <a href="stream_8c_source.html#l00475">stream.c:475</a></div></div>
-<div class="ttc" id="group__semtrex_html_ga27540c8e1822da3160a0cc4717df410f"><div class="ttname"><a href="group__semtrex.html#ga27540c8e1822da3160a0cc4717df410f">_t_matchr</a></div><div class="ttdeci">int _t_matchr(T *semtrex, T *t, T **rP)</div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8c_source.html#l00695">semtrex.c:695</a></div></div>
+<div class="ttc" id="http__example_8h_html_a5476caaca538a030a6770bc99a42f372"><div class="ttname"><a href="http__example_8h.html#a5476caaca538a030a6770bc99a42f372">_makeTestHTTPResponseProcess</a></div><div class="ttdeci">void _makeTestHTTPResponseProcess(Receptor *r, T **paramsP, Process *pP)</div><div class="ttdoc">[makeTestHTTPRequestTree] </div><div class="ttdef"><b>Definition:</b> <a href="http__example_8h_source.html#l00051">http_example.h:51</a></div></div>
+<div class="ttc" id="group__tree_html_ga18ca0b633cdd6b8f2d3d0f2598c4a933"><div class="ttname"><a href="group__tree.html#ga18ca0b633cdd6b8f2d3d0f2598c4a933">_t_parent</a></div><div class="ttdeci">T * _t_parent(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l01262">tree.c:1262</a></div></div>
+<div class="ttc" id="structSemTable_html"><div class="ttname"><a href="structSemTable.html">SemTable</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00223">ceptr_types.h:223</a></div></div>
+<div class="ttc" id="group__semtrex_html_ga27540c8e1822da3160a0cc4717df410f"><div class="ttname"><a href="group__semtrex.html#ga27540c8e1822da3160a0cc4717df410f">_t_matchr</a></div><div class="ttdeci">int _t_matchr(T *semtrex, T *t, T **rP)</div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8c_source.html#l00798">semtrex.c:798</a></div></div>
 <div class="ttc" id="structVMHost_html"><div class="ttname"><a href="structVMHost.html">VMHost</a></div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8h_source.html#l00040">vmhost.h:40</a></div></div>
-<div class="ttc" id="structReceptor_html_a4bb9ce729b6b85fb99326e9df7b23cbd"><div class="ttname"><a href="structReceptor.html#a4bb9ce729b6b85fb99326e9df7b23cbd">Receptor::sem</a></div><div class="ttdeci">SemTable * sem</div><div class="ttdoc">pointer back to the genotype table for this receptor&#39;s vmhost instance </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00240">ceptr_types.h:240</a></div></div>
-<div class="ttc" id="group__accumulator_html_ga46ff4d16575a21f8c7d02fa754ac6d2f"><div class="ttname"><a href="group__accumulator.html#ga46ff4d16575a21f8c7d02fa754ac6d2f">_o_express_role</a></div><div class="ttdeci">void _o_express_role(Receptor *r, Protocol protocol, Symbol role, Aspect aspect, T *bindings)</div><div class="ttdef"><b>Definition:</b> <a href="protocol_8c_source.html#l00364">protocol.c:364</a></div></div>
+<div class="ttc" id="structReceptor_html_a4bb9ce729b6b85fb99326e9df7b23cbd"><div class="ttname"><a href="structReceptor.html#a4bb9ce729b6b85fb99326e9df7b23cbd">Receptor::sem</a></div><div class="ttdeci">SemTable * sem</div><div class="ttdoc">pointer back to the genotype table for this receptor&#39;s vmhost instance </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00242">ceptr_types.h:242</a></div></div>
+<div class="ttc" id="group__accumulator_html_ga46ff4d16575a21f8c7d02fa754ac6d2f"><div class="ttname"><a href="group__accumulator.html#ga46ff4d16575a21f8c7d02fa754ac6d2f">_o_express_role</a></div><div class="ttdeci">void _o_express_role(Receptor *r, Protocol protocol, Symbol role, Aspect aspect, T *bindings)</div><div class="ttdef"><b>Definition:</b> <a href="protocol_8c_source.html#l00409">protocol.c:409</a></div></div>
 <div class="ttc" id="http__example_8h_html_a1c182b5a6e82ef49c6967183a15c3e8b"><div class="ttname"><a href="http__example_8h.html#a1c182b5a6e82ef49c6967183a15c3e8b">_makeTestHTTPRequestTree</a></div><div class="ttdeci">T * _makeTestHTTPRequestTree()</div><div class="ttdoc">[makeTestHTTPRequestTree] </div><div class="ttdef"><b>Definition:</b> <a href="http__example_8h_source.html#l00026">http_example.h:26</a></div></div>
-<div class="ttc" id="structReceptor_html"><div class="ttname"><a href="structReceptor.html">Receptor</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00235">ceptr_types.h:235</a></div></div>
-<div class="ttc" id="structXaddr_html"><div class="ttname"><a href="structXaddr.html">Xaddr</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00265">ceptr_types.h:265</a></div></div>
+<div class="ttc" id="structReceptor_html"><div class="ttname"><a href="structReceptor.html">Receptor</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00237">ceptr_types.h:237</a></div></div>
+<div class="ttc" id="structXaddr_html"><div class="ttname"><a href="structXaddr.html">Xaddr</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00267">ceptr_types.h:267</a></div></div>
 <div class="ttc" id="structVMHost_html_a218d2e91e129dee7c71e1b06ff533a6e"><div class="ttname"><a href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">VMHost::r</a></div><div class="ttdeci">Receptor * r</div><div class="ttdoc">Receptor data for this vm host. </div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8h_source.html#l00043">vmhost.h:43</a></div></div>
-<div class="ttc" id="group__semtrex_html_ga12e70dc3d5fde33655e8731ad3bdd935"><div class="ttname"><a href="group__semtrex.html#ga12e70dc3d5fde33655e8731ad3bdd935">_sl</a></div><div class="ttdeci">#define _sl(t, s)</div><div class="ttdoc">macro to add a single symbol literal to semtrex tree </div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8h_source.html#l00118">semtrex.h:118</a></div></div>
-<div class="ttc" id="group__semtrex_html_gabe49b12bfb8785a10bf088c4ebe60db4"><div class="ttname"><a href="group__semtrex.html#gabe49b12bfb8785a10bf088c4ebe60db4">parseSemtrex</a></div><div class="ttdeci">T * parseSemtrex(SemTable *sem, char *stx)</div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8c_source.html#l01195">semtrex.c:1195</a></div></div>
-<div class="ttc" id="group__tree_html_ga3b7a6499fe49f8e6a54166d583b08d5c"><div class="ttname"><a href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a></div><div class="ttdeci">void _t_add(T *t, T *c)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00260">tree.c:260</a></div></div>
-<div class="ttc" id="group__tree_html_gad6597b652983165f6b2993211a598ad4"><div class="ttname"><a href="group__tree.html#gad6597b652983165f6b2993211a598ad4">__t_morph</a></div><div class="ttdeci">void __t_morph(T *t, Symbol s, void *surface, size_t size, int allocate)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00324">tree.c:324</a></div></div>
-<div class="ttc" id="group__tree_html_ga4b1df42f7a8edbe3a6192d64ab027ecc"><div class="ttname"><a href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a></div><div class="ttdeci">int _t_children(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l01174">tree.c:1174</a></div></div>
-<div class="ttc" id="http__example_8h_html_aab25be2feb3ef9f92c3bd1cecace8168"><div class="ttname"><a href="http__example_8h.html#aab25be2feb3ef9f92c3bd1cecace8168">G_stxs</a></div><div class="ttdeci">char * G_stxs</div><div class="ttdoc">[makeTestHTTPResponseProcess] </div><div class="ttdef"><b>Definition:</b> <a href="http__example_8h_source.html#l00080">http_example.h:80</a></div></div>
+<div class="ttc" id="group__semtrex_html_ga12e70dc3d5fde33655e8731ad3bdd935"><div class="ttname"><a href="group__semtrex.html#ga12e70dc3d5fde33655e8731ad3bdd935">_sl</a></div><div class="ttdeci">#define _sl(t, s)</div><div class="ttdoc">macro to add a single symbol literal to semtrex tree </div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8h_source.html#l00122">semtrex.h:122</a></div></div>
+<div class="ttc" id="group__semtrex_html_gabe49b12bfb8785a10bf088c4ebe60db4"><div class="ttname"><a href="group__semtrex.html#gabe49b12bfb8785a10bf088c4ebe60db4">parseSemtrex</a></div><div class="ttdeci">T * parseSemtrex(SemTable *sem, char *stx)</div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8c_source.html#l01298">semtrex.c:1298</a></div></div>
+<div class="ttc" id="group__tree_html_ga749a1b6c40a2fd3d36dc0f3e7f6bb6af"><div class="ttname"><a href="group__tree.html#ga749a1b6c40a2fd3d36dc0f3e7f6bb6af">_t_parse</a></div><div class="ttdeci">T * _t_parse(SemTable *sem, T *parent, char *s,...)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00919">tree.c:919</a></div></div>
+<div class="ttc" id="structSocketListener_html"><div class="ttname"><a href="structSocketListener.html">SocketListener</a></div><div class="ttdef"><b>Definition:</b> <a href="stream_8h_source.html#l00060">stream.h:60</a></div></div>
+<div class="ttc" id="group__tree_html_ga3b7a6499fe49f8e6a54166d583b08d5c"><div class="ttname"><a href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a></div><div class="ttdeci">void _t_add(T *t, T *c)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00261">tree.c:261</a></div></div>
+<div class="ttc" id="group__tree_html_gad6597b652983165f6b2993211a598ad4"><div class="ttname"><a href="group__tree.html#gad6597b652983165f6b2993211a598ad4">__t_morph</a></div><div class="ttdeci">void __t_morph(T *t, Symbol s, void *surface, size_t size, int allocate)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00325">tree.c:325</a></div></div>
+<div class="ttc" id="group__tree_html_ga4b1df42f7a8edbe3a6192d64ab027ecc"><div class="ttname"><a href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a></div><div class="ttdeci">int _t_children(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l01205">tree.c:1205</a></div></div>
+<div class="ttc" id="http__example_8h_html_aab25be2feb3ef9f92c3bd1cecace8168"><div class="ttname"><a href="http__example_8h.html#aab25be2feb3ef9f92c3bd1cecace8168">G_stxs</a></div><div class="ttdeci">char * G_stxs</div><div class="ttdoc">[makeTestHTTPResponseProcess] </div><div class="ttdef"><b>Definition:</b> <a href="http__example_8h_source.html#l00085">http_example.h:85</a></div></div>
 <div class="ttc" id="group__receptor_html_ga6bb73d41388d17428e5735ad9cbe5917"><div class="ttname"><a href="group__receptor.html#ga6bb73d41388d17428e5735ad9cbe5917">_r_define_process</a></div><div class="ttdeci">Process _r_define_process(Receptor *r, T *code, char *name, char *intention, T *signature, T *link)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00275">receptor.c:275</a></div></div>
-<div class="ttc" id="group__tree_html_gad718449607421d4b572315be630cbf75"><div class="ttname"><a href="group__tree.html#gad718449607421d4b572315be630cbf75">_t_detach_by_ptr</a></div><div class="ttdeci">void _t_detach_by_ptr(T *t, T *c)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00290">tree.c:290</a></div></div>
-<div class="ttc" id="group__tree_html_ga31e55cdc031e5f12523b998e89080db6"><div class="ttname"><a href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a></div><div class="ttdeci">void _t_free(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00525">tree.c:525</a></div></div>
+<div class="ttc" id="group__tree_html_gad718449607421d4b572315be630cbf75"><div class="ttname"><a href="group__tree.html#gad718449607421d4b572315be630cbf75">_t_detach_by_ptr</a></div><div class="ttdeci">void _t_detach_by_ptr(T *t, T *c)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00291">tree.c:291</a></div></div>
+<div class="ttc" id="group__tree_html_ga31e55cdc031e5f12523b998e89080db6"><div class="ttname"><a href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a></div><div class="ttdeci">void _t_free(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00526">tree.c:526</a></div></div>
 <div class="ttc" id="structSemanticID_html"><div class="ttname"><a href="structSemanticID.html">SemanticID</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00022">ceptr_types.h:22</a></div></div>
-<div class="ttc" id="group__tree_html_gaebfc497f04bdfbfd3a241771b146bebc"><div class="ttname"><a href="group__tree.html#gaebfc497f04bdfbfd3a241771b146bebc">_t_build</a></div><div class="ttdeci">T * _t_build(SemTable *sem, T *parent,...)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00634">tree.c:634</a></div></div>
+<div class="ttc" id="group__tree_html_gaebfc497f04bdfbfd3a241771b146bebc"><div class="ttname"><a href="group__tree.html#gaebfc497f04bdfbfd3a241771b146bebc">_t_build</a></div><div class="ttdeci">T * _t_build(SemTable *sem, T *parent,...)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00635">tree.c:635</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><a class="el" href="http__example_8h.html">http_example.h</a></li>
-    <li class="footer">Generated on Sat Apr 16 2016 17:00:49 for ceptr by
+    <li class="footer">Generated on Thu Jul 21 2016 10:13:07 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

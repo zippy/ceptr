@@ -2,6 +2,7 @@ var dir_68267d1309a1af8e8297ef4c3efbcdba =
 [
     [ "accumulator.c", "accumulator_8c.html", "accumulator_8c" ],
     [ "accumulator.h", "accumulator_8h.html", "accumulator_8h" ],
+    [ "ansicolor.h", "ansicolor_8h_source.html", null ],
     [ "base_defs.c", "base__defs_8c.html", "base__defs_8c" ],
     [ "base_defs.h", "base__defs_8h.html", "base__defs_8h" ],
     [ "ceptr.c", "ceptr_8c.html", "ceptr_8c" ],

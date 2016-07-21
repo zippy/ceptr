@@ -14,11 +14,14 @@ var stream_8c =
     [ "_st_data_consumed", "stream_8c.html#ae1f81dee38191862a7c809d3b4b6809c", null ],
     [ "_st_free", "stream_8c.html#abe8d8f68050d4ac4122baf7976a9e609", null ],
     [ "_st_kill", "stream_8c.html#ab2a9830ab76c5e671aaf4061b6bd296e", null ],
-    [ "_st_new_socket_listener", "stream_8c.html#ad20ee66b188634c439da4f3f790ed7b1", null ],
+    [ "_st_new_socket_listener", "stream_8c.html#a70506777b08d324579fe24112575db68", null ],
     [ "_st_new_socket_stream", "stream_8c.html#a8e7ab9e5dc8a84dab8b9b70f27164db7", null ],
     [ "_st_start_read", "stream_8c.html#abb3d2ea8ba1e9e81d5804f68715ea529", null ],
     [ "_st_stream_read", "stream_8c.html#a2821568a817bd441883f3c2aa17714f0", null ],
     [ "_st_write", "stream_8c.html#adc1200527bf33bc8bf4746174aaae3f2", null ],
+    [ "_st_writeln", "stream_8c.html#a889eeffa46cc96cfb82015beef74eb9f", null ],
     [ "get_in_addr", "stream_8c.html#a294867ba9d7ff47e39d421134d8e12ab", null ],
-    [ "ss2str", "stream_8c.html#a5b240006fd0f6dfe064f3f4ce489821f", null ]
+    [ "ss2str", "stream_8c.html#a5b240006fd0f6dfe064f3f4ce489821f", null ],
+    [ "DELIM_CRLF", "stream_8c.html#a69b2d5a0cd02e466db99c6008f464821", null ],
+    [ "DELIM_LF", "stream_8c.html#a8fa85b26597109e4321dc04611801dab", null ]
 ];

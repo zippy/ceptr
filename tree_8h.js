@@ -23,7 +23,7 @@ var tree_8h =
       [ "TFLAG_RUN_NODE", "group__tree.html#ggaeddfb7542c9d4915c3613083cd001c60adae094e20b51c267d00c7db5c458ca00", null ],
       [ "TFLAG_REFERENCE", "group__tree.html#ggaeddfb7542c9d4915c3613083cd001c60ab5c9336f35e5970951366e0e0d6fec5b", null ]
     ] ],
-    [ "__t_fill_template", "group__tree.html#gac1c43acbe9e29de7e0c9244c65ce44a3", null ],
+    [ "__t_fill_template", "group__tree.html#ga11b4a76525ad582d7bc5e5930706c6f9", null ],
     [ "__t_find", "group__tree.html#ga07a51eddd726d8ad73efd587cf08de1d", null ],
     [ "__t_free", "group__tree.html#ga9ae9ab4b3db34fd0ef209adafec68794", null ],
     [ "__t_free_children", "group__tree.html#ga4fb39ee561fc4b17cfb241330b835951", null ],
@@ -70,6 +70,7 @@ var tree_8h =
     [ "_t_parse", "group__tree.html#ga749a1b6c40a2fd3d36dc0f3e7f6bb6af", null ],
     [ "_t_path_depth", "group__tree.html#ga55270b512ed52ffe5a938a793fa5cd7f", null ],
     [ "_t_path_equal", "group__tree.html#ga1d7afbc2a405c20a83b7bee4cfcb3a29", null ],
+    [ "_t_path_walk", "group__tree.html#ga60bd842879c5f07b7024a885930b7599", null ],
     [ "_t_pathcpy", "group__tree.html#ga608555368dfdef7de1872f89b6fed637", null ],
     [ "_t_rclone", "group__tree.html#ga030487f63804a31d5e6b911908ec795b", null ],
     [ "_t_replace", "group__tree.html#ga0dcacdfd022b2a04b8fb53eb25ee367e", null ],

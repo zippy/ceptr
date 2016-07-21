@@ -3,6 +3,8 @@ var semtrex_8h =
     [ "_sl", "group__semtrex.html#ga12e70dc3d5fde33655e8731ad3bdd935", null ],
     [ "_sln", "group__semtrex.html#gac1b578cc9fc2f835ad12855698fe4cf2", null ],
     [ "DS", "group__semtrex.html#ga23a719903c25f5387274002776ae5fa1", null ],
+    [ "isTransitionNext", "group__semtrex.html#gacb0932f4aec2a179ffac3dcf71370061", null ],
+    [ "isTransitionPop", "group__semtrex.html#gaca247bbadbfa0a680bb0d1c6fa0c9934", null ],
     [ "LITERAL_NOT", "group__semtrex.html#ga29222c0e3cd15e9abd80d8a7430dd71c", null ],
     [ "LITERAL_SET", "group__semtrex.html#ga8db8df11b2ba92a05c72c50106fb4ec0", null ],
     [ "SgroupClose", "group__semtrex.html#gab4bc67d51970ec75875c2e9e135c4bf3", null ],
@@ -13,11 +15,8 @@ var semtrex_8h =
     [ "STypeData", "group__semtrex.html#ga8dced199acb1f24ff8f91e409aa6d1cb", null ],
     [ "Svalue", "group__semtrex.html#ga886f61851b2c5a479cf7bed2ba78cd7d", null ],
     [ "TransitionType", "group__semtrex.html#ga8fbe3b9e7b9817abdf0c2de2f180b4fd", null ],
-    [ "FSAStateTransitions", "group__semtrex.html#ga7cce21ba007b15ca5263f3cc5ef15c11", [
-      [ "TransitionNextChild", "group__semtrex.html#gga7cce21ba007b15ca5263f3cc5ef15c11a0304642b1bec42fa532a750ef23e276d", null ],
-      [ "TransitionUp", "group__semtrex.html#gga7cce21ba007b15ca5263f3cc5ef15c11a3cea77279ce8c9665393a6cb9196acd2", null ],
-      [ "TransitionDown", "group__semtrex.html#gga7cce21ba007b15ca5263f3cc5ef15c11a3281a29fe6ed6c41e5b47100af5737e4", null ]
-    ] ],
+    [ "TransitionDown", "group__semtrex.html#ggab48899087cc647f0f791ed0c459adc53a3281a29fe6ed6c41e5b47100af5737e4", null ],
+    [ "TransitionNone", "group__semtrex.html#ggab48899087cc647f0f791ed0c459adc53a630d262ae4a8cfbe9e11c90fbbacec5b", null ],
     [ "StateType", "group__semtrex.html#ga1615968a92950438f6e67a28e9d56e5c", [
       [ "StateSymbol", "group__semtrex.html#gga1615968a92950438f6e67a28e9d56e5cafe6260b41f5531e021f29fd308c0395f", null ],
       [ "StateAny", "group__semtrex.html#gga1615968a92950438f6e67a28e9d56e5ca0779141668964da164673db1e0467ef1", null ],
@@ -31,10 +30,12 @@ var semtrex_8h =
       [ "StateNot", "group__semtrex.html#gga1615968a92950438f6e67a28e9d56e5ca5a2ec827fec4aa6cf84047878d96fd44", null ]
     ] ],
     [ "__sl", "group__semtrex.html#gabbe3a3359feb3be7f9dd5b7fbbbb74ed", null ],
+    [ "__stx_dump", "group__semtrex.html#ga2090b974f84ab4310569afdbafe496d7", null ],
     [ "__stxcv", "group__semtrex.html#ga5e4a8396bf0b927fb440bc207ff44b32", null ],
     [ "__stxcvm", "group__semtrex.html#gaca2dea328b69197bc1f21cf8139e904d", null ],
     [ "__t_embody_from_match", "group__semtrex.html#gac4ac621a801500342d1259573fc3d15d", null ],
     [ "_dump_semtrex", "group__semtrex.html#ga0b627873ef75a23e1c24074e9893ee6e", null ],
+    [ "_stx_dump", "group__semtrex.html#ga22849d7b86f21463685f4e11cd4dcc93", null ],
     [ "_stx_freeFA", "group__semtrex.html#gacbce8db372cc051950f8d684af47c39a", null ],
     [ "_stx_get_matched_node", "group__semtrex.html#ga4445b670a237494dbb895b7e9ef1628c", null ],
     [ "_stx_makeFA", "group__semtrex.html#ga23ed44c9e7a1637d5f7d49e6114af83a", null ],
@@ -51,7 +52,8 @@ var semtrex_8h =
     [ "asciiT_tos", "group__semtrex.html#ga4ff0c2f907a002cce83813f17b6481d5", null ],
     [ "makeASCIITree", "group__semtrex.html#gad46a0cafec3ba9ca1500ecd6f8984238", null ],
     [ "parseSemtrex", "group__semtrex.html#gabe49b12bfb8785a10bf088c4ebe60db4", null ],
+    [ "stx_dump", "group__semtrex.html#ga368fe614ab0b40e39cedffdf6c0c3fb9", null ],
     [ "wrap", "group__semtrex.html#ga812993c95f0eeed3dd78ad1c5f979a7f", null ],
-    [ "G_te", "group__semtrex.html#ga8592201e0b95200efcedc42ec62b6676", null ],
-    [ "G_ts", "group__semtrex.html#ga82573c9fc996af7623605123964ec479", null ]
+    [ "G_cur_stx_state", "group__semtrex.html#ga33c5bd1d13dc0854ffab33d22d90162c", null ],
+    [ "G_stx_dump_buf", "group__semtrex.html#gac7c07276101d670471b7806bb5458f5c", null ]
 ];

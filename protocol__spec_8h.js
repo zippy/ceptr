@@ -3,6 +3,7 @@ var protocol__spec_8h =
     [ "_setupTestProtocols", "protocol__spec_8h.html#a78e30d4d4870f48b3dacaef365480d55", null ],
     [ "testProtocol", "protocol__spec_8h.html#a7cfab829fbe3742daa8bc0d3328e2fe9", null ],
     [ "testProtocolAlive", "protocol__spec_8h.html#a141b4fb9a77e36598e397c14bb6f7f45", null ],
+    [ "testProtocolDefaults", "protocol__spec_8h.html#a833419c66e24754e9ed0e8b7c44f0219", null ],
     [ "testProtocolRecognize", "protocol__spec_8h.html#a56ca8a011d2adc06cc680b9a685b09cd", null ],
     [ "testProtocolRequesting", "protocol__spec_8h.html#a0cdc34b2fc559da1993a15da0473df34", null ],
     [ "testProtocolResolve", "protocol__spec_8h.html#ad0d710eb160529ec9635f5b7e472d469", null ],

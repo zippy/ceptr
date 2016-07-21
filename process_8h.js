@@ -61,7 +61,7 @@ var process_8h =
     [ "__p_make_context", "process_8h.html#ad0d80f3ab87c4552e3355e90616be5a5", null ],
     [ "__p_make_form", "process_8h.html#ae55f31a15b53840b8241fafea0f50189", null ],
     [ "__p_reduce_sys_proc", "process_8h.html#a5e368ad3c3c5a772d49c30675b143fff", null ],
-    [ "__p_unblock", "process_8h.html#a95f4b3611fc8219a648be771df2ac3f8", null ],
+    [ "__p_unblock", "process_8h.html#a94a89b78f465b8f74efb74e13d025049", null ],
     [ "_p_cleanup", "process_8h.html#a18f2b2af97cc8a9e6096d226a2f4f060", null ],
     [ "_p_enqueue", "process_8h.html#a39ccc64f181f96a92744969f3daca886", null ],
     [ "_p_fill_from_match", "process_8h.html#a003f9d30641ce562d54e16220a43049c", null ],
@@ -74,5 +74,6 @@ var process_8h =
     [ "_p_reduceq_thread", "process_8h.html#add05ec8f9d463726351fef1ffaa938fd", null ],
     [ "_p_step", "process_8h.html#a3a5e10aa19f18453fcc24481bafb2903", null ],
     [ "_p_unblock", "process_8h.html#ae2449b4f1ecf168f4ac166d27f99edf7", null ],
+    [ "_p_wakeup", "process_8h.html#a604e3f7657e29a106a3aab3e38f60a0a", null ],
     [ "defaultRequestUntil", "process_8h.html#a801534a91014a8b984c6261c71231398", null ]
 ];

@@ -1,6 +1,7 @@
 var util_8h =
 [
     [ "sleepns", "util_8h.html#a746a389f2532361736a69aac7cae3304", null ],
+    [ "bin_to_strhex", "util_8h.html#a4b4bb5975aa36dfeab34e46dc941f344", null ],
     [ "diff_micro", "util_8h.html#a8c34e2e5c3a9bafa83ef071c5e108791", null ],
     [ "hexDump", "util_8h.html#af1bddd272ab58d596235a98a58df8c46", null ],
     [ "readFile", "util_8h.html#a0cf830222cd383bdd5cff636c3dac58c", null ],

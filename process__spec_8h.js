@@ -46,6 +46,7 @@ var process__spec_8h =
     [ "testProcessSym", "process__spec_8h.html#a559e672f23da2065c51b0e48a75f0c65", null ],
     [ "testProcessThisScope", "process__spec_8h.html#ab5c5f04dec88497422d8b90ce3f8fbe7", null ],
     [ "testProcessTranscode", "process__spec_8h.html#a436d79305dbe259152bd9774252b0c26", null ],
+    [ "testProcessWakeup", "process__spec_8h.html#a5e7700f3b4b03fcfd4e71ddc403ab8a1", null ],
     [ "testRunTree", "process__spec_8h.html#ac4571cec1a9f70eded22140be940cc54", null ],
     [ "testRunTreeTemplate", "process__spec_8h.html#abacd5c1cc21ad8df975867aa7d4b662a", null ],
     [ "G_ifeven", "process__spec_8h.html#adc9062013c118d6b46e99e4c3ccb03bd", null ],

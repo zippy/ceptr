@@ -92,7 +92,7 @@ $(document).ready(function(){initNavTree('receptor_8c.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -128,6 +128,9 @@ Include dependency graph for receptor.c:</div>
 </div>
 <p><a href="receptor_8c_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="memitem:ad38dbf5239bff59e4d368db897c9089e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad38dbf5239bff59e4d368db897c9089e"></a>
+typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><b>doConversationFn</b> )(<a class="el" href="structT.html">T</a> *, void *)</td></tr>
+<tr class="separator:ad38dbf5239bff59e4d368db897c9089e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30f156c899683f59a13cfb7b4df6fbd6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a30f156c899683f59a13cfb7b4df6fbd6"></a>
 <a class="el" href="structXaddr.html">Xaddr</a>&#160;</td><td class="memItemRight" valign="bottom"><b>G_null_xaddr</b> = {0,0}</td></tr>
 <tr class="separator:a30f156c899683f59a13cfb7b4df6fbd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -213,15 +216,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_r_remove_expectation
 <tr class="memitem:gae8b6f71d3064f488ae5407f3df2c03f9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gae8b6f71d3064f488ae5407f3df2c03f9"></a>
 <a class="el" href="structReceptorAddress.html">ReceptorAddress</a>&#160;</td><td class="memItemRight" valign="bottom"><b>__r_get_addr</b> (<a class="el" href="structT.html">T</a> *addr)</td></tr>
 <tr class="separator:gae8b6f71d3064f488ae5407f3df2c03f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9bf86b246fd28187cf7d434dc2de9a81"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga9bf86b246fd28187cf7d434dc2de9a81">__r_make_signal</a> (<a class="el" href="structReceptorAddress.html">ReceptorAddress</a> from, <a class="el" href="structReceptorAddress.html">ReceptorAddress</a> to, <a class="el" href="structSemanticID.html">Aspect</a> aspect, <a class="el" href="structSemanticID.html">Symbol</a> carrier, <a class="el" href="structT.html">T</a> *signal_contents, <a class="el" href="structUUIDt.html">UUIDt</a> *in_response_to, <a class="el" href="structT.html">T</a> *until, <a class="el" href="structT.html">T</a> *conversation)</td></tr>
+<tr class="memitem:ga9bf86b246fd28187cf7d434dc2de9a81"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga9bf86b246fd28187cf7d434dc2de9a81">__r_make_signal</a> (<a class="el" href="structReceptorAddress.html">ReceptorAddress</a> from, <a class="el" href="structReceptorAddress.html">ReceptorAddress</a> to, <a class="el" href="structSemanticID.html">Aspect</a> aspect, <a class="el" href="structSemanticID.html">Symbol</a> carrier, <a class="el" href="structT.html">T</a> *signal_contents, <a class="el" href="structUUIDt.html">UUIDt</a> *in_response_to, <a class="el" href="structT.html">T</a> *until, <a class="el" href="structT.html">T</a> *cid)</td></tr>
 <tr class="separator:ga9bf86b246fd28187cf7d434dc2de9a81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga5bb9c9f7caa8240b191fe33c0f7ea157"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga5bb9c9f7caa8240b191fe33c0f7ea157"></a>
 <a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>__r_send</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structT.html">T</a> *signal)</td></tr>
 <tr class="separator:ga5bb9c9f7caa8240b191fe33c0f7ea157"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa9abda6d1e05a6b498580619d216efe9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#gaa9abda6d1e05a6b498580619d216efe9">_r_send</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structT.html">T</a> *signal)</td></tr>
 <tr class="separator:gaa9abda6d1e05a6b498580619d216efe9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga560777ec3ceabeb53f89e3da8612a634"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga560777ec3ceabeb53f89e3da8612a634">_r_request</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structT.html">T</a> *signal, <a class="el" href="structSemanticID.html">Symbol</a> response_carrier, <a class="el" href="structT.html">T</a> *code_point, int process_id)</td></tr>
-<tr class="separator:ga560777ec3ceabeb53f89e3da8612a634"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga052851cf4e45fbdc61923ebe9b8cbad7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga052851cf4e45fbdc61923ebe9b8cbad7">_r_request</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structT.html">T</a> *signal, <a class="el" href="structSemanticID.html">Symbol</a> response_carrier, <a class="el" href="structT.html">T</a> *code_point, int process_id, <a class="el" href="structT.html">T</a> *cid)</td></tr>
+<tr class="separator:ga052851cf4e45fbdc61923ebe9b8cbad7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad035def5eff0ddf6e431719950265d4c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gad035def5eff0ddf6e431719950265d4c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>evaluateEndCondition</b> (<a class="el" href="structT.html">T</a> *ec, bool *cleanup, bool *allow)</td></tr>
 <tr class="separator:gad035def5eff0ddf6e431719950265d4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -233,15 +236,33 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>evaluateEndCondition<
 <tr class="memitem:a2161e41fbd4708eee34c8b30b78c2c25"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2161e41fbd4708eee34c8b30b78c2c25"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>__r_deliver_response</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structT.html">T</a> *response_to, <a class="el" href="structT.html">T</a> *signal)</td></tr>
 <tr class="separator:a2161e41fbd4708eee34c8b30b78c2c25"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gacae43ad5063f079cbe8e1cc3ee9ff042"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gacae43ad5063f079cbe8e1cc3ee9ff042"></a>
-<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>_r_add_conversation</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structUUIDt.html">UUIDt</a> id, <a class="el" href="structT.html">T</a> *until, <a class="el" href="structT.html">T</a> *wakeup)</td></tr>
-<tr class="separator:gacae43ad5063f079cbe8e1cc3ee9ff042"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa87c88a830248f650df49af380249098"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaa87c88a830248f650df49af380249098"></a>
-<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>_r_find_conversation</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structUUIDt.html">UUIDt</a> cuuid)</td></tr>
-<tr class="separator:gaa87c88a830248f650df49af380249098"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga20f6a1fe8fac309f809340cb36e45a51"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga20f6a1fe8fac309f809340cb36e45a51"></a>
-<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>__r_cleanup_conversation</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structUUIDt.html">UUIDt</a> cuuid)</td></tr>
-<tr class="separator:ga20f6a1fe8fac309f809340cb36e45a51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga03ae2c586d8a9e6f16aace3226c8cf59"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga03ae2c586d8a9e6f16aace3226c8cf59"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>__cid_equal</b> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structT.html">T</a> *cid1, <a class="el" href="structT.html">T</a> *cid2)</td></tr>
+<tr class="separator:ga03ae2c586d8a9e6f16aace3226c8cf59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac47906ecc47c1ce18f7496fb6f8f2de5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gac47906ecc47c1ce18f7496fb6f8f2de5"></a>
+<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>__cid_new</b> (<a class="el" href="structT.html">T</a> *parent, <a class="el" href="structUUIDt.html">UUIDt</a> *c, <a class="el" href="structT.html">T</a> *topic)</td></tr>
+<tr class="separator:gac47906ecc47c1ce18f7496fb6f8f2de5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaaa89bf25ed00058a3670d54dfe3fc037"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaaa89bf25ed00058a3670d54dfe3fc037"></a>
+<a class="el" href="structUUIDt.html">UUIDt</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>__cid_getUUID</b> (<a class="el" href="structT.html">T</a> *cid)</td></tr>
+<tr class="separator:gaaa89bf25ed00058a3670d54dfe3fc037"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac4db4cb5c52d437c4ff7d5b364edcd93"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gac4db4cb5c52d437c4ff7d5b364edcd93"></a>
+<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>_r_add_conversation</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structUUIDt.html">UUIDt</a> *parent_u, <a class="el" href="structUUIDt.html">UUIDt</a> *u, <a class="el" href="structT.html">T</a> *until, <a class="el" href="structT.html">T</a> *wakeup)</td></tr>
+<tr class="separator:gac4db4cb5c52d437c4ff7d5b364edcd93"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae70c562c6a3bb7c5fd0dee2411e01215"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae70c562c6a3bb7c5fd0dee2411e01215"></a>
+<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>__r_find_conversation</b> (<a class="el" href="structT.html">T</a> *conversations, <a class="el" href="structUUIDt.html">UUIDt</a> *uuid)</td></tr>
+<tr class="separator:ae70c562c6a3bb7c5fd0dee2411e01215"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga092c8c739d4cdc238a172df14a425250"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga092c8c739d4cdc238a172df14a425250"></a>
+<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>_r_find_conversation</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structUUIDt.html">UUIDt</a> *uuid)</td></tr>
+<tr class="separator:ga092c8c739d4cdc238a172df14a425250"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34bda66444b28711e3f8a8a76b8346ca"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a34bda66444b28711e3f8a8a76b8346ca"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>__r_walk_conversation</b> (<a class="el" href="structT.html">T</a> *conversation, doConversationFn fn, void *param)</td></tr>
+<tr class="separator:a34bda66444b28711e3f8a8a76b8346ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af85a170b8ef9ea0dd8a4d4e30d64e1da"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af85a170b8ef9ea0dd8a4d4e30d64e1da"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>_cleaner</b> (<a class="el" href="structT.html">T</a> *cid, void *p)</td></tr>
+<tr class="separator:af85a170b8ef9ea0dd8a4d4e30d64e1da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaea350c69aa48cec7c265f1549c97c11f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaea350c69aa48cec7c265f1549c97c11f"></a>
+<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>__r_cleanup_conversation</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structUUIDt.html">UUIDt</a> *cuuid)</td></tr>
+<tr class="separator:gaea350c69aa48cec7c265f1549c97c11f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7d40f33135ee51640d0d24b8c9e3e046"><td class="memItemLeft" align="right" valign="top">Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga7d40f33135ee51640d0d24b8c9e3e046">_r_deliver</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structT.html">T</a> *signal)</td></tr>
 <tr class="separator:ga7d40f33135ee51640d0d24b8c9e3e046"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6d832bc4fd6b86ba0cb523166711c3a1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga6d832bc4fd6b86ba0cb523166711c3a1"></a>
@@ -276,9 +297,9 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>__td</b> (<a class=
 <tr class="memitem:a0529d5116c62a384c8e049f072bf6a99"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0529d5116c62a384c8e049f072bf6a99"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>__r_listenerCallback</b> (<a class="el" href="structStream.html">Stream</a> *st, void *arg)</td></tr>
 <tr class="separator:a0529d5116c62a384c8e049f072bf6a99"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga382a2ee8dc556dd3b78f33942f36236f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga382a2ee8dc556dd3b78f33942f36236f"></a>
-<a class="el" href="structSocketListener.html">SocketListener</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>_r_addListener</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, int port, <a class="el" href="structReceptorAddress.html">ReceptorAddress</a> to, <a class="el" href="structSemanticID.html">Aspect</a> aspect, <a class="el" href="structSemanticID.html">Symbol</a> carrier, <a class="el" href="structSemanticID.html">Symbol</a> result_symbol)</td></tr>
-<tr class="separator:ga382a2ee8dc556dd3b78f33942f36236f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga10888524ff3203054e8f19ee6efee103"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga10888524ff3203054e8f19ee6efee103"></a>
+<a class="el" href="structSocketListener.html">SocketListener</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>_r_addListener</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, int port, <a class="el" href="structT.html">T</a> *code, <a class="el" href="structT.html">T</a> *params, <a class="el" href="structT.html">T</a> *err_handler, char *delim)</td></tr>
+<tr class="separator:ga10888524ff3203054e8f19ee6efee103"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gae0e3668ad7e7949f3dbc942b75070547"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gae0e3668ad7e7949f3dbc942b75070547"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>_r_addReader</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structStream.html">Stream</a> *st, <a class="el" href="structReceptorAddress.html">ReceptorAddress</a> to, <a class="el" href="structSemanticID.html">Aspect</a> aspect, <a class="el" href="structSemanticID.html">Symbol</a> carrier, <a class="el" href="structSemanticID.html">Symbol</a> result_symbol, bool conversation)</td></tr>
 <tr class="separator:gae0e3668ad7e7949f3dbc942b75070547"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -353,7 +374,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__r_dump_instances</b
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="receptor_8c.html">receptor.c</a></li>
-    <li class="footer">Generated on Sat Apr 16 2016 17:00:50 for ceptr by
+    <li class="footer">Generated on Thu Jul 21 2016 10:13:08 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

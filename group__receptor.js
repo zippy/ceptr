@@ -34,7 +34,7 @@ var group__receptor =
     [ "_r_new", "group__receptor.html#ga9f66f2aaba88463a6e1f238a367a33f9", null ],
     [ "_r_new_instance", "group__receptor.html#gadd08a3c284251a2ec7e03b8f91eddc5c", null ],
     [ "_r_new_receptor_from_package", "group__receptor.html#ga8bee7d388b8fde389b0667bf57684ba0", null ],
-    [ "_r_request", "group__receptor.html#ga560777ec3ceabeb53f89e3da8612a634", null ],
+    [ "_r_request", "group__receptor.html#ga052851cf4e45fbdc61923ebe9b8cbad7", null ],
     [ "_r_send", "group__receptor.html#gaa9abda6d1e05a6b498580619d216efe9", null ],
     [ "_r_serialize", "group__receptor.html#ga3e737841784555574a0d90ad2eff4cc4", null ],
     [ "_r_set_instance", "group__receptor.html#ga28899931aa49371ed6eb6c69b123b5f6", null ],

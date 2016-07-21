@@ -92,7 +92,7 @@ $(document).ready(function(){initNavTree('stream_8c.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -135,6 +135,12 @@ Include dependency graph for stream.c:</div>
 <tr class="memitem:aeefbbafa97642defe3ee6c3080b7d66f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeefbbafa97642defe3ee6c3080b7d66f"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>BACKLOG</b>&#160;&#160;&#160;10</td></tr>
 <tr class="separator:aeefbbafa97642defe3ee6c3080b7d66f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8fa85b26597109e4321dc04611801dab"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8fa85b26597109e4321dc04611801dab"></a>
+char *&#160;</td><td class="memItemRight" valign="bottom"><b>DELIM_LF</b> = &quot;\n&quot;</td></tr>
+<tr class="separator:a8fa85b26597109e4321dc04611801dab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69b2d5a0cd02e466db99c6008f464821"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a69b2d5a0cd02e466db99c6008f464821"></a>
+char *&#160;</td><td class="memItemRight" valign="bottom"><b>DELIM_CRLF</b> = &quot;\r\n&quot;</td></tr>
+<tr class="separator:a69b2d5a0cd02e466db99c6008f464821"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5e7e01e5f9e4782d4dbb200ffdb13424"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5e7e01e5f9e4782d4dbb200ffdb13424"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>__st_realloc_reader</b> (<a class="el" href="structStream.html">Stream</a> *st)</td></tr>
 <tr class="separator:a5e7e01e5f9e4782d4dbb200ffdb13424"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -167,8 +173,8 @@ void *&#160;</td><td class="memItemRight" valign="bottom"><b>get_in_addr</b> (st
 <tr class="memitem:ac8dbd3173bc1bb3a4eaed4fe70842da0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac8dbd3173bc1bb3a4eaed4fe70842da0"></a>
 void *&#160;</td><td class="memItemRight" valign="bottom"><b>__st_socket_stream_accept</b> (void *arg)</td></tr>
 <tr class="separator:ac8dbd3173bc1bb3a4eaed4fe70842da0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad20ee66b188634c439da4f3f790ed7b1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSocketListener.html">SocketListener</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stream_8c.html#ad20ee66b188634c439da4f3f790ed7b1">_st_new_socket_listener</a> (int port, lisenterConnectionCallbackFn fn, void *callback_arg)</td></tr>
-<tr class="separator:ad20ee66b188634c439da4f3f790ed7b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70506777b08d324579fe24112575db68"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSocketListener.html">SocketListener</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stream_8c.html#a70506777b08d324579fe24112575db68">_st_new_socket_listener</a> (int port, lisenterConnectionCallbackFn fn, void *callback_arg, char *delim)</td></tr>
+<tr class="separator:a70506777b08d324579fe24112575db68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb7b03c09131b8d30d20d3c59332218b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stream_8c.html#afb7b03c09131b8d30d20d3c59332218b">_st_close_listener</a> (<a class="el" href="structSocketListener.html">SocketListener</a> *l)</td></tr>
 <tr class="separator:afb7b03c09131b8d30d20d3c59332218b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb3d2ea8ba1e9e81d5804f68715ea529"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stream_8c.html#abb3d2ea8ba1e9e81d5804f68715ea529">_st_start_read</a> (<a class="el" href="structStream.html">Stream</a> *st)</td></tr>
@@ -181,6 +187,8 @@ void *&#160;</td><td class="memItemRight" valign="bottom"><b>__st_socket_stream_
 <tr class="separator:abe8d8f68050d4ac4122baf7976a9e609"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc1200527bf33bc8bf4746174aaae3f2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stream_8c.html#adc1200527bf33bc8bf4746174aaae3f2">_st_write</a> (<a class="el" href="structStream.html">Stream</a> *st, char *buf, size_t len)</td></tr>
 <tr class="separator:adc1200527bf33bc8bf4746174aaae3f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a889eeffa46cc96cfb82015beef74eb9f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stream_8c.html#a889eeffa46cc96cfb82015beef74eb9f">_st_writeln</a> (<a class="el" href="structStream.html">Stream</a> *stream, char *str)</td></tr>
+<tr class="separator:a889eeffa46cc96cfb82015beef74eb9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>stream abstraction implementation </p>
@@ -214,7 +222,7 @@ void *&#160;</td><td class="memItemRight" valign="bottom"><b>__st_socket_stream_
 <p>create a new stream object of the unix file flavor</p>
 <p>if the the stream is a read stream you must pass in a starting buffer size </p>
 
-<p>Definition at line <a class="el" href="stream_8c_source.html#l00272">272</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
+<p>Definition at line <a class="el" href="stream_8c_source.html#l00300">300</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
 
 </div>
 </div>
@@ -232,9 +240,9 @@ void *&#160;</td><td class="memItemRight" valign="bottom"><b>__st_socket_stream_
       </table>
 </div><div class="memdoc">
 <p>scan a stream's buffer for a unit</p>
-<p>currently a unit simply is defined by a new-line char </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000034">Todo:</a></b></dt><dd>allow other delimiters to mark off a unit. </dd></dl>
+<p>currently a unit simply is defined by a new-line char </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000033">Todo:</a></b></dt><dd>allow other delimiters, or even simply a length, to mark off a unit. </dd></dl>
 
-<p>Definition at line <a class="el" href="stream_8c_source.html#l00112">112</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
+<p>Definition at line <a class="el" href="stream_8c_source.html#l00125">125</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
 
 </div>
 </div>
@@ -255,7 +263,7 @@ void *&#160;</td><td class="memItemRight" valign="bottom"><b>__st_socket_stream_
 <p>returns the number of bytes loaded if 0 bytes loaded, st-&gt;err will hold the reason, which is either because socket error condition, or a some other unix error (from errno)</p>
 <p>if the buffer is already full when this function is called, it will attempt to increase the buffer size with a realloc before reading. </p>
 
-<p>Definition at line <a class="el" href="stream_8c_source.html#l00083">83</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
+<p>Definition at line <a class="el" href="stream_8c_source.html#l00095">95</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
 
 </div>
 </div>
@@ -284,7 +292,7 @@ void *&#160;</td><td class="memItemRight" valign="bottom"><b>__st_socket_stream_
 </div><div class="memdoc">
 <p>set up a stream as a reader by allocating a read buffer creating the reader thread, and setting up the conditional mutex that gets called to activate reading in that thread </p>
 
-<p>Definition at line <a class="el" href="stream_8c_source.html#l00248">248</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
+<p>Definition at line <a class="el" href="stream_8c_source.html#l00276">276</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
 
 </div>
 </div>
@@ -304,7 +312,7 @@ void *&#160;</td><td class="memItemRight" valign="bottom"><b>__st_socket_stream_
 <p>reads a unit from a stream</p>
 <p>calls the stream loading function according to stream type when needed to get stream data into the read buffer, and then scans along that buffer setting the StreamHasData flag for each unit found. If the scan returns Partial (i.e. no terminator found yet) and then stream is terminated (indicate by 0 value from the load function) then the partial will be treated as a successfully read unit. </p>
 
-<p>Definition at line <a class="el" href="stream_8c_source.html#l00158">158</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
+<p>Definition at line <a class="el" href="stream_8c_source.html#l00178">178</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
 
 </div>
 </div>
@@ -325,7 +333,7 @@ void *&#160;</td><td class="memItemRight" valign="bottom"><b>__st_socket_stream_
 <p>returns the number of bytes loaded if 0 bytes loaded, st-&gt;err will hold the reason, which is either because and EndOfFile condition, or a some other unix error (from errno)</p>
 <p>if the buffer is already full when this function is called, it will attempt to increase the buffer size with a realloc before reading. </p>
 
-<p>Definition at line <a class="el" href="stream_8c_source.html#l00047">47</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
+<p>Definition at line <a class="el" href="stream_8c_source.html#l00049">49</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
 
 </div>
 </div>
@@ -344,7 +352,7 @@ void *&#160;</td><td class="memItemRight" valign="bottom"><b>__st_socket_stream_
 </div><div class="memdoc">
 <p>close a socket listener </p>
 
-<p>Definition at line <a class="el" href="stream_8c_source.html#l00412">412</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
+<p>Definition at line <a class="el" href="stream_8c_source.html#l00444">444</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
 
 </div>
 </div>
@@ -363,7 +371,7 @@ void *&#160;</td><td class="memItemRight" valign="bottom"><b>__st_socket_stream_
 </div><div class="memdoc">
 <p>mark that data in a stream has been consumed </p>
 
-<p>Definition at line <a class="el" href="stream_8c_source.html#l00438">438</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
+<p>Definition at line <a class="el" href="stream_8c_source.html#l00470">470</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
 
 </div>
 </div>
@@ -382,7 +390,7 @@ void *&#160;</td><td class="memItemRight" valign="bottom"><b>__st_socket_stream_
 </div><div class="memdoc">
 <p>release the resources of a stream object </p>
 
-<p>Definition at line <a class="el" href="stream_8c_source.html#l00475">475</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
+<p>Definition at line <a class="el" href="stream_8c_source.html#l00507">507</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
 
 </div>
 </div>
@@ -402,11 +410,11 @@ void *&#160;</td><td class="memItemRight" valign="bottom"><b>__st_socket_stream_
 <p>kill a stream</p>
 <p>if a reader stream is blocked and waiting, calls _st_start_read so that the reader thread can complete. </p>
 
-<p>Definition at line <a class="el" href="stream_8c_source.html#l00449">449</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
+<p>Definition at line <a class="el" href="stream_8c_source.html#l00481">481</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ad20ee66b188634c439da4f3f790ed7b1"></a>
+<a class="anchor" id="a70506777b08d324579fe24112575db68"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -426,7 +434,13 @@ void *&#160;</td><td class="memItemRight" valign="bottom"><b>__st_socket_stream_
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>callback_arg</em>&#160;</td>
+          <td class="paramname"><em>callback_arg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>delim</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -437,7 +451,7 @@ void *&#160;</td><td class="memItemRight" valign="bottom"><b>__st_socket_stream_
 </div><div class="memdoc">
 <p>create a socket listener on a port which will generate socket streams when connections arrive </p>
 
-<p>Definition at line <a class="el" href="stream_8c_source.html#l00341">341</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
+<p>Definition at line <a class="el" href="stream_8c_source.html#l00372">372</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
 
 </div>
 </div>
@@ -456,7 +470,7 @@ void *&#160;</td><td class="memItemRight" valign="bottom"><b>__st_socket_stream_
 </div><div class="memdoc">
 <p>create a new stream object of the unix file flavor </p>
 
-<p>Definition at line <a class="el" href="stream_8c_source.html#l00286">286</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
+<p>Definition at line <a class="el" href="stream_8c_source.html#l00314">314</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
 
 </div>
 </div>
@@ -475,7 +489,7 @@ void *&#160;</td><td class="memItemRight" valign="bottom"><b>__st_socket_stream_
 </div><div class="memdoc">
 <p>wake the stream reader thread </p>
 
-<p>Definition at line <a class="el" href="stream_8c_source.html#l00423">423</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
+<p>Definition at line <a class="el" href="stream_8c_source.html#l00455">455</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
 
 </div>
 </div>
@@ -510,7 +524,36 @@ void *&#160;</td><td class="memItemRight" valign="bottom"><b>__st_socket_stream_
 </div><div class="memdoc">
 <p>write to a stream </p>
 
-<p>Definition at line <a class="el" href="stream_8c_source.html#l00502">502</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
+<p>Definition at line <a class="el" href="stream_8c_source.html#l00534">534</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a889eeffa46cc96cfb82015beef74eb9f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int _st_writeln </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structStream.html">Stream</a> *&#160;</td>
+          <td class="paramname"><em>stream</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>str</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>write a line to a stream using the delim as the EOL </p>
+
+<p>Definition at line <a class="el" href="stream_8c_source.html#l00563">563</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
 
 </div>
 </div>
@@ -520,7 +563,7 @@ void *&#160;</td><td class="memItemRight" valign="bottom"><b>__st_socket_stream_
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="stream_8c.html">stream.c</a></li>
-    <li class="footer">Generated on Sat Apr 16 2016 17:00:50 for ceptr by
+    <li class="footer">Generated on Thu Jul 21 2016 10:13:08 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

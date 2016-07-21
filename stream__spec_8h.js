@@ -9,5 +9,6 @@ var stream__spec_8h =
     [ "testStreamRead", "stream__spec_8h.html#afb34a34f3c1cecd54faac9d4854bfd2e", null ],
     [ "testStreamScan", "stream__spec_8h.html#a20f7ded1dda747b6adca49e40e86de11", null ],
     [ "testStreamSocket", "stream__spec_8h.html#a0443be2bd6ee37499fc4bb81c94362c5", null ],
-    [ "testStreamWrite", "stream__spec_8h.html#ae560558373e101eb46c6bd60bb7c5771", null ]
+    [ "testStreamWrite", "stream__spec_8h.html#ae560558373e101eb46c6bd60bb7c5771", null ],
+    [ "testStreamWriteLine", "stream__spec_8h.html#a49d9e9e8a95b1bcd8b41460d672119d6", null ]
 ];

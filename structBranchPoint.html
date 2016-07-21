@@ -93,7 +93,7 @@ $(document).ready(function(){initNavTree('structBranchPoint.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -112,20 +112,30 @@ $(document).ready(function(){initNavTree('structBranchPoint.html','');});
 <div class="dynheader">
 Collaboration diagram for BranchPoint:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structBranchPoint__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structBranchPoint__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:a4bd1a748bad2b17bf677398876e319c8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4bd1a748bad2b17bf677398876e319c8"></a>
-<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>walk</b></td></tr>
-<tr class="separator:a4bd1a748bad2b17bf677398876e319c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81cf15b308905e62df4b92779e396751"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a81cf15b308905e62df4b92779e396751"></a>
+<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>walk_root</b></td></tr>
+<tr class="separator:a81cf15b308905e62df4b92779e396751"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc95aeadf91e3f372d0bb4890a171dee"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adc95aeadf91e3f372d0bb4890a171dee"></a>
+int *&#160;</td><td class="memItemRight" valign="bottom"><b>walk_cursor</b></td></tr>
+<tr class="separator:adc95aeadf91e3f372d0bb4890a171dee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9730c9b44b01068da19c6809b73351d6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9730c9b44b01068da19c6809b73351d6"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>walk_len</b></td></tr>
+<tr class="separator:a9730c9b44b01068da19c6809b73351d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3de84ad3907fe0a1b92a7c3084f157e7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3de84ad3907fe0a1b92a7c3084f157e7"></a>
 <a class="el" href="structSState.html">SState</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>s</b></td></tr>
 <tr class="separator:a3de84ad3907fe0a1b92a7c3084f157e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aad08c49aa325227261bf8a5ed399d05a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aad08c49aa325227261bf8a5ed399d05a"></a>
-<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>cursor</b></td></tr>
-<tr class="separator:aad08c49aa325227261bf8a5ed399d05a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8125a7dd5d18d04dd4afc77f9c0f2a1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af8125a7dd5d18d04dd4afc77f9c0f2a1"></a>
+TransitionType&#160;</td><td class="memItemRight" valign="bottom"><b>transition</b></td></tr>
+<tr class="separator:af8125a7dd5d18d04dd4afc77f9c0f2a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76619d656861dee4fed261210a3a83de"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a76619d656861dee4fed261210a3a83de"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>cursor</b> [CURSOR_MAX_DEPTH]</td></tr>
+<tr class="separator:a76619d656861dee4fed261210a3a83de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a91b11af15653cbf6afbcc59eb25afe"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1a91b11af15653cbf6afbcc59eb25afe"></a>
 <a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>match</b></td></tr>
 <tr class="separator:a1a91b11af15653cbf6afbcc59eb25afe"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -135,7 +145,7 @@ int *&#160;</td><td class="memItemRight" valign="bottom"><b>r_path</b></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00417">417</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00520">520</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 </div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li>src/<a class="el" href="semtrex_8c_source.html">semtrex.c</a></li>
 </ul>
@@ -145,7 +155,7 @@ int *&#160;</td><td class="memItemRight" valign="bottom"><b>r_path</b></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="structBranchPoint.html">BranchPoint</a></li>
-    <li class="footer">Generated on Sat Apr 16 2016 17:00:50 for ceptr by
+    <li class="footer">Generated on Thu Jul 21 2016 10:13:08 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

@@ -92,7 +92,7 @@ $(document).ready(function(){initNavTree('ceptr_8c_source.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -110,54 +110,102 @@ $(document).ready(function(){initNavTree('ceptr_8c_source.html','');});
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;ceptr.h&quot;</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="accumulator_8h.html">accumulator.h</a>&quot;</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="shell_8h.html">shell.h</a>&quot;</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keywordtype">int</span> <a class="code" href="ceptr__specs_8c.html#a217dbf8b442f20279ea00b898af96f52">main</a>(<span class="keywordtype">int</span> argc, <span class="keyword">const</span> <span class="keywordtype">char</span> **argv) {</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    def_sys();</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keywordtype">char</span> *dname = <span class="stringliteral">&quot;tmp/shell_vm&quot;</span>;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="comment">//    _a_boot(dname);</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="comment">// set up the vmhost</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    G_vm = <a class="code" href="group__vmhost.html#gab6fbe5683628fb0d62a966316ced938d">_v_new</a>();</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <a class="code" href="group__vmhost.html#ga74a1f49de857467af1613bb0e71b0963">_v_instantiate_builtins</a>(G_vm);</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <a class="code" href="structStream.html">Stream</a> *output_stream, *input_stream;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <a class="code" href="structReceptor.html">Receptor</a> *i_r,*o_r;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    makeShell(G_vm,stdin,stdout,&amp;i_r,&amp;o_r,&amp;input_stream,&amp;output_stream);</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    output_stream-&gt;flags &amp;= ~StreamCloseOnFree; <span class="comment">// don&#39;t close the stdout on free...</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    input_stream-&gt;flags &amp;= ~StreamCloseOnFree; <span class="comment">// don&#39;t close the stdin on free...</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="protocol_8h.html">protocol.h</a>&quot;</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keywordtype">void</span> setupHTTP(<a class="code" href="structVMHost.html">VMHost</a> *v) {</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <a class="code" href="structSemanticID.html">Symbol</a> HTTP;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    _sem_get_by_label(v-&gt;<a class="code" href="structVMHost.html#a0718944e7f9d848d3b96f704ea0f0252">sem</a>,<span class="stringliteral">&quot;HTTP&quot;</span>,&amp;HTTP);</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="comment">// create empty edge receptor</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <a class="code" href="structReceptor.html">Receptor</a> *r = _r_makeStreamEdgeReceptor(v-&gt;<a class="code" href="structVMHost.html#a0718944e7f9d848d3b96f704ea0f0252">sem</a>);</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="comment">// instantiate it in the vmhost</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <a class="code" href="structXaddr.html">Xaddr</a> edge = _v_new_receptor(v,v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,STREAM_EDGE,r);</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="comment">// set up a socket listener that will transcode ascii to HTTP_REQUEST and send all the received requests to an HTTP aspect on the same receptor</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <a class="code" href="structT.html">T</a> *code = <a class="code" href="group__tree.html#ga749a1b6c40a2fd3d36dc0f3e7f6bb6af">_t_parse</a>(r-&gt;<a class="code" href="structReceptor.html#a4bb9ce729b6b85fb99326e9df7b23cbd">sem</a>,0,<span class="stringliteral">&quot;(CONVERSE (SCOPE (ITERATE (PARAMS) (STREAM_ALIVE (PARAM_REF:/2/1)) (INITIATE_PROTOCOL (PNAME:HTTP) (WHICH_INTERACTION:backnforth) (PROTOCOL_BINDINGS (RESOLUTION (WHICH_RECEPTOR (ROLE:HTTP_CLIENT) %)) (RESOLUTION (WHICH_RECEPTOR (ROLE:HTTP_SERVER) %)) (RESOLUTION (WHICH_PROCESS (GOAL:RESPONSE_HANDLER) (ACTUAL_PROCESS:echo2stream))) (RESOLUTION (WHICH_USAGE (USAGE:RESPONSE_HANDLER_PARAMETERS) (ACTUAL_VALUE (PARAM_REF:/2/1)))) (RESOLUTION (WHICH_VALUE (ACTUAL_SYMBOL:HTTP_REQUEST) (ACTUAL_VALUE (STREAM_READ (PARAM_REF:/2/1) (RESULT_SYMBOL:HTTP_REQUEST)))))) ) ) (STREAM_CLOSE (PARAM_REF:/2/1))) (BOOLEAN:1))&quot;</span>,__r_make_addr(0,ACTUAL_RECEPTOR,r-&gt;<a class="code" href="structReceptor.html#afeea3c89b6853516cd4c4d8e9d885174">addr</a>),__r_make_addr(0,ACTUAL_RECEPTOR,r-&gt;<a class="code" href="structReceptor.html#afeea3c89b6853516cd4c4d8e9d885174">addr</a>));</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="comment">// add an error handler that just completes the iteration</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <a class="code" href="structT.html">T</a> *err_handler = <a class="code" href="group__tree.html#ga749a1b6c40a2fd3d36dc0f3e7f6bb6af">_t_parse</a>(r-&gt;<a class="code" href="structReceptor.html#a4bb9ce729b6b85fb99326e9df7b23cbd">sem</a>,0,<span class="stringliteral">&quot;(CONTINUE (POP_PATH (PARAM_REF:/4/1/1) (RESULT_SYMBOL:CONTINUE_LOCATION) (POP_COUNT:5)) (CONTINUE_VALUE (BOOLEAN:0)))&quot;</span>);</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <a class="code" href="structSocketListener.html">SocketListener</a> *l = _r_addListener(r,8888,code,0,err_handler,DELIM_CRLF);</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <a class="code" href="group__vmhost.html#ga53694170e5452b8062ec405e6a9a3f60">_v_activate</a>(v,edge);</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="comment">//debug_enable(D_SIGNALS);</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    _v_start_vmhost(G_vm);</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordflow">while</span> (G_vm-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>-&gt;<a class="code" href="structReceptor.html#a877d31e0f4bd35d7c4a598c6e0416dd5">state</a> == Alive) {</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        sleepms(100);</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    };</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    _v_join_thread(&amp;G_vm-&gt;clock_thread);</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    _v_join_thread(&amp;G_vm-&gt;vm_thread);</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <a class="code" href="structT.html">T</a> *bindings = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(PROTOCOL_BINDINGS);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <a class="code" href="structT.html">T</a> *res = _t_newr(bindings,RESOLUTION);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <a class="code" href="structT.html">T</a> *w = _t_newr(res,WHICH_RECEPTOR);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    _t_news(w,ROLE,HTTP_SERVER);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    __r_make_addr(w,ACTUAL_RECEPTOR,r-&gt;<a class="code" href="structReceptor.html#afeea3c89b6853516cd4c4d8e9d885174">addr</a>);</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    res = _t_newr(bindings,RESOLUTION);</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    w = _t_newr(res,WHICH_PROCESS);</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    _t_news(w,GOAL,HTTP_REQUEST_HANDLER);</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    _t_news(w,ACTUAL_PROCESS,fill_i_am);</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;}</div>
-<div class="ttc" id="structReceptor_html_a877d31e0f4bd35d7c4a598c6e0416dd5"><div class="ttname"><a href="structReceptor.html#a877d31e0f4bd35d7c4a598c6e0416dd5">Receptor::state</a></div><div class="ttdeci">int state</div><div class="ttdoc">state information about the receptor that the vmhost manages </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00249">ceptr_types.h:249</a></div></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <a class="code" href="group__accumulator.html#ga46ff4d16575a21f8c7d02fa754ac6d2f">_o_express_role</a>(r,HTTP,HTTP_SERVER,HTTP_ASPECT,bindings);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(bindings);</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;}</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keywordtype">int</span> main(<span class="keywordtype">int</span> argc, <span class="keyword">const</span> <span class="keywordtype">char</span> **argv) {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    G_sem = def_sys();</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="comment">//char *dname = &quot;tmp/shell_vm&quot;;</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="comment">//_a_boot(dname);</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    debug_enable(D_SIGNALS+D_BOOT+D_STEP+D_STREAM);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="comment">// set up the vmhost</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    G_vm = <a class="code" href="group__vmhost.html#gab6fbe5683628fb0d62a966316ced938d">_v_new</a>();</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <a class="code" href="group__vmhost.html#ga74a1f49de857467af1613bb0e71b0963">_v_instantiate_builtins</a>(G_vm);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <a class="code" href="structStream.html">Stream</a> *output_stream, *input_stream;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <a class="code" href="structReceptor.html">Receptor</a> *i_r,*o_r;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    makeShell(G_vm,stdin,stdout,&amp;i_r,&amp;o_r,&amp;input_stream,&amp;output_stream);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    output_stream-&gt;flags &amp;= ~StreamCloseOnFree; <span class="comment">// don&#39;t close the stdout on free...</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    input_stream-&gt;flags &amp;= ~StreamCloseOnFree; <span class="comment">// don&#39;t close the stdin on free...</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    input_stream-&gt;flags |= StreamLoadByLine;   <span class="comment">// don&#39;t wait for EOF when loading from stdin!!</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    setupHTTP(G_vm);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    _v_start_vmhost(G_vm);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordflow">while</span> (G_vm-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>-&gt;<a class="code" href="structReceptor.html#a877d31e0f4bd35d7c4a598c6e0416dd5">state</a> == Alive) {</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        sleepms(100);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    };</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    _v_join_thread(&amp;G_vm-&gt;clock_thread);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    _v_join_thread(&amp;G_vm-&gt;vm_thread);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    sys_free(G_sem);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;}</div>
+<div class="ttc" id="group__tree_html_ga25dd0f385044ffbcc7c215ea80fa00b4"><div class="ttname"><a href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a></div><div class="ttdeci">T * _t_new_root(Symbol symbol)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00160">tree.c:160</a></div></div>
+<div class="ttc" id="structT_html"><div class="ttname"><a href="structT.html">T</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00114">ceptr_types.h:114</a></div></div>
+<div class="ttc" id="structReceptor_html_a877d31e0f4bd35d7c4a598c6e0416dd5"><div class="ttname"><a href="structReceptor.html#a877d31e0f4bd35d7c4a598c6e0416dd5">Receptor::state</a></div><div class="ttdeci">int state</div><div class="ttdoc">state information about the receptor that the vmhost manages </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00251">ceptr_types.h:251</a></div></div>
 <div class="ttc" id="structStream_html"><div class="ttname"><a href="structStream.html">Stream</a></div><div class="ttdef"><b>Definition:</b> <a href="stream_8h_source.html#l00030">stream.h:30</a></div></div>
 <div class="ttc" id="shell_8h_html"><div class="ttname"><a href="shell_8h.html">shell.h</a></div><div class="ttdoc">command line shell receptor header files </div></div>
-<div class="ttc" id="group__vmhost_html_ga74a1f49de857467af1613bb0e71b0963"><div class="ttname"><a href="group__vmhost.html#ga74a1f49de857467af1613bb0e71b0963">_v_instantiate_builtins</a></div><div class="ttdeci">void _v_instantiate_builtins(VMHost *v)</div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8c_source.html#l00323">vmhost.c:323</a></div></div>
+<div class="ttc" id="group__vmhost_html_ga74a1f49de857467af1613bb0e71b0963"><div class="ttname"><a href="group__vmhost.html#ga74a1f49de857467af1613bb0e71b0963">_v_instantiate_builtins</a></div><div class="ttdeci">void _v_instantiate_builtins(VMHost *v)</div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8c_source.html#l00324">vmhost.c:324</a></div></div>
+<div class="ttc" id="protocol_8h_html"><div class="ttname"><a href="protocol_8h.html">protocol.h</a></div><div class="ttdoc">protocol helpers header file </div></div>
+<div class="ttc" id="structReceptor_html_afeea3c89b6853516cd4c4d8e9d885174"><div class="ttname"><a href="structReceptor.html#afeea3c89b6853516cd4c4d8e9d885174">Receptor::addr</a></div><div class="ttdeci">ReceptorAddress addr</div><div class="ttdoc">the address by which to get messages to this receptor instance </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00241">ceptr_types.h:241</a></div></div>
 <div class="ttc" id="group__vmhost_html_gab6fbe5683628fb0d62a966316ced938d"><div class="ttname"><a href="group__vmhost.html#gab6fbe5683628fb0d62a966316ced938d">_v_new</a></div><div class="ttdeci">VMHost * _v_new()</div><div class="ttdoc">Creates a new virtual machine host. </div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8c_source.html#l00041">vmhost.c:41</a></div></div>
-<div class="ttc" id="structReceptor_html"><div class="ttname"><a href="structReceptor.html">Receptor</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00235">ceptr_types.h:235</a></div></div>
+<div class="ttc" id="group__vmhost_html_ga53694170e5452b8062ec405e6a9a3f60"><div class="ttname"><a href="group__vmhost.html#ga53694170e5452b8062ec405e6a9a3f60">_v_activate</a></div><div class="ttdeci">void _v_activate(VMHost *v, Xaddr x)</div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8c_source.html#l00172">vmhost.c:172</a></div></div>
+<div class="ttc" id="structVMHost_html_a0718944e7f9d848d3b96f704ea0f0252"><div class="ttname"><a href="structVMHost.html#a0718944e7f9d848d3b96f704ea0f0252">VMHost::sem</a></div><div class="ttdeci">SemTable * sem</div><div class="ttdoc">Semantic Table for definitions on this host. </div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8h_source.html#l00044">vmhost.h:44</a></div></div>
+<div class="ttc" id="structVMHost_html"><div class="ttname"><a href="structVMHost.html">VMHost</a></div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8h_source.html#l00040">vmhost.h:40</a></div></div>
+<div class="ttc" id="structReceptor_html_a4bb9ce729b6b85fb99326e9df7b23cbd"><div class="ttname"><a href="structReceptor.html#a4bb9ce729b6b85fb99326e9df7b23cbd">Receptor::sem</a></div><div class="ttdeci">SemTable * sem</div><div class="ttdoc">pointer back to the genotype table for this receptor&#39;s vmhost instance </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00242">ceptr_types.h:242</a></div></div>
+<div class="ttc" id="group__accumulator_html_ga46ff4d16575a21f8c7d02fa754ac6d2f"><div class="ttname"><a href="group__accumulator.html#ga46ff4d16575a21f8c7d02fa754ac6d2f">_o_express_role</a></div><div class="ttdeci">void _o_express_role(Receptor *r, Protocol protocol, Symbol role, Aspect aspect, T *bindings)</div><div class="ttdef"><b>Definition:</b> <a href="protocol_8c_source.html#l00409">protocol.c:409</a></div></div>
+<div class="ttc" id="structReceptor_html"><div class="ttname"><a href="structReceptor.html">Receptor</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00237">ceptr_types.h:237</a></div></div>
+<div class="ttc" id="structXaddr_html"><div class="ttname"><a href="structXaddr.html">Xaddr</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00267">ceptr_types.h:267</a></div></div>
 <div class="ttc" id="structVMHost_html_a218d2e91e129dee7c71e1b06ff533a6e"><div class="ttname"><a href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">VMHost::r</a></div><div class="ttdeci">Receptor * r</div><div class="ttdoc">Receptor data for this vm host. </div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8h_source.html#l00043">vmhost.h:43</a></div></div>
-<div class="ttc" id="ceptr__specs_8c_html_a217dbf8b442f20279ea00b898af96f52"><div class="ttname"><a href="ceptr__specs_8c.html#a217dbf8b442f20279ea00b898af96f52">main</a></div><div class="ttdeci">int main(int argc, const char **argv)</div><div class="ttdef"><b>Definition:</b> <a href="ceptr__specs_8c_source.html#l00037">ceptr_specs.c:37</a></div></div>
+<div class="ttc" id="group__tree_html_ga749a1b6c40a2fd3d36dc0f3e7f6bb6af"><div class="ttname"><a href="group__tree.html#ga749a1b6c40a2fd3d36dc0f3e7f6bb6af">_t_parse</a></div><div class="ttdeci">T * _t_parse(SemTable *sem, T *parent, char *s,...)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00919">tree.c:919</a></div></div>
+<div class="ttc" id="structSocketListener_html"><div class="ttname"><a href="structSocketListener.html">SocketListener</a></div><div class="ttdef"><b>Definition:</b> <a href="stream_8h_source.html#l00060">stream.h:60</a></div></div>
 <div class="ttc" id="accumulator_8h_html"><div class="ttname"><a href="accumulator_8h.html">accumulator.h</a></div><div class="ttdoc">header file for the accumulator </div></div>
+<div class="ttc" id="group__tree_html_ga31e55cdc031e5f12523b998e89080db6"><div class="ttname"><a href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a></div><div class="ttdeci">void _t_free(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00526">tree.c:526</a></div></div>
+<div class="ttc" id="structSemanticID_html"><div class="ttname"><a href="structSemanticID.html">SemanticID</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00022">ceptr_types.h:22</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="ceptr_8c.html">ceptr.c</a></li>
-    <li class="footer">Generated on Sat Apr 16 2016 17:00:50 for ceptr by
+    <li class="footer">Generated on Thu Jul 21 2016 10:13:07 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

@@ -29,7 +29,9 @@ var group__semtrex =
       [ "out", "structSState.html#abe374b3ee42ca3ece234fcaafd4f8330", null ],
       [ "out1", "structSState.html#a6dc01f4330db9f0d04ede6c97d8b1e77", null ],
       [ "transition", "structSState.html#a929d501094346c34a5c14e715b2f133f", null ],
-      [ "type", "structSState.html#ac570e1a6012a5f5e9ac09e2b7a261a3c", null ]
+      [ "transition1", "structSState.html#a18a4c7d75ba80a2a309bf0c0d8b0589c", null ],
+      [ "type", "structSState.html#ac570e1a6012a5f5e9ac09e2b7a261a3c", null ],
+      [ "type_", "structSState.html#ad88a33127c582ed0a304ad790ab34344", null ]
     ] ],
     [ "Semtrex explained", "group__semtrex.html#semtrex", null ],
     [ "_sl", "group__semtrex.html#ga12e70dc3d5fde33655e8731ad3bdd935", null ],
@@ -38,11 +40,6 @@ var group__semtrex =
     [ "SgroupClose", "group__semtrex.html#gab4bc67d51970ec75875c2e9e135c4bf3", null ],
     [ "SgroupOpen", "group__semtrex.html#ga09de53f7ae900c6cb78a22c19af533ff", null ],
     [ "STypeData", "group__semtrex.html#ga8dced199acb1f24ff8f91e409aa6d1cb", null ],
-    [ "FSAStateTransitions", "group__semtrex.html#ga7cce21ba007b15ca5263f3cc5ef15c11", [
-      [ "TransitionNextChild", "group__semtrex.html#gga7cce21ba007b15ca5263f3cc5ef15c11a0304642b1bec42fa532a750ef23e276d", null ],
-      [ "TransitionUp", "group__semtrex.html#gga7cce21ba007b15ca5263f3cc5ef15c11a3cea77279ce8c9665393a6cb9196acd2", null ],
-      [ "TransitionDown", "group__semtrex.html#gga7cce21ba007b15ca5263f3cc5ef15c11a3281a29fe6ed6c41e5b47100af5737e4", null ]
-    ] ],
     [ "__sl", "group__semtrex.html#gabbe3a3359feb3be7f9dd5b7fbbbb74ed", null ],
     [ "_dump_semtrex", "group__semtrex.html#ga0b627873ef75a23e1c24074e9893ee6e", null ],
     [ "_stx_freeFA", "group__semtrex.html#gacbce8db372cc051950f8d684af47c39a", null ],

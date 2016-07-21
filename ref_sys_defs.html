@@ -86,7 +86,7 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -814,14 +814,26 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
    </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
-       <div class="def-name"><a name="LIST_OF_FROM_ADDRESS_AND_TO_ADDRESS_AND_ASPECT_IDENT_AND_CARRIER_AND_ZERO_OR_ONE_OF_CONVERSATION_UUID_AND_ZERO_OR_ONE_OF_LOGICAL_OR_OF_END_CONDITIONS_AND_IN_RESPONSE_TO_UUID"></a>LIST-OF-FROM-ADDRESS-AND-TO-ADDRESS-AND-ASPECT-IDENT-AND-CARRIER-AND-ZERO-OR-ONE-OF-CONVERSATION-UUID-AND-ZERO-OR-ONE-OF-LOGICAL-OR-OF-END-CONDITIONS-AND-IN-RESPONSE-TO-UUID</div>
-       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#FROM_ADDRESS">FROM_ADDRESS</a>, <a href="ref_sys_symbols.html#TO_ADDRESS">TO_ADDRESS</a>, <a href="ref_sys_symbols.html#ASPECT_IDENT">ASPECT_IDENT</a>, <a href="ref_sys_symbols.html#CARRIER">CARRIER</a>, ?(<a href="ref_sys_symbols.html#CONVERSATION_UUID">CONVERSATION_UUID</a>), ?(OR(<a href="ref_sys_symbols.html#END_CONDITIONS">END_CONDITIONS</a>, <a href="ref_sys_symbols.html#IN_RESPONSE_TO_UUID">IN_RESPONSE_TO_UUID</a>)))</div>
+       <div class="def-name"><a name="LIST_OF_CONVERSATION_UUID"></a>LIST-OF-CONVERSATION-UUID</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#CONVERSATION_UUID">CONVERSATION_UUID</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="CONVERSATION_IDENT"></a>CONVERSATION_IDENT</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_CONVERSATION_UUID">LIST-OF-CONVERSATION-UUID</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="LIST_OF_FROM_ADDRESS_AND_TO_ADDRESS_AND_ASPECT_IDENT_AND_CARRIER_AND_ZERO_OR_ONE_OF_CONVERSATION_IDENT_AND_ZERO_OR_ONE_OF_LOGICAL_OR_OF_END_CONDITIONS_AND_IN_RESPONSE_TO_UUID"></a>LIST-OF-FROM-ADDRESS-AND-TO-ADDRESS-AND-ASPECT-IDENT-AND-CARRIER-AND-ZERO-OR-ONE-OF-CONVERSATION-IDENT-AND-ZERO-OR-ONE-OF-LOGICAL-OR-OF-END-CONDITIONS-AND-IN-RESPONSE-TO-UUID</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#FROM_ADDRESS">FROM_ADDRESS</a>, <a href="ref_sys_symbols.html#TO_ADDRESS">TO_ADDRESS</a>, <a href="ref_sys_symbols.html#ASPECT_IDENT">ASPECT_IDENT</a>, <a href="ref_sys_symbols.html#CARRIER">CARRIER</a>, ?(<a href="ref_sys_symbols.html#CONVERSATION_IDENT">CONVERSATION_IDENT</a>), ?(OR(<a href="ref_sys_symbols.html#END_CONDITIONS">END_CONDITIONS</a>, <a href="ref_sys_symbols.html#IN_RESPONSE_TO_UUID">IN_RESPONSE_TO_UUID</a>)))</div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="HEAD"></a>HEAD</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_FROM_ADDRESS_AND_TO_ADDRESS_AND_ASPECT_IDENT_AND_CARRIER_AND_ZERO_OR_ONE_OF_CONVERSATION_UUID_AND_ZERO_OR_ONE_OF_LOGICAL_OR_OF_END_CONDITIONS_AND_IN_RESPONSE_TO_UUID">LIST-OF-FROM-ADDRESS-AND-TO-ADDRESS-AND-ASPECT-IDENT-AND-CARRIER-AND-ZERO-OR-ONE-OF-CONVERSATION-UUID-AND-ZERO-OR-ONE-OF-LOGICAL-OR-OF-END-CONDITIONS-AND-IN-RESPONSE-TO-UUID</a></div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_FROM_ADDRESS_AND_TO_ADDRESS_AND_ASPECT_IDENT_AND_CARRIER_AND_ZERO_OR_ONE_OF_CONVERSATION_IDENT_AND_ZERO_OR_ONE_OF_LOGICAL_OR_OF_END_CONDITIONS_AND_IN_RESPONSE_TO_UUID">LIST-OF-FROM-ADDRESS-AND-TO-ADDRESS-AND-ASPECT-IDENT-AND-CARRIER-AND-ZERO-OR-ONE-OF-CONVERSATION-IDENT-AND-ZERO-OR-ONE-OF-LOGICAL-OR-OF-END-CONDITIONS-AND-IN-RESPONSE-TO-UUID</a></div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-structure">
@@ -886,14 +898,14 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
    </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
-       <div class="def-name"><a name="LIST_OF_SIGNAL_UUID_AND_CARRIER_AND_WAKEUP_REFERENCE_AND_END_CONDITIONS"></a>LIST-OF-SIGNAL-UUID-AND-CARRIER-AND-WAKEUP-REFERENCE-AND-END-CONDITIONS</div>
-       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#SIGNAL_UUID">SIGNAL_UUID</a>, <a href="ref_sys_symbols.html#CARRIER">CARRIER</a>, <a href="ref_sys_symbols.html#WAKEUP_REFERENCE">WAKEUP_REFERENCE</a>, <a href="ref_sys_symbols.html#END_CONDITIONS">END_CONDITIONS</a>)</div>
+       <div class="def-name"><a name="LIST_OF_SIGNAL_UUID_AND_CARRIER_AND_WAKEUP_REFERENCE_AND_END_CONDITIONS_AND_ZERO_OR_ONE_OF_CONVERSATION_IDENT"></a>LIST-OF-SIGNAL-UUID-AND-CARRIER-AND-WAKEUP-REFERENCE-AND-END-CONDITIONS-AND-ZERO-OR-ONE-OF-CONVERSATION-IDENT</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#SIGNAL_UUID">SIGNAL_UUID</a>, <a href="ref_sys_symbols.html#CARRIER">CARRIER</a>, <a href="ref_sys_symbols.html#WAKEUP_REFERENCE">WAKEUP_REFERENCE</a>, <a href="ref_sys_symbols.html#END_CONDITIONS">END_CONDITIONS</a>, ?(<a href="ref_sys_symbols.html#CONVERSATION_IDENT">CONVERSATION_IDENT</a>))</div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="PENDING_RESPONSE"></a>PENDING_RESPONSE</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_SIGNAL_UUID_AND_CARRIER_AND_WAKEUP_REFERENCE_AND_END_CONDITIONS">LIST-OF-SIGNAL-UUID-AND-CARRIER-AND-WAKEUP-REFERENCE-AND-END-CONDITIONS</a></div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_SIGNAL_UUID_AND_CARRIER_AND_WAKEUP_REFERENCE_AND_END_CONDITIONS_AND_ZERO_OR_ONE_OF_CONVERSATION_IDENT">LIST-OF-SIGNAL-UUID-AND-CARRIER-AND-WAKEUP-REFERENCE-AND-END-CONDITIONS-AND-ZERO-OR-ONE-OF-CONVERSATION-IDENT</a></div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-structure">
@@ -935,7 +947,7 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="SEMANTIC_MAP"></a>SEMANTIC_MAP</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_ONE_OR_MORE_OF_SEMANTIC_LINK">LIST-OF-ONE-OR-MORE-OF-SEMANTIC-LINK</a></div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SEMANTIC_LINKS">SEMANTIC-LINKS</a></div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-structure">
@@ -956,16 +968,10 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
        <div class="def-struc-def">*(<a href="ref_sys_symbols.html#EXPECTATION">EXPECTATION</a>)</div>
        <div class="def-comment"></div>
    </div>
-   <div class="def-item def-structure">
-       <div class="def-type">Structure:</div>
-       <div class="def-name"><a name="LIST_OF_CONVERSATION_UUID_AND_END_CONDITIONS_AND_ZERO_OR_ONE_OF_WAKEUP_REFERENCE"></a>LIST-OF-CONVERSATION-UUID-AND-END-CONDITIONS-AND-ZERO-OR-ONE-OF-WAKEUP-REFERENCE</div>
-       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#CONVERSATION_UUID">CONVERSATION_UUID</a>, <a href="ref_sys_symbols.html#END_CONDITIONS">END_CONDITIONS</a>, ?(<a href="ref_sys_symbols.html#WAKEUP_REFERENCE">WAKEUP_REFERENCE</a>))</div>
-       <div class="def-comment"></div>
-   </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="CONVERSATION"></a>CONVERSATION</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_CONVERSATION_UUID_AND_END_CONDITIONS_AND_ZERO_OR_ONE_OF_WAKEUP_REFERENCE">LIST-OF-CONVERSATION-UUID-AND-END-CONDITIONS-AND-ZERO-OR-ONE-OF-WAKEUP-REFERENCE</a></div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_CONVERSATION_UUID_AND_END_CONDITIONS_AND_CONVERSATIONS_AND_ZERO_OR_ONE_OF_WAKEUP_REFERENCE">LIST-OF-CONVERSATION-UUID-AND-END-CONDITIONS-AND-CONVERSATIONS-AND-ZERO-OR-ONE-OF-WAKEUP-REFERENCE</a></div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-structure">
@@ -980,23 +986,29 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
        <div class="def-sym-def"><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_CONVERSATION">ZERO-OR-MORE-OF-CONVERSATION</a></div>
        <div class="def-comment"></div>
    </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="LIST_OF_CONVERSATION_UUID_AND_END_CONDITIONS_AND_CONVERSATIONS_AND_ZERO_OR_ONE_OF_WAKEUP_REFERENCE"></a>LIST-OF-CONVERSATION-UUID-AND-END-CONDITIONS-AND-CONVERSATIONS-AND-ZERO-OR-ONE-OF-WAKEUP-REFERENCE</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#CONVERSATION_UUID">CONVERSATION_UUID</a>, <a href="ref_sys_symbols.html#END_CONDITIONS">END_CONDITIONS</a>, <a href="ref_sys_symbols.html#CONVERSATIONS">CONVERSATIONS</a>, ?(<a href="ref_sys_symbols.html#WAKEUP_REFERENCE">WAKEUP_REFERENCE</a>))</div>
+       <div class="def-comment"></div>
+   </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="TRANSCODER"></a>TRANSCODER</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
-       <div class="def-comment"></div>
+       <div class="def-comment">   should be an enum value for process type</div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="OPERATOR"></a>OPERATOR</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
-       <div class="def-comment"></div>
+       <div class="def-comment">     should be an enum value for process type</div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="VALIDATOR"></a>VALIDATOR</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
-       <div class="def-comment"></div>
+       <div class="def-comment">    should be an enum value for process type</div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
@@ -1174,8 +1186,14 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
    </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
-       <div class="def-name"><a name="LIST_OF_ONE_OR_MORE_OF_SEMANTIC_LINK"></a>LIST-OF-ONE-OR-MORE-OF-SEMANTIC-LINK</div>
+       <div class="def-name"><a name="SEMANTIC_LINKS"></a>SEMANTIC-LINKS</div>
        <div class="def-struc-def">SEQ(+(<a href="ref_sys_symbols.html#SEMANTIC_LINK">SEMANTIC_LINK</a>))</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="PROTOCOL_DEFAULTS"></a>PROTOCOL_DEFAULTS</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SEMANTIC_LINKS">SEMANTIC-LINKS</a></div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
@@ -1448,6 +1466,12 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
        <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
        <div class="def-comment">   the symbols stored in an WHICH_INTERACTION must be limited to those that are uses of the INTERACTION structure</div>
    </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="PROTOCOL_DEFINITION"></a>PROTOCOL_DEFINITION</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_PROTOCOL_LABEL_AND_PROTOCOL_SEMANTICS_AND_ZERO_OR_MORE_OF_PROTOCOL_DEFAULTS_AND_ZERO_OR_MORE_OF_STRUCTURE_OF_INTERACTION_AND_ZERO_OR_MORE_OF_INCLUSION">LIST-OF-PROTOCOL-LABEL-AND-PROTOCOL-SEMANTICS-AND-ZERO-OR-MORE-OF-PROTOCOL-DEFAULTS-AND-ZERO-OR-MORE-OF-STRUCTURE-OF-INTERACTION-AND-ZERO-OR-MORE-OF-INCLUSION</a></div>
+       <div class="def-comment"></div>
+   </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
        <div class="def-name"><a name="ZERO_OR_MORE_OF_PROTOCOL_DEFINITION"></a>ZERO-OR-MORE-OF-PROTOCOL-DEFINITION</div>
@@ -1482,7 +1506,7 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="ACTUAL_VALUE"></a>ACTUAL_VALUE</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></div>
-       <div class="def-comment">  this really can't be anything, rather only something that's a SYMBOL semantic type</div>
+       <div class="def-comment">  this really can't be an anything, rather only something that's a SYMBOL semantic type</div>
    </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
@@ -1648,14 +1672,8 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
    </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
-       <div class="def-name"><a name="LIST_OF_PROTOCOL_LABEL_AND_PROTOCOL_SEMANTICS_AND_ZERO_OR_MORE_OF_STRUCTURE_OF_INTERACTION_AND_ZERO_OR_MORE_OF_INCLUSION"></a>LIST-OF-PROTOCOL-LABEL-AND-PROTOCOL-SEMANTICS-AND-ZERO-OR-MORE-OF-STRUCTURE-OF-INTERACTION-AND-ZERO-OR-MORE-OF-INCLUSION</div>
-       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#PROTOCOL_LABEL">PROTOCOL_LABEL</a>, <a href="ref_sys_symbols.html#PROTOCOL_SEMANTICS">PROTOCOL_SEMANTICS</a>, *(%<a href="ref_sys_structures.html#INTERACTION">INTERACTION</a>), *(<a href="ref_sys_symbols.html#INCLUSION">INCLUSION</a>))</div>
-       <div class="def-comment"></div>
-   </div>
-   <div class="def-item def-symbol">
-       <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="PROTOCOL_DEFINITION"></a>PROTOCOL_DEFINITION</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_PROTOCOL_LABEL_AND_PROTOCOL_SEMANTICS_AND_ZERO_OR_MORE_OF_STRUCTURE_OF_INTERACTION_AND_ZERO_OR_MORE_OF_INCLUSION">LIST-OF-PROTOCOL-LABEL-AND-PROTOCOL-SEMANTICS-AND-ZERO-OR-MORE-OF-STRUCTURE-OF-INTERACTION-AND-ZERO-OR-MORE-OF-INCLUSION</a></div>
+       <div class="def-name"><a name="LIST_OF_PROTOCOL_LABEL_AND_PROTOCOL_SEMANTICS_AND_ZERO_OR_MORE_OF_PROTOCOL_DEFAULTS_AND_ZERO_OR_MORE_OF_STRUCTURE_OF_INTERACTION_AND_ZERO_OR_MORE_OF_INCLUSION"></a>LIST-OF-PROTOCOL-LABEL-AND-PROTOCOL-SEMANTICS-AND-ZERO-OR-MORE-OF-PROTOCOL-DEFAULTS-AND-ZERO-OR-MORE-OF-STRUCTURE-OF-INTERACTION-AND-ZERO-OR-MORE-OF-INCLUSION</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#PROTOCOL_LABEL">PROTOCOL_LABEL</a>, <a href="ref_sys_symbols.html#PROTOCOL_SEMANTICS">PROTOCOL_SEMANTICS</a>, *(<a href="ref_sys_symbols.html#PROTOCOL_DEFAULTS">PROTOCOL_DEFAULTS</a>), *(%<a href="ref_sys_structures.html#INTERACTION">INTERACTION</a>), *(<a href="ref_sys_symbols.html#INCLUSION">INCLUSION</a>))</div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-structure">
@@ -1924,7 +1942,7 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="DATE_DIVIDER"></a>DATE_DIVIDER</div>
+       <div class="def-name"><a name="DELIMITER"></a>DELIMITER</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
        <div class="def-comment"></div>
    </div>
@@ -1936,14 +1954,32 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SHORT_TIME"></a>SHORT_TIME</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="ERROR_LOCATION"></a>ERROR_LOCATION</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
-       <div class="def-name"><a name="REDUCTION_ERROR"></a>REDUCTION_ERROR</div>
-       <div class="def-struc-def"><a href="ref_sys_symbols.html#ERROR_LOCATION">ERROR_LOCATION</a></div>
+       <div class="def-name"><a name="LIST_OF_ANY_SYMBOL"></a>LIST-OF-ANY-SYMBOL</div>
+       <div class="def-struc-def">SEQ(!)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="ERROR_DATA"></a>ERROR_DATA</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_ANY_SYMBOL">LIST-OF-ANY-SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="REDUCTION_ERROR"></a>REDUCTION-ERROR</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#ERROR_LOCATION">ERROR_LOCATION</a>, <a href="ref_sys_symbols.html#ERROR_DATA">ERROR_DATA</a>)</div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
@@ -2986,6 +3022,13 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
        <div class="def-sig-out">to(SYMBOL:<a href="ref_sys_symbols.html#US_SHORT_DATE">US_SHORT_DATE</a>)</div>
        <div class="def-comment"><i>date to us short format date transcoder</i></div>
    </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="time2shortime"></a>time2shortime</div>
+       <div class="def-sig-in"><li>from(STRUCTURE:<a href="ref_sys_symbols.html#TIME">TIME</a>)</li></div>
+       <div class="def-sig-out">to(SYMBOL:<a href="ref_sys_symbols.html#SHORT_TIME">SHORT_TIME</a>)</div>
+       <div class="def-comment"><i>time to short format date transcoder</i></div>
+   </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="REQUESTER"></a>REQUESTER</div>
@@ -3000,13 +3043,13 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="REQUEST_DATA"></a>REQUEST_DATA</div>
+       <div class="def-name"><a name="REQUEST_TYPE"></a>REQUEST_TYPE</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="RESPONSE_DATA"></a>RESPONSE_DATA</div>
+       <div class="def-name"><a name="RESPONSE_TYPE"></a>RESPONSE_TYPE</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
        <div class="def-comment"></div>
    </div>
@@ -3018,14 +3061,20 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="REQUEST_HANDLER"></a>REQUEST_HANDLER</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#PROCESS">PROCESS</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="RESPONSE_HANDLER"></a>RESPONSE_HANDLER</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#PROCESS">PROCESS</a></div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="REQUEST_HANDLER"></a>REQUEST_HANDLER</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#PROCESS">PROCESS</a></div>
+       <div class="def-name"><a name="RESPONSE_HANDLER_PARAMETERS"></a>RESPONSE_HANDLER_PARAMETERS</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
@@ -3424,16 +3473,6 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
    </div>
 </div>
 <div class="defs-context">
-   <h4>STREAM_EDGE_CONTEXT</h4>
-   <div class="def-item def-process">
-       <div class="def-type">Process:</div>
-       <div class="def-name"><a name="echo2stream"></a>echo2stream</div>
-       <div class="def-sig-in"><li>stream(SYMBOL:<a href="ref_sys_symbols.html#EDGE_STREAM">EDGE_STREAM</a>)</li><li>value(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</li></div>
-       <div class="def-sig-out">result(SYMBOL:<a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a>)</div>
-       <div class="def-comment"><i>echo input to stream</i></div>
-   </div>
-</div>
-<div class="defs-context">
    <h4>INTERNET_CONTEXT</h4>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
@@ -3673,42 +3712,6 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="HTTP_REQUEST_METHOD"></a>HTTP_REQUEST_METHOD</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
-       <div class="def-comment"></div>
-   </div>
-   <div class="def-item def-symbol">
-       <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="HTTP_REQUEST_PATH"></a>HTTP_REQUEST_PATH</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#URI">URI</a></div>
-       <div class="def-comment"></div>
-   </div>
-   <div class="def-item def-symbol">
-       <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="HTTP_REQUEST_VERSION"></a>HTTP_REQUEST_VERSION</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#VERSION">VERSION</a></div>
-       <div class="def-comment"></div>
-   </div>
-   <div class="def-item def-structure">
-       <div class="def-type">Structure:</div>
-       <div class="def-name"><a name="HTTP_REQUEST_V09"></a>HTTP-REQUEST-V09</div>
-       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#HTTP_REQUEST_VERSION">HTTP_REQUEST_VERSION</a>, <a href="ref_sys_symbols.html#HTTP_REQUEST_METHOD">HTTP_REQUEST_METHOD</a>, <a href="ref_sys_symbols.html#HTTP_REQUEST_PATH">HTTP_REQUEST_PATH</a>)</div>
-       <div class="def-comment"></div>
-   </div>
-   <div class="def-item def-symbol">
-       <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="HTTP_REQUEST"></a>HTTP_REQUEST</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#HTTP_REQUEST_V09">HTTP-REQUEST-V09</a></div>
-       <div class="def-comment"></div>
-   </div>
-   <div class="def-item def-symbol">
-       <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="HTTP_REQUEST_HOST"></a>HTTP_REQUEST_HOST</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
-       <div class="def-comment"></div>
-   </div>
-   <div class="def-item def-symbol">
-       <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="HEADER_KEY"></a>HEADER_KEY</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
        <div class="def-comment"></div>
@@ -3769,6 +3772,90 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="HTTP_REQUEST_HOST"></a>HTTP_REQUEST_HOST</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-comment">  @todo, should actually be a "domain-name address:port"</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="HTTP_REQUEST_USER_AGENT"></a>HTTP_REQUEST_USER_AGENT</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="HTTP_REQUEST_METHOD"></a>HTTP_REQUEST_METHOD</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="HTTP_REQUEST_PATH"></a>HTTP_REQUEST_PATH</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#URI">URI</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="HTTP_REQUEST_VERSION"></a>HTTP_REQUEST_VERSION</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#VERSION">VERSION</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="LIST_OF_HTTP_REQUEST_VERSION_AND_HTTP_REQUEST_METHOD_AND_HTTP_REQUEST_PATH"></a>LIST-OF-HTTP-REQUEST-VERSION-AND-HTTP-REQUEST-METHOD-AND-HTTP-REQUEST-PATH</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#HTTP_REQUEST_VERSION">HTTP_REQUEST_VERSION</a>, <a href="ref_sys_symbols.html#HTTP_REQUEST_METHOD">HTTP_REQUEST_METHOD</a>, <a href="ref_sys_symbols.html#HTTP_REQUEST_PATH">HTTP_REQUEST_PATH</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="HTTP_REQUEST_LINE"></a>HTTP_REQUEST_LINE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_HTTP_REQUEST_VERSION_AND_HTTP_REQUEST_METHOD_AND_HTTP_REQUEST_PATH">LIST-OF-HTTP-REQUEST-VERSION-AND-HTTP-REQUEST-METHOD-AND-HTTP-REQUEST-PATH</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="HTTP_REQUEST_BODY"></a>HTTP_REQUEST_BODY</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="LOGICAL_OR_OF_HTTP_REQUEST_HOST_AND_HTTP_REQUEST_USER_AGENT"></a>LOGICAL-OR-OF-HTTP-REQUEST-HOST-AND-HTTP-REQUEST-USER-AGENT</div>
+       <div class="def-struc-def">OR(<a href="ref_sys_symbols.html#HTTP_REQUEST_HOST">HTTP_REQUEST_HOST</a>, <a href="ref_sys_symbols.html#HTTP_REQUEST_USER_AGENT">HTTP_REQUEST_USER_AGENT</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="HTTP_REQUEST_HEADER"></a>HTTP_REQUEST_HEADER</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LOGICAL_OR_OF_HTTP_REQUEST_HOST_AND_HTTP_REQUEST_USER_AGENT">LOGICAL-OR-OF-HTTP-REQUEST-HOST-AND-HTTP-REQUEST-USER-AGENT</a></div>
+       <div class="def-comment">  @todo plus a bunch more see rfc2616 section 5.3</div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="ZERO_OR_MORE_OF_LOGICAL_OR_OF_HTTP_REQUEST_HEADER_AND_HTTP_GENERAL_HEADER_AND_HTTP_ENTITY_HEADER"></a>ZERO-OR-MORE-OF-LOGICAL-OR-OF-HTTP-REQUEST-HEADER-AND-HTTP-GENERAL-HEADER-AND-HTTP-ENTITY-HEADER</div>
+       <div class="def-struc-def">*(OR(<a href="ref_sys_symbols.html#HTTP_REQUEST_HEADER">HTTP_REQUEST_HEADER</a>, <a href="ref_sys_symbols.html#HTTP_GENERAL_HEADER">HTTP_GENERAL_HEADER</a>, <a href="ref_sys_symbols.html#HTTP_ENTITY_HEADER">HTTP_ENTITY_HEADER</a>))</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="HTTP_REQUEST_HEADERS"></a>HTTP_REQUEST_HEADERS</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_LOGICAL_OR_OF_HTTP_REQUEST_HEADER_AND_HTTP_GENERAL_HEADER_AND_HTTP_ENTITY_HEADER">ZERO-OR-MORE-OF-LOGICAL-OR-OF-HTTP-REQUEST-HEADER-AND-HTTP-GENERAL-HEADER-AND-HTTP-ENTITY-HEADER</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="LIST_OF_HTTP_REQUEST_LINE_AND_HTTP_REQUEST_HEADERS_AND_HTTP_REQUEST_BODY"></a>LIST-OF-HTTP-REQUEST-LINE-AND-HTTP-REQUEST-HEADERS-AND-HTTP-REQUEST-BODY</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#HTTP_REQUEST_LINE">HTTP_REQUEST_LINE</a>, <a href="ref_sys_symbols.html#HTTP_REQUEST_HEADERS">HTTP_REQUEST_HEADERS</a>, <a href="ref_sys_symbols.html#HTTP_REQUEST_BODY">HTTP_REQUEST_BODY</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="HTTP_REQUEST"></a>HTTP_REQUEST</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_HTTP_REQUEST_LINE_AND_HTTP_REQUEST_HEADERS_AND_HTTP_REQUEST_BODY">LIST-OF-HTTP-REQUEST-LINE-AND-HTTP-REQUEST-HEADERS-AND-HTTP-REQUEST-BODY</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="HTTP_RESPONSE_BODY"></a>HTTP_RESPONSE_BODY</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></div>
        <div class="def-comment"></div>
@@ -3814,6 +3901,13 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
        <div class="def-name"><a name="HTTP_RESPONSE"></a>HTTP_RESPONSE</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_HTTP_RESPONSE_STATUS_AND_HTTP_HEADERS_AND_HTTP_RESPONSE_BODY">LIST-OF-HTTP-RESPONSE-STATUS-AND-HTTP-HEADERS-AND-HTTP-RESPONSE-BODY</a></div>
        <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name=" http_response_status_2_ascii_str"></a> http_response_status_2_ascii_str</div>
+       <div class="def-sig-in"><li>input(SYMBOL:<a href="ref_sys_symbols.html#HTTP_RESPONSE_STATUS">HTTP_RESPONSE_STATUS</a>)</li></div>
+       <div class="def-sig-out">output(SYMBOL:<a href="ref_sys_symbols.html#ASCII_STR">ASCII_STR</a>)</div>
+       <div class="def-comment"><i>http response status transcoder</i></div>
    </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
@@ -4060,7 +4154,7 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="HTTP_RESPONSE_HANDLER"></a>HTTP_RESPONSE_HANDLER</div>
+       <div class="def-name"><a name="HTTP_REQUEST_HANDLER"></a>HTTP_REQUEST_HANDLER</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#PROCESS">PROCESS</a></div>
        <div class="def-comment"></div>
    </div>
@@ -4071,18 +4165,12 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
        <div class="def-sig-out">response(SYMBOL:<a href="ref_sys_symbols.html#HTTP_RESPONSE">HTTP_RESPONSE</a>)</div>
        <div class="def-comment"><i>build an HTTP_RESPONSE</i></div>
    </div>
-   <div class="def-item def-protocol">
-       <div class="def-type">Protocol:</div>
-       <div class="def-name"><a name="HTTP"></a>HTTP</div>
-       <div class="def-protocol-def">http_def</div>
-       <div class="def-comment"></div>
-   </div>
  </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Apr 16 2016 17:00:50 for ceptr by
+    <li class="footer">Generated on Thu Jul 21 2016 10:13:08 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

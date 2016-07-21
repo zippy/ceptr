@@ -23,6 +23,8 @@ var debug_8h =
     [ "D_TRANSCODE", "debug_8h.html#a06fc87d81c62e9abb8790b6e5713c55babafbee8d42e5d5d628ba5b4c27f4fb87", null ],
     [ "D_STEP", "debug_8h.html#a06fc87d81c62e9abb8790b6e5713c55bad199b212ac586c063749c30faa234a6b", null ],
     [ "D_SOCKET", "debug_8h.html#a06fc87d81c62e9abb8790b6e5713c55babc825e0edf03b149faeb118816311f48", null ],
+    [ "D_BOOT", "debug_8h.html#a06fc87d81c62e9abb8790b6e5713c55babb5d745ecfb45a2c4fa105c5874527e1", null ],
+    [ "D_STX_BUILD", "debug_8h.html#a06fc87d81c62e9abb8790b6e5713c55bac9d9668dcd0a9b4aa4701732718df0ab", null ],
     [ "debug_disable", "debug_8h.html#a3a0352a9ab7c27e5d274a94991394772", null ],
     [ "debug_enable", "debug_8h.html#a6c1711ac8962ae51ef71bb0f3a8eed29", null ],
     [ "dtypestr", "debug_8h.html#a60a7ed7da732b6081d9dec4102fdc863", null ],

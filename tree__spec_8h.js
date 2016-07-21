@@ -24,6 +24,7 @@ var tree__spec_8h =
     [ "testTreePathGetPath", "tree__spec_8h.html#a14b70ecd723111bbe4d10b3d3e36600a", null ],
     [ "testTreePathGetSurface", "tree__spec_8h.html#ad27e0ca8287fd12eb5823170bb306c90", null ],
     [ "testTreePathSprint", "tree__spec_8h.html#a3473a2e241b0849ddfca791ffc713857", null ],
+    [ "testTreePathWalk", "tree__spec_8h.html#a75160131b94774c8e30b46db43b59dcb", null ],
     [ "testTreeRealloc", "tree__spec_8h.html#a5ab4f95726a96eba403ad1a978d075d6", null ],
     [ "testTreeReplace", "tree__spec_8h.html#a40c176590d4f13d3110238f7c50824fb", null ],
     [ "testTreeScape", "tree__spec_8h.html#a6796662fa58d1f646024d0ca537cb8cb", null ],

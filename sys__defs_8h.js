@@ -21,6 +21,8 @@ var sys__defs_8h =
     [ "sTs", "sys__defs_8h.html#a57077e2388ce61c796b3cea81b933f9b", null ],
     [ "sY", "sys__defs_8h.html#a8e9dbbf194fdfd3e577a672734fbed37", null ],
     [ "sYs", "sys__defs_8h.html#a29f55129e7ae84352824fbf74d80f09b", null ],
+    [ "load_context", "sys__defs_8h.html#a89a758dec4e3efcc5886503600397f95", null ],
+    [ "load_contexts", "sys__defs_8h.html#a5dcc56a4b1c855ef1920c24c52c77a63", null ],
     [ "sT_", "sys__defs_8h.html#a82eca0dc2c333607b1e0e79ee893ef8a", null ],
     [ "G_ctx", "sys__defs_8h.html#aac33201af5a06542fc8c51895b4c26b7", null ],
     [ "G_label", "sys__defs_8h.html#af2802562ba52d6692f72a674e350db08", null ],

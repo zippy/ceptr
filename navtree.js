@@ -23,8 +23,6 @@ var NAVTREE =
         [ "Functions", "globals_func.html", "globals_func" ],
         [ "Variables", "globals_vars.html", null ],
         [ "Typedefs", "globals_type.html", null ],
-        [ "Enumerations", "globals_enum.html", null ],
-        [ "Enumerator", "globals_eval.html", null ],
         [ "Macros", "globals_defs.html", null ]
       ] ]
     ] ]
@@ -34,21 +32,22 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "accumulator_8c.html",
-"base__defs_8c.html#a5e4bed513d0e545e0b0da97359d8b859",
-"base__defs_8c.html#abc1602d7d05f77b7cb1893fd7bda55dd",
-"base__defs_8h.html#a1c2a028547aa1b5b756dd97205ae2245",
-"base__defs_8h.html#a61b975f5ebe08f5bb55d5cf302328b3dad1e55861586c23fc792d034e888cb60e",
-"base__defs_8h.html#ab80fbd71bafe98561a83ba9a53463d1f",
-"base__defs_8h.html#adcaa8737adb936f2966688e7a96585dba38bfb4896d19b463fbacff01eb198d08",
-"base__defs_8h.html#afaba043c0867bbf9b8f028fa414aed64ad99aafaba716df5ccdbc336069f9fdbc",
-"base__defs_8h.html#affd60a1bd0b4f90d4339099ca8831b52abe16b560e5a1383e8c32683f80cf0da4",
-"group__def.html#ga1948e9707d7d787b8cc57fa6a6981af0",
-"group__receptor.html#gaa8c97a2acf18af02e4e582d15932640c",
-"group__tree.html#ga79cff1b1b9d692acc297634be059c6a9",
-"mtree_8h.html#a7bdb04a09caa291cfca57ba943589bd4",
-"receptor_8c.html#abce160e07e3e803eb53550a4986fdb77",
-"stream_8h.html#a00d54a45dd15144c1fa18944c2e39adcad9aee7157013cdd3d499e1644c46d98e",
-"structVMHost.html#a4027fe2c92bce5f9d030fdef8a232373"
+"base__defs_8c.html#a570a7b253cda5254adcc0f2196473d46",
+"base__defs_8c.html#ab4e9e2f3ff51e81c0f5a5a91f94ba487",
+"base__defs_8h.html#a14fa7b85893c1debb6ecdd9ccc36582b",
+"base__defs_8h.html#a5b3a1897816c4748ab385c110c569501",
+"base__defs_8h.html#aad15be6d56785d77d81b142c4a1dd200",
+"base__defs_8h.html#ad794f76fcce4ecd78cca9f5240a585cb",
+"base__defs_8h.html#af9a1a347ca65a91874fc850a3c57a5ad",
+"base__defs_8h.html#affd60a1bd0b4f90d4339099ca8831b52a9900674c2074002cece1c08d8fad7e6b",
+"group__accumulator.html#ga3ef200d557f77faa71b6f7355121e48d",
+"group__receptor.html#ga2d10d474fac25653e38738ba8ac027e7",
+"group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b",
+"http__example_8h.html#aab25be2feb3ef9f92c3bd1cecace8168",
+"process__spec_8h.html#a90b4b5b026569d3f4e2f2a1905d0d788",
+"semtrex__spec_8h.html#a5622e59695f9c1e25e09164f612f3ca4",
+"structS.html#a42b7c31a741f42d0dc496a8251d4686f",
+"tree__spec_8h.html#ad67357180aa840b09dfc3a37493f56e9"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

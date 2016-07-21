@@ -2,6 +2,7 @@ var def_8c =
 [
     [ "MAX_HASHES", "def_8c.html#afa554317e7a371329316836d01c9d1d5", null ],
     [ "MAX_LEVEL", "def_8c.html#a5bb4257ca9fa4bfcf9391b7895b97761", null ],
+    [ "__d_build_def_semtrex", "def_8c.html#a80d71715e1d37b50bfb05ffe52fdc580", null ],
     [ "__d_define_receptor", "group__def.html#ga036a7762cf738c687dacec95107442a0", null ],
     [ "__d_get_symbol_structure", "group__def.html#ga9482f4a5f8e4c442b9869fd316d150ee", null ],
     [ "__d_set_structure_def", "def_8c.html#a04efc8e66ed5ab08728864f36b114538", null ],
@@ -28,5 +29,6 @@ var def_8c =
     [ "_indent_line", "group__def.html#gaee4f12240e5b7b65311d3bd7ba361f29", null ],
     [ "_sys_structure_size", "group__def.html#gaf8aa0bc822a3388973c0753b060ad146", null ],
     [ "semeq", "group__def.html#gabcf3213518bfa365ca05298f802d0dd7", null ],
-    [ "__d_extra_buf", "def_8c.html#ad5be22a5bd16c6abb74f4887c35cac4c", null ]
+    [ "__d_extra_buf", "def_8c.html#ad5be22a5bd16c6abb74f4887c35cac4c", null ],
+    [ "G_cursor", "def_8c.html#a165818fcd58b61a7030c7a3aec91677e", null ]
 ];

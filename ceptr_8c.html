@@ -92,7 +92,7 @@ $(document).ready(function(){initNavTree('ceptr_8c.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -109,28 +109,33 @@ $(document).ready(function(){initNavTree('ceptr_8c.html','');});
 </div><!--header-->
 <div class="contents">
 
-<p>implements <a class="el" href="ceptr__specs_8c.html#a217dbf8b442f20279ea00b898af96f52">main()</a> entry point for the ceptr node  
+<p>implements main() entry point for the ceptr node  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;ceptr.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="accumulator_8h_source.html">accumulator.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="shell_8h_source.html">shell.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="protocol_8h_source.html">protocol.h</a>&quot;</code><br />
 <code>#include &lt;stdio.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for ceptr.c:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="ceptr_8c__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="ceptr_8c__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div>
 <p><a href="ceptr_8c_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a345012be4123f32841d31bbf8e68ab2c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a345012be4123f32841d31bbf8e68ab2c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setupHTTP</b> (<a class="el" href="structVMHost.html">VMHost</a> *v)</td></tr>
+<tr class="separator:a345012be4123f32841d31bbf8e68ab2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a217dbf8b442f20279ea00b898af96f52"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a217dbf8b442f20279ea00b898af96f52"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> (int argc, const char **argv)</td></tr>
 <tr class="separator:a217dbf8b442f20279ea00b898af96f52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>implements <a class="el" href="ceptr__specs_8c.html#a217dbf8b442f20279ea00b898af96f52">main()</a> entry point for the ceptr node </p>
+<div class="textblock"><p>implements main() entry point for the ceptr node </p>
 <dl class="section copyright"><dt>Copyright</dt><dd>Copyright (C) 2013-2016, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al). This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3). </dd></dl>
 
 <p>Definition in file <a class="el" href="ceptr_8c_source.html">ceptr.c</a>.</p>
@@ -140,7 +145,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> (int argc, co
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="ceptr_8c.html">ceptr.c</a></li>
-    <li class="footer">Generated on Sat Apr 16 2016 17:00:50 for ceptr by
+    <li class="footer">Generated on Thu Jul 21 2016 10:13:08 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

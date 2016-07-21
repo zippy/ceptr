@@ -92,7 +92,7 @@ $(document).ready(function(){initNavTree('semtrex_8h.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -125,7 +125,8 @@ Include dependency graph for semtrex.h:</div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="semtrex_8h__dep__incl.svg" width="100%" height="496"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="semtrex_8h__dep__incl.svg" width="100%" height="496"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div>
 <p><a href="semtrex_8h_source.html">Go to the source code of this file.</a></p>
@@ -147,6 +148,12 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
+<tr class="memitem:gaca247bbadbfa0a680bb0d1c6fa0c9934"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaca247bbadbfa0a680bb0d1c6fa0c9934"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>isTransitionPop</b>(t)&#160;&#160;&#160;(t&lt;0)</td></tr>
+<tr class="separator:gaca247bbadbfa0a680bb0d1c6fa0c9934"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacb0932f4aec2a179ffac3dcf71370061"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gacb0932f4aec2a179ffac3dcf71370061"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>isTransitionNext</b>(t)&#160;&#160;&#160;(t==0)</td></tr>
+<tr class="separator:gacb0932f4aec2a179ffac3dcf71370061"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga29222c0e3cd15e9abd80d8a7430dd71c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga29222c0e3cd15e9abd80d8a7430dd71c"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>LITERAL_NOT</b>&#160;&#160;&#160;0x01</td></tr>
 <tr class="separator:ga29222c0e3cd15e9abd80d8a7430dd71c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -208,11 +215,10 @@ Enumerations</h2></td></tr>
 <br />
  }</td></tr>
 <tr class="separator:ga1615968a92950438f6e67a28e9d56e5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7cce21ba007b15ca5263f3cc5ef15c11"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga7cce21ba007b15ca5263f3cc5ef15c11">FSAStateTransitions</a> { <a class="el" href="group__semtrex.html#gga7cce21ba007b15ca5263f3cc5ef15c11a0304642b1bec42fa532a750ef23e276d">TransitionNextChild</a> =0, 
-<a class="el" href="group__semtrex.html#gga7cce21ba007b15ca5263f3cc5ef15c11a3cea77279ce8c9665393a6cb9196acd2">TransitionUp</a> =-1, 
-<a class="el" href="group__semtrex.html#gga7cce21ba007b15ca5263f3cc5ef15c11a3281a29fe6ed6c41e5b47100af5737e4">TransitionDown</a> =1
+<tr class="memitem:gab48899087cc647f0f791ed0c459adc53"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>TransitionDown</b> =1, 
+<b>TransitionNone</b> =0x8000
  }</td></tr>
-<tr class="separator:ga7cce21ba007b15ca5263f3cc5ef15c11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:gab48899087cc647f0f791ed0c459adc53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -266,15 +272,24 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_stx_replace</b> (<a 
 <tr class="separator:ga812993c95f0eeed3dd78ad1c5f979a7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gabbe3a3359feb3be7f9dd5b7fbbbb74ed"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#gabbe3a3359feb3be7f9dd5b7fbbbb74ed">__sl</a> (<a class="el" href="structT.html">T</a> *p, bool not, int count,...)</td></tr>
 <tr class="separator:gabbe3a3359feb3be7f9dd5b7fbbbb74ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2090b974f84ab4310569afdbafe496d7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga2090b974f84ab4310569afdbafe496d7"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>__stx_dump</b> (<a class="el" href="structSState.html">SState</a> *s, char *buf)</td></tr>
+<tr class="separator:ga2090b974f84ab4310569afdbafe496d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga22849d7b86f21463685f4e11cd4dcc93"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga22849d7b86f21463685f4e11cd4dcc93"></a>
+char *&#160;</td><td class="memItemRight" valign="bottom"><b>_stx_dump</b> (<a class="el" href="structSState.html">SState</a> *s, char *buf)</td></tr>
+<tr class="separator:ga22849d7b86f21463685f4e11cd4dcc93"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga368fe614ab0b40e39cedffdf6c0c3fb9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga368fe614ab0b40e39cedffdf6c0c3fb9"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>stx_dump</b> (<a class="el" href="structT.html">T</a> *s)</td></tr>
+<tr class="separator:ga368fe614ab0b40e39cedffdf6c0c3fb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:ga82573c9fc996af7623605123964ec479"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga82573c9fc996af7623605123964ec479"></a>
-<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>G_ts</b></td></tr>
-<tr class="separator:ga82573c9fc996af7623605123964ec479"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8592201e0b95200efcedc42ec62b6676"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga8592201e0b95200efcedc42ec62b6676"></a>
-<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>G_te</b></td></tr>
-<tr class="separator:ga8592201e0b95200efcedc42ec62b6676"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga33c5bd1d13dc0854ffab33d22d90162c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga33c5bd1d13dc0854ffab33d22d90162c"></a>
+<a class="el" href="structSState.html">SState</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>G_cur_stx_state</b></td></tr>
+<tr class="separator:ga33c5bd1d13dc0854ffab33d22d90162c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac7c07276101d670471b7806bb5458f5c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gac7c07276101d670471b7806bb5458f5c"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><b>G_stx_dump_buf</b> [100000]</td></tr>
+<tr class="separator:gac7c07276101d670471b7806bb5458f5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Semantic tree regular expression header file. </p>
@@ -287,7 +302,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="semtrex_8h.html">semtrex.h</a></li>
-    <li class="footer">Generated on Sat Apr 16 2016 17:00:50 for ceptr by
+    <li class="footer">Generated on Thu Jul 21 2016 10:13:08 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
