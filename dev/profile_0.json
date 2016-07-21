@@ -1,28 +1,28 @@
-{ "symbol":{ "context":0,"id":109 },"type":"LIST_OF_CODE_AND_PARAMS_AND_ZERO_OR_ONE_OF_CODE","name":"RUN_TREE","children":[
+{ "symbol":{ "context":0,"id":128 },"type":"LIST_OF_CODE_AND_PARAMS_AND_ZERO_OR_ONE_OF_CODE_AND_ZERO_OR_ONE_OF_PARAMS","name":"RUN_TREE","children":[
    { "type":"process","name" :"CONCAT_STR","children":[
-      { "symbol":{ "context":0,"id":112 },"type":"SYMBOL","name":"RESULT_SYMBOL","surface":"MAILING_LABEL"},
+      { "symbol":{ "context":0,"id":131 },"type":"SYMBOL","name":"RESULT_SYMBOL","surface":"MAILING_LABEL"},
       { "type":"process","name" :"CONCAT_STR","children":[
-         { "symbol":{ "context":0,"id":110 },"type":"TREE_PATH","name":"PARAM_REF","surface":"/2/1/1/1"},
-         { "symbol":{ "context":3,"id":4 },"type":"CSTRING","name":"TEST_STR_SYMBOL","surface":" "},
-         { "symbol":{ "context":0,"id":110 },"type":"TREE_PATH","name":"PARAM_REF","surface":"/2/1/1/2"}]},
-      { "symbol":{ "context":3,"id":4 },"type":"CSTRING","name":"TEST_STR_SYMBOL","surface":"\n"},
-      { "symbol":{ "context":0,"id":110 },"type":"TREE_PATH","name":"PARAM_REF","surface":"/2/1/2/1"},
-      { "symbol":{ "context":3,"id":4 },"type":"CSTRING","name":"TEST_STR_SYMBOL","surface":"\n"},
+         { "symbol":{ "context":0,"id":129 },"type":"TREE_PATH","name":"PARAM_REF","surface":"/2/1/1/1"},
+         { "symbol":{ "context":3,"id":5 },"type":"CSTRING","name":"TEST_STR_SYMBOL","surface":" "},
+         { "symbol":{ "context":0,"id":129 },"type":"TREE_PATH","name":"PARAM_REF","surface":"/2/1/1/2"}]},
+      { "symbol":{ "context":3,"id":5 },"type":"CSTRING","name":"TEST_STR_SYMBOL","surface":"\n"},
+      { "symbol":{ "context":0,"id":129 },"type":"TREE_PATH","name":"PARAM_REF","surface":"/2/1/2/1"},
+      { "symbol":{ "context":3,"id":5 },"type":"CSTRING","name":"TEST_STR_SYMBOL","surface":"\n"},
       { "type":"process","name" :"CONCAT_STR","children":[
-         { "symbol":{ "context":0,"id":110 },"type":"TREE_PATH","name":"PARAM_REF","surface":"/2/1/2/2"},
-         { "symbol":{ "context":3,"id":4 },"type":"CSTRING","name":"TEST_STR_SYMBOL","surface":", "},
-         { "symbol":{ "context":0,"id":110 },"type":"TREE_PATH","name":"PARAM_REF","surface":"/2/1/2/3"},
-         { "symbol":{ "context":3,"id":4 },"type":"CSTRING","name":"TEST_STR_SYMBOL","surface":" "},
-         { "symbol":{ "context":0,"id":110 },"type":"TREE_PATH","name":"PARAM_REF","surface":"/2/1/2/4"}]}]},
-   { "symbol":{ "context":0,"id":79 },"type":"ZERO_OR_MORE_OF_ANY_SYMBOL","name":"PARAMS","children":[
-      { "symbol":{ "context":3,"id":92 },"type":"PROFILE","name":"USER_PROFILE","children":[
-         { "symbol":{ "context":3,"id":84 },"type":"NAME","name":"PROFILE_NAME","children":[
-            { "symbol":{ "context":3,"id":82 },"type":"CSTRING","name":"FIRST_NAME","surface":"Jane"},
-            { "symbol":{ "context":3,"id":83 },"type":"CSTRING","name":"LAST_NAME","surface":"Smith"}]},
-         { "symbol":{ "context":3,"id":90 },"type":"ADDRESS","name":"PROFILE_ADDRESS","children":[
-            { "symbol":{ "context":3,"id":85 },"type":"CSTRING","name":"STREET_ADDRESS","surface":"126 Main Street"},
-            { "symbol":{ "context":3,"id":86 },"type":"CSTRING","name":"CITY","surface":"Smallville"},
-            { "symbol":{ "context":3,"id":87 },"type":"CSTRING","name":"STATE","surface":"CA"},
-            { "symbol":{ "context":3,"id":88 },"type":"CSTRING","name":"ZIP","surface":"12345"},
-            { "symbol":{ "context":3,"id":89 },"type":"CSTRING","name":"COUNTRY","surface":"USA"}]},
-         { "symbol":{ "context":3,"id":91 },"type":"CSTRING","name":"PROFILE_EMAIL","surface":"test@example.com"}]}]}]}
+         { "symbol":{ "context":0,"id":129 },"type":"TREE_PATH","name":"PARAM_REF","surface":"/2/1/2/2"},
+         { "symbol":{ "context":3,"id":5 },"type":"CSTRING","name":"TEST_STR_SYMBOL","surface":", "},
+         { "symbol":{ "context":0,"id":129 },"type":"TREE_PATH","name":"PARAM_REF","surface":"/2/1/2/3"},
+         { "symbol":{ "context":3,"id":5 },"type":"CSTRING","name":"TEST_STR_SYMBOL","surface":" "},
+         { "symbol":{ "context":0,"id":129 },"type":"TREE_PATH","name":"PARAM_REF","surface":"/2/1/2/4"}]}]},
+   { "symbol":{ "context":0,"id":84 },"type":"ZERO_OR_MORE_OF_ANY_SYMBOL","name":"PARAMS","children":[
+      { "symbol":{ "context":3,"id":105 },"type":"PROFILE","name":"USER_PROFILE","children":[
+         { "symbol":{ "context":3,"id":97 },"type":"NAME","name":"PROFILE_NAME","children":[
+            { "symbol":{ "context":3,"id":95 },"type":"CSTRING","name":"FIRST_NAME","surface":"Jane"},
+            { "symbol":{ "context":3,"id":96 },"type":"CSTRING","name":"LAST_NAME","surface":"Smith"}]},
+         { "symbol":{ "context":3,"id":103 },"type":"ADDRESS","name":"PROFILE_ADDRESS","children":[
+            { "symbol":{ "context":3,"id":98 },"type":"CSTRING","name":"STREET_ADDRESS","surface":"126 Main Street"},
+            { "symbol":{ "context":3,"id":99 },"type":"CSTRING","name":"CITY","surface":"Smallville"},
+            { "symbol":{ "context":3,"id":100 },"type":"CSTRING","name":"STATE","surface":"CA"},
+            { "symbol":{ "context":3,"id":101 },"type":"CSTRING","name":"ZIP","surface":"12345"},
+            { "symbol":{ "context":3,"id":102 },"type":"CSTRING","name":"COUNTRY","surface":"USA"}]},
+         { "symbol":{ "context":3,"id":104 },"type":"CSTRING","name":"PROFILE_EMAIL","surface":"test@example.com"}]}]}]}
