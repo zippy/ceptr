@@ -170,6 +170,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
             var struct = $.getOrCreate('struct',sem_elem);
             this.structVisible ? $.show(struct) : $.hide(struct);
             struct.innerHTML=getSemName(getSymbolStruct(sem));
+            label.setAttribute("title",struct.innerHTML);
         }
     }
 
