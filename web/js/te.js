@@ -573,7 +573,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
             var signatures = process_def.children[3].children;
             var params = [];
             for (var j=1;j<signatures.length;j++) {
-                var n = signatures[j].children[0].surface;
+                var n = signatures[j].children[0].children[0].surface;
                 params.push(n);
             }
             if (params.length>0) def.params = params;
