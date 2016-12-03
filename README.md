@@ -50,7 +50,7 @@ The tests also produce a bunch of semantic trees dumped out to json for visualiz
 
 We welcome participation. Check our our waffle for [Roadmap & kanban](https://waffle.io/zippy/ceptr) or if you prefer you can just use github's [issue tracking](https://github.com/zippy/ceptr/issues).
 
-If you have any dev questions pop them into our [dev gitter](https://gitter.im/zippy/ceptr), or you can show up for our [live dev-chat](http://ceptr.org/devchat) 1st and 3rd Wednesdays of the month, 3pm EST.
+If you have any dev questions pop them into our [dev gitter](https://gitter.im/zippy/ceptr).
 
 Finally, zippy314 does some [livecoding](https://www.livecoding.tv/zippy/)..
 
