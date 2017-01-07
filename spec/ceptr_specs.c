@@ -32,6 +32,8 @@
 
 #include <setjmp.h>
 
+Symbol A,B,C,D,E,F,Root;
+
 jmp_buf G_err;
 
 int main(int argc, const char **argv) {
@@ -42,30 +44,44 @@ int main(int argc, const char **argv) {
         printf("ERROR: %d\n",err);
     }
     else {
-    def_sys();
-    //**** core tests
-    /* testSemTable(); */
-    /* testDef(); */
-    testTree();
-    /* testMTree(); */
-    testStream();
-    /* testLabel(); */
-    // testSemtrex();
-    testProcess();
-     testReceptor();
-    /* testScape(); */
-    testVMHost();
-    /* testAccumulator(); */
-    /* testProtocol(); */
+    G_sem = def_sys();
+    //debug_enable(D_BOOT);
+    load_contexts(G_sem);
+    //debug_disable(D_BOOT);
 
-    /* //\**** receptor tests */
+    // define some generic symbols for doing specs
+    sYt(A,NULL_STRUCTURE);
+    sYt(B,NULL_STRUCTURE);
+    sYt(C,NULL_STRUCTURE);
+    sYt(D,NULL_STRUCTURE);
+    sYt(E,NULL_STRUCTURE);
+    sYt(F,NULL_STRUCTURE);
+    sYt(Root,NULL_STRUCTURE);
+
+    //**** core tests
+    testSemTable();
+    testDef();
+    testTree();
+    testMTree();
+    testStream();
+    testLabel();
+    testSemtrex();
+    testProcess();
+    testReceptor();
+    testScape();
+    testVMHost();
+    testAccumulator();
+    testProtocol();
+
+    /**** receptor tests */
     /* testGroup(); */
+
     testHTTP();
 
-    /* /\* /\\***** examples *\\/ *\/ */
-    /* testProfileExample(); */
+    /****** examples */
+    testProfileExample();
 
-    sys_free();
+    sys_free(G_sem);
     report_tests();
     }
     pthread_exit(NULL);

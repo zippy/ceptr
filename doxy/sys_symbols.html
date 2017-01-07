@@ -60,31 +60,37 @@
 <tr><td><a name="ASPECTS"></a>ASPECTS</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_ASPECT_DEF">ONE-OR-MORE-OF-ASPECT-DEF</a></td><td></td></tr>
 <tr><td><a name="CARRIER"></a>CARRIER</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
 <tr><td><a name="BODY"></a>BODY</td><td><a href="ref_sys_structures.html#TREE">TREE</a></td><td>                          orthogonal tree that holds message body</td></tr>
-<tr><td><a name="SIGNAL_UUID"></a>SIGNAL_UUID</td><td><a href="ref_sys_structures.html#UUID">UUID</a></td><td></td></tr>
-<tr><td><a name="IN_RESPONSE_TO_UUID"></a>IN_RESPONSE_TO_UUID</td><td><a href="ref_sys_structures.html#UUID">UUID</a></td><td></td></tr>
+<tr><td><a name="SIGNAL_UUID"></a>SIGNAL_UUID</td><td><a href="ref_sys_structures.html#UUID">UUID</a></td><td>           @todo change from UUID to hash link as per #132</td></tr>
+<tr><td><a name="IN_RESPONSE_TO_UUID"></a>IN_RESPONSE_TO_UUID</td><td><a href="ref_sys_structures.html#UUID">UUID</a></td><td>   @todo change from UUID to hash link as per #132</td></tr>
+<tr><td><a name="CONVERSATION_UUID"></a>CONVERSATION_UUID</td><td><a href="ref_sys_structures.html#UUID">UUID</a></td><td>     @todo change from UUID to hash link as per #132</td></tr>
 <tr><td><a name="RECEPTOR_PATH"></a>RECEPTOR_PATH</td><td><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></td><td></td></tr>
 <tr><td><a name="RECEPTOR_PATHS"></a>RECEPTOR_PATHS</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_RECEPTOR_PATH">ONE-OR-MORE-OF-RECEPTOR-PATH</a></td><td></td></tr>
 <tr><td><a name="RECEPTOR_ADDR"></a>RECEPTOR_ADDR</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
 <tr><td><a name="FROM_ADDRESS"></a>FROM_ADDRESS</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
 <tr><td><a name="TO_ADDRESS"></a>TO_ADDRESS</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
 <tr><td><a name="END_CONDITIONS"></a>END_CONDITIONS</td><td><a href="ref_sys_structures.html#TUPLE_OF_ZERO_OR_ONE_OF_TIMEOUT_AT_AND_ZERO_OR_ONE_OF_REPETITIONS">TUPLE-OF-ZERO-OR-ONE-OF-TIMEOUT-AT-AND-ZERO-OR-ONE-OF-REPETITIONS</a></td><td></td></tr>
-<tr><td><a name="ENVELOPE"></a>ENVELOPE</td><td><a href="ref_sys_structures.html#LIST_OF_FROM_ADDRESS_AND_TO_ADDRESS_AND_ASPECT_IDENT_AND_CARRIER_AND_SIGNAL_UUID_AND_ZERO_OR_ONE_OF_LOGICAL_OR_OF_END_CONDITIONS_AND_IN_RESPONSE_TO_UUID">LIST-OF-FROM-ADDRESS-AND-TO-ADDRESS-AND-ASPECT-IDENT-AND-CARRIER-AND-SIGNAL-UUID-AND-ZERO-OR-ONE-OF-LOGICAL-OR-OF-END-CONDITIONS-AND-IN-RESPONSE-TO-UUID</a></td><td></td></tr>
-<tr><td><a name="SIGNAL"></a>SIGNAL</td><td><a href="ref_sys_structures.html#TUPLE_OF_ENVELOPE_AND_BODY">TUPLE-OF-ENVELOPE-AND-BODY</a></td><td>                        a signal on the flux.  It's first child is the contents of the signal</td></tr>
-<tr><td><a name="PENDING_SIGNALS"></a>PENDING_SIGNALS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_SIGNAL">ZERO-OR-MORE-OF-SIGNAL</a></td><td>               list of signals pending to be sent by the SYS_RECEPTOR</td></tr>
+<tr><td><a name="ENVELOPE"></a>ENVELOPE</td><td><a href="ref_sys_structures.html#LIST_OF_SIGNAL_UUID">LIST-OF-SIGNAL-UUID</a></td><td></td></tr>
+<tr><td><a name="CONVERSATION_IDENT"></a>CONVERSATION_IDENT</td><td><a href="ref_sys_structures.html#LIST_OF_CONVERSATION_UUID">LIST-OF-CONVERSATION-UUID</a></td><td></td></tr>
+<tr><td><a name="HEAD"></a>HEAD</td><td><a href="ref_sys_structures.html#LIST_OF_FROM_ADDRESS_AND_TO_ADDRESS_AND_ASPECT_IDENT_AND_CARRIER_AND_ZERO_OR_ONE_OF_CONVERSATION_IDENT_AND_ZERO_OR_ONE_OF_LOGICAL_OR_OF_END_CONDITIONS_AND_IN_RESPONSE_TO_UUID">LIST-OF-FROM-ADDRESS-AND-TO-ADDRESS-AND-ASPECT-IDENT-AND-CARRIER-AND-ZERO-OR-ONE-OF-CONVERSATION-IDENT-AND-ZERO-OR-ONE-OF-LOGICAL-OR-OF-END-CONDITIONS-AND-IN-RESPONSE-TO-UUID</a></td><td></td></tr>
+<tr><td><a name="MESSAGE"></a>MESSAGE</td><td><a href="ref_sys_structures.html#TUPLE_OF_HEAD_AND_BODY">TUPLE-OF-HEAD-AND-BODY</a></td><td>              meta-data of a signal</td></tr>
+<tr><td><a name="SIGNAL"></a>SIGNAL</td><td><a href="ref_sys_structures.html#TUPLE_OF_ENVELOPE_AND_MESSAGE">TUPLE-OF-ENVELOPE-AND-MESSAGE</a></td><td>        a signal on the flux.  It's first child is the contents of the signal</td></tr>
+<tr><td><a name="PENDING_SIGNALS"></a>PENDING_SIGNALS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_SIGNAL">ZERO-OR-MORE-OF-SIGNAL</a></td><td>          list of signals pending to be sent by the SYS_RECEPTOR</td></tr>
 <tr><td><a name="CODE_PATH"></a>CODE_PATH</td><td><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></td><td></td></tr>
 <tr><td><a name="PROCESS_IDENT"></a>PROCESS_IDENT</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
-<tr><td><a name="WAKEUP_REFERENCE"></a>WAKEUP_REFERENCE</td><td><a href="ref_sys_structures.html#TUPLE_OF_PROCESS_IDENT_AND_CODE_PATH">TUPLE-OF-PROCESS-IDENT-AND-CODE-PATH</a></td><td></td></tr>
-<tr><td><a name="PENDING_RESPONSE"></a>PENDING_RESPONSE</td><td><a href="ref_sys_structures.html#LIST_OF_SIGNAL_UUID_AND_CARRIER_AND_WAKEUP_REFERENCE_AND_END_CONDITIONS">LIST-OF-SIGNAL-UUID-AND-CARRIER-AND-WAKEUP-REFERENCE-AND-END-CONDITIONS</a></td><td></td></tr>
+<tr><td><a name="WAKEUP_REFERENCE"></a>WAKEUP_REFERENCE</td><td><a href="ref_sys_structures.html#CODE_REF">CODE-REF</a></td><td></td></tr>
+<tr><td><a name="PENDING_RESPONSE"></a>PENDING_RESPONSE</td><td><a href="ref_sys_structures.html#LIST_OF_SIGNAL_UUID_AND_CARRIER_AND_WAKEUP_REFERENCE_AND_END_CONDITIONS_AND_ZERO_OR_ONE_OF_CONVERSATION_IDENT">LIST-OF-SIGNAL-UUID-AND-CARRIER-AND-WAKEUP-REFERENCE-AND-END-CONDITIONS-AND-ZERO-OR-ONE-OF-CONVERSATION-IDENT</a></td><td></td></tr>
 <tr><td><a name="PENDING_RESPONSES"></a>PENDING_RESPONSES</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_PENDING_RESPONSE">ZERO-OR-MORE-OF-PENDING-RESPONSE</a></td><td></td></tr>
 <tr><td><a name="RESPONSE_CARRIER"></a>RESPONSE_CARRIER</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>            expected carrier for the response to a signal that "listen" to changes on the flux</td></tr>
 <tr><td><a name="PATTERN"></a>PATTERN</td><td><a href="ref_sys_structures.html#SEMTREX_DEF">SEMTREX-DEF</a></td><td>                expectation is a semtrex (thus has one child which is the first part of the semtrex)</td></tr>
 <tr><td><a name="ACTION"></a>ACTION</td><td><a href="ref_sys_structures.html#PROCESS">PROCESS</a></td><td>                     code tree_ID, which specifies the action to perform when an expectation's semtrex matches</td></tr>
 <tr><td><a name="PARAMS"></a>PARAMS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_ANY_SYMBOL">ZERO-OR-MORE-OF-ANY-SYMBOL</a></td><td></td></tr>
-<tr><td><a name="SEMANTIC_MAP"></a>SEMANTIC_MAP</td><td><a href="ref_sys_structures.html#LIST_OF_ONE_OR_MORE_OF_SEMANTIC_LINK">LIST-OF-ONE-OR-MORE-OF-SEMANTIC-LINK</a></td><td></td></tr>
-<tr><td><a name="EXPECTATION"></a>EXPECTATION</td><td><a href="ref_sys_structures.html#LIST_OF_CARRIER_AND_PATTERN_AND_ACTION_AND_PARAMS_AND_END_CONDITIONS_AND_ZERO_OR_ONE_OF_SEMANTIC_MAP">LIST-OF-CARRIER-AND-PATTERN-AND-ACTION-AND-PARAMS-AND-END-CONDITIONS-AND-ZERO-OR-ONE-OF-SEMANTIC-MAP</a></td><td></td></tr>
-<tr><td><a name="TRANSCODER"></a>TRANSCODER</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
-<tr><td><a name="OPERATOR"></a>OPERATOR</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
-<tr><td><a name="VALIDATOR"></a>VALIDATOR</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
+<tr><td><a name="SEMANTIC_MAP"></a>SEMANTIC_MAP</td><td><a href="ref_sys_structures.html#SEMANTIC_LINKS">SEMANTIC-LINKS</a></td><td></td></tr>
+<tr><td><a name="EXPECTATION"></a>EXPECTATION</td><td><a href="ref_sys_structures.html#LIST_OF_CARRIER_AND_PATTERN_AND_ACTION_AND_PARAMS_AND_END_CONDITIONS_AND_ZERO_OR_ONE_OF_SEMANTIC_MAP_AND_ZERO_OR_ONE_OF_CONVERSATION_UUID">LIST-OF-CARRIER-AND-PATTERN-AND-ACTION-AND-PARAMS-AND-END-CONDITIONS-AND-ZERO-OR-ONE-OF-SEMANTIC-MAP-AND-ZERO-OR-ONE-OF-CONVERSATION-UUID</a></td><td></td></tr>
+<tr><td><a name="CONVERSATION"></a>CONVERSATION</td><td><a href="ref_sys_structures.html#LIST_OF_CONVERSATION_UUID_AND_END_CONDITIONS_AND_CONVERSATIONS_AND_ZERO_OR_ONE_OF_WAKEUP_REFERENCE">LIST-OF-CONVERSATION-UUID-AND-END-CONDITIONS-AND-CONVERSATIONS-AND-ZERO-OR-ONE-OF-WAKEUP-REFERENCE</a></td><td></td></tr>
+<tr><td><a name="CONVERSATIONS"></a>CONVERSATIONS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_CONVERSATION">ZERO-OR-MORE-OF-CONVERSATION</a></td><td></td></tr>
+<tr><td><a name="TRANSCODER"></a>TRANSCODER</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td>   should be an enum value for process type</td></tr>
+<tr><td><a name="OPERATOR"></a>OPERATOR</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td>     should be an enum value for process type</td></tr>
+<tr><td><a name="VALIDATOR"></a>VALIDATOR</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td>    should be an enum value for process type</td></tr>
 <tr><td><a name="PROCESS_OF_STRUCTURE"></a>PROCESS_OF_STRUCTURE</td><td><a href="ref_sys_structures.html#STRUCTURE">STRUCTURE</a></td><td></td></tr>
 <tr><td><a name="PROCESS_OF_SYMBOL"></a>PROCESS_OF_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
 <tr><td><a name="PROCESS_OF_PROCESS"></a>PROCESS_OF_PROCESS</td><td><a href="ref_sys_structures.html#PROCESS">PROCESS</a></td><td></td></tr>
@@ -105,10 +111,13 @@
 <tr><td><a name="SLOT"></a>SLOT</td><td><a href="ref_sys_structures.html#SLOT_STRUCTURE">SLOT-STRUCTURE</a></td><td></td></tr>
 <tr><td><a name="REPLACEMENT_VALUE"></a>REPLACEMENT_VALUE</td><td><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></td><td>        what to fill the slot with</td></tr>
 <tr><td><a name="SEMANTIC_LINK"></a>SEMANTIC_LINK</td><td><a href="ref_sys_structures.html#TUPLE_OF_SEMANTIC_REFERENCE_AND_REPLACEMENT_VALUE">TUPLE-OF-SEMANTIC-REFERENCE-AND-REPLACEMENT-VALUE</a></td><td>   mapping between a semantic reference and replacement value, used for filling templates</td></tr>
+<tr><td><a name="PROTOCOL_DEFAULTS"></a>PROTOCOL_DEFAULTS</td><td><a href="ref_sys_structures.html#SEMANTIC_LINKS">SEMANTIC-LINKS</a></td><td></td></tr>
 <tr><td><a name="SIGNATURE_LABEL"></a>SIGNATURE_LABEL</td><td><a href="ref_sys_structures.html#LABEL">LABEL</a></td><td></td></tr>
 <tr><td><a name="SIGNATURE_STRUCTURE"></a>SIGNATURE_STRUCTURE</td><td><a href="ref_sys_structures.html#STRUCTURE">STRUCTURE</a></td><td>      the structure that would match</td></tr>
 <tr><td><a name="SIGNATURE_SYMBOL"></a>SIGNATURE_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>            the symbol that would match</td></tr>
 <tr><td><a name="SIGNATURE_PROCESS"></a>SIGNATURE_PROCESS</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>           the output signature of the process</td></tr>
+<tr><td><a name="SIGNATURE_RECEPTOR"></a>SIGNATURE_RECEPTOR</td><td><a href="ref_sys_structures.html#RECEPTOR">RECEPTOR</a></td><td>        use of receptor in signature</td></tr>
+<tr><td><a name="SIGNATURE_PROTOCOL"></a>SIGNATURE_PROTOCOL</td><td><a href="ref_sys_structures.html#PROTOCOL">PROTOCOL</a></td><td>        use of protocol in signature</td></tr>
 <tr><td><a name="SIGNATURE_PASSTHRU"></a>SIGNATURE_PASSTHRU</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
 <tr><td><a name="SIGNATURE_ANY"></a>SIGNATURE_ANY</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
 <tr><td><a name="SIGNATURE_OPTIONAL"></a>SIGNATURE_OPTIONAL</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
@@ -118,10 +127,14 @@
 <tr><td><a name="OUTPUT_SIGNATURE"></a>OUTPUT_SIGNATURE</td><td><a href="ref_sys_structures.html#TUPLE_OF_SIGNATURE_LABEL_AND_SIGNATURE_OUTPUT_TYPE">TUPLE-OF-SIGNATURE-LABEL-AND-SIGNATURE-OUTPUT-TYPE</a></td><td></td></tr>
 <tr><td><a name="EXPECTED_SLOT"></a>EXPECTED_SLOT</td><td><a href="ref_sys_structures.html#SLOT_STRUCTURE">SLOT-STRUCTURE</a></td><td>  use of the slot structure not as a slot but as what kind of slot to expect (for the template signature)</td></tr>
 <tr><td><a name="TEMPLATE_SIGNATURE"></a>TEMPLATE_SIGNATURE</td><td><a href="ref_sys_structures.html#LIST_OF_ZERO_OR_MORE_OF_EXPECTED_SLOT">LIST-OF-ZERO-OR-MORE-OF-EXPECTED-SLOT</a></td><td></td></tr>
-<tr><td><a name="RUN_TREE"></a>RUN_TREE</td><td><a href="ref_sys_structures.html#LIST_OF_CODE_AND_PARAMS_AND_ZERO_OR_ONE_OF_CODE">LIST-OF-CODE-AND-PARAMS-AND-ZERO-OR-ONE-OF-CODE</a></td><td>     think about this as a stack frame and its code and error handling code</td></tr>
+<tr><td><a name="RUN_TREE"></a>RUN_TREE</td><td><a href="ref_sys_structures.html#LIST_OF_CODE_AND_PARAMS_AND_ZERO_OR_ONE_OF_CODE_AND_ZERO_OR_ONE_OF_PARAMS">LIST-OF-CODE-AND-PARAMS-AND-ZERO-OR-ONE-OF-CODE-AND-ZERO-OR-ONE-OF-PARAMS</a></td><td>     think about this as a stack frame and its code and error handling code plus error params</td></tr>
 <tr><td><a name="PARAM_REF"></a>PARAM_REF</td><td><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></td><td>                used in a code tree as a reference to a parameter</td></tr>
 <tr><td><a name="SIGNAL_REF"></a>SIGNAL_REF</td><td><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></td><td>               used in a code tree triggered by an expectation as a reference to a part of the signal that triggered the action.</td></tr>
 <tr><td><a name="RESULT_SYMBOL"></a>RESULT_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
+<tr><td><a name="RESULT_STRUCTURE"></a>RESULT_STRUCTURE</td><td><a href="ref_sys_structures.html#STRUCTURE">STRUCTURE</a></td><td></td></tr>
+<tr><td><a name="RESULT_PROCESS"></a>RESULT_PROCESS</td><td><a href="ref_sys_structures.html#PROCESS">PROCESS</a></td><td></td></tr>
+<tr><td><a name="RESULT_RECEPTOR"></a>RESULT_RECEPTOR</td><td><a href="ref_sys_structures.html#RECEPTOR">RECEPTOR</a></td><td></td></tr>
+<tr><td><a name="RESULT_PROTOCOL"></a>RESULT_PROTOCOL</td><td><a href="ref_sys_structures.html#PROTOCOL">PROTOCOL</a></td><td></td></tr>
 <tr><td><a name="REDUCTION_ERROR_SYMBOL"></a>REDUCTION_ERROR_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
 <tr><td><a name="SOURCE"></a>SOURCE</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_ROLE">ONE-OR-MORE-OF-ROLE</a></td><td></td></tr>
 <tr><td><a name="DESTINATION"></a>DESTINATION</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_ROLE">ONE-OR-MORE-OF-ROLE</a></td><td></td></tr>
@@ -130,11 +143,12 @@
 <tr><td><a name="PNAME"></a>PNAME</td><td><a href="ref_sys_structures.html#PROTOCOL">PROTOCOL</a></td><td></td></tr>
 <tr><td><a name="INCLUSION"></a>INCLUSION</td><td><a href="ref_sys_structures.html#TUPLE_OF_PNAME_AND_ONE_OR_MORE_OF_LOGICAL_OR_OF_RESOLUTION_AND_LINKAGE">TUPLE-OF-PNAME-AND-ONE-OR-MORE-OF-LOGICAL-OR-OF-RESOLUTION-AND-LINKAGE</a></td><td></td></tr>
 <tr><td><a name="WHICH_INTERACTION"></a>WHICH_INTERACTION</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>   the symbols stored in an WHICH_INTERACTION must be limited to those that are uses of the INTERACTION structure</td></tr>
+<tr><td><a name="PROTOCOL_DEFINITION"></a>PROTOCOL_DEFINITION</td><td><a href="ref_sys_structures.html#LIST_OF_PROTOCOL_LABEL_AND_PROTOCOL_SEMANTICS_AND_ZERO_OR_MORE_OF_PROTOCOL_DEFAULTS_AND_ZERO_OR_MORE_OF_STRUCTURE_OF_INTERACTION_AND_ZERO_OR_MORE_OF_INCLUSION">LIST-OF-PROTOCOL-LABEL-AND-PROTOCOL-SEMANTICS-AND-ZERO-OR-MORE-OF-PROTOCOL-DEFAULTS-AND-ZERO-OR-MORE-OF-STRUCTURE-OF-INTERACTION-AND-ZERO-OR-MORE-OF-INCLUSION</a></td><td></td></tr>
 <tr><td><a name="ACTUAL_PROCESS"></a>ACTUAL_PROCESS</td><td><a href="ref_sys_structures.html#PROCESS">PROCESS</a></td><td></td></tr>
 <tr><td><a name="ACTUAL_RECEPTOR"></a>ACTUAL_RECEPTOR</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
 <tr><td><a name="ACTUAL_SYMBOL"></a>ACTUAL_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
 <tr><td><a name="ACTUAL_PROTOCOL"></a>ACTUAL_PROTOCOL</td><td><a href="ref_sys_structures.html#PROTOCOL">PROTOCOL</a></td><td></td></tr>
-<tr><td><a name="ACTUAL_VALUE"></a>ACTUAL_VALUE</td><td><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></td><td>  this really can't be anything, rather only something that's a SYMBOL semantic type</td></tr>
+<tr><td><a name="ACTUAL_VALUE"></a>ACTUAL_VALUE</td><td><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></td><td>  this really can't be an anything, rather only something that's a SYMBOL semantic type</td></tr>
 <tr><td><a name="WHICH_PROCESS"></a>WHICH_PROCESS</td><td><a href="ref_sys_structures.html#TUPLE_OF_GOAL_AND_ACTUAL_PROCESS">TUPLE-OF-GOAL-AND-ACTUAL-PROCESS</a></td><td></td></tr>
 <tr><td><a name="WHICH_RECEPTOR"></a>WHICH_RECEPTOR</td><td><a href="ref_sys_structures.html#TUPLE_OF_ROLE_AND_ACTUAL_RECEPTOR">TUPLE-OF-ROLE-AND-ACTUAL-RECEPTOR</a></td><td></td></tr>
 <tr><td><a name="WHICH_SYMBOL"></a>WHICH_SYMBOL</td><td><a href="ref_sys_structures.html#TUPLE_OF_USAGE_AND_ACTUAL_SYMBOL">TUPLE-OF-USAGE-AND-ACTUAL-SYMBOL</a></td><td></td></tr>
@@ -149,7 +163,6 @@
 <tr><td><a name="PROTOCOL_BINDINGS"></a>PROTOCOL_BINDINGS</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_RESOLUTION">ONE-OR-MORE-OF-RESOLUTION</a></td><td></td></tr>
 <tr><td><a name="PROTOCOL_LABEL"></a>PROTOCOL_LABEL</td><td><a href="ref_sys_structures.html#LABEL">LABEL</a></td><td></td></tr>
 <tr><td><a name="PROTOCOL_SEMANTICS"></a>PROTOCOL_SEMANTICS</td><td><a href="ref_sys_structures.html#LIST_OF_ZERO_OR_MORE_OF_ROLE_AND_ZERO_OR_MORE_OF_GOAL_AND_ZERO_OR_MORE_OF_USAGE_AND_ZERO_OR_MORE_OF_WEAL">LIST-OF-ZERO-OR-MORE-OF-ROLE-AND-ZERO-OR-MORE-OF-GOAL-AND-ZERO-OR-MORE-OF-USAGE-AND-ZERO-OR-MORE-OF-WEAL</a></td><td></td></tr>
-<tr><td><a name="PROTOCOL_DEFINITION"></a>PROTOCOL_DEFINITION</td><td><a href="ref_sys_structures.html#LIST_OF_PROTOCOL_LABEL_AND_PROTOCOL_SEMANTICS_AND_ZERO_OR_MORE_OF_STRUCTURE_OF_INTERACTION_AND_ZERO_OR_MORE_OF_INCLUSION">LIST-OF-PROTOCOL-LABEL-AND-PROTOCOL-SEMANTICS-AND-ZERO-OR-MORE-OF-STRUCTURE-OF-INTERACTION-AND-ZERO-OR-MORE-OF-INCLUSION</a></td><td></td></tr>
 <tr><td><a name="MANIFEST_LABEL"></a>MANIFEST_LABEL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td>           a label in the manifest to identify a binding</td></tr>
 <tr><td><a name="MANIFEST_SPEC"></a>MANIFEST_SPEC</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>             a symbol to specify what type of data must be provided for a given manifest label</td></tr>
 <tr><td><a name="MANIFEST_PAIR"></a>MANIFEST_PAIR</td><td><a href="ref_sys_structures.html#TUPLE_OF_MANIFEST_LABEL_AND_MANIFEST_SPEC">TUPLE-OF-MANIFEST-LABEL-AND-MANIFEST-SPEC</a></td><td></td></tr>
@@ -161,7 +174,7 @@
 <tr><td><a name="RECEPTOR_ELAPSED_TIME"></a>RECEPTOR_ELAPSED_TIME</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
 <tr><td><a name="RECEPTOR_LABEL"></a>RECEPTOR_LABEL</td><td><a href="ref_sys_structures.html#LABEL">LABEL</a></td><td></td></tr>
 <tr><td><a name="RECEPTOR_DEFINITION"></a>RECEPTOR_DEFINITION</td><td><a href="ref_sys_structures.html#TUPLE_OF_RECEPTOR_LABEL_AND_DEFINITIONS">TUPLE-OF-RECEPTOR-LABEL-AND-DEFINITIONS</a></td><td></td></tr>
-<tr><td><a name="RECEPTOR_STATE"></a>RECEPTOR_STATE</td><td><a href="ref_sys_structures.html#LIST_OF_FLUX_AND_PENDING_SIGNALS_AND_PENDING_RESPONSES_AND_RECEPTOR_ELAPSED_TIME">LIST-OF-FLUX-AND-PENDING-SIGNALS-AND-PENDING-RESPONSES-AND-RECEPTOR-ELAPSED-TIME</a></td><td></td></tr>
+<tr><td><a name="RECEPTOR_STATE"></a>RECEPTOR_STATE</td><td><a href="ref_sys_structures.html#LIST_OF_FLUX_AND_PENDING_SIGNALS_AND_PENDING_RESPONSES_AND_CONVERSATIONS_AND_RECEPTOR_ELAPSED_TIME">LIST-OF-FLUX-AND-PENDING-SIGNALS-AND-PENDING-RESPONSES-AND-CONVERSATIONS-AND-RECEPTOR-ELAPSED-TIME</a></td><td></td></tr>
 <tr><td><a name="PARENT_CONTEXT_NUM"></a>PARENT_CONTEXT_NUM</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td>        identifies the semantic context of a receptors parent</td></tr>
 <tr><td><a name="CONTEXT_NUM"></a>CONTEXT_NUM</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td>               identifies the semantic context of a receptor</td></tr>
 <tr><td><a name="INSTANCE_OF"></a>INSTANCE_OF</td><td><a href="ref_sys_structures.html#RECEPTOR">RECEPTOR</a></td><td>              identifies the kind of receptor this is</td></tr>
@@ -178,9 +191,11 @@
 <tr><td><a name="TODAY"></a>TODAY</td><td><a href="ref_sys_structures.html#DATE">DATE</a></td><td></td></tr>
 <tr><td><a name="NOW"></a>NOW</td><td><a href="ref_sys_structures.html#TIME">TIME</a></td><td></td></tr>
 <tr><td><a name="TICK"></a>TICK</td><td><a href="ref_sys_structures.html#TIMESTAMP">TIMESTAMP</a></td><td></td></tr>
-<tr><td><a name="DATE_DIVIDER"></a>DATE_DIVIDER</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="DELIMITER"></a>DELIMITER</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="US_SHORT_DATE"></a>US_SHORT_DATE</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="SHORT_TIME"></a>SHORT_TIME</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="ERROR_LOCATION"></a>ERROR_LOCATION</td><td><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></td><td></td></tr>
+<tr><td><a name="ERROR_DATA"></a>ERROR_DATA</td><td><a href="ref_sys_structures.html#LIST_OF_ANY_SYMBOL">LIST-OF-ANY-SYMBOL</a></td><td></td></tr>
 <tr><td><a name="ZERO_DIVIDE_ERR"></a>ZERO_DIVIDE_ERR</td><td><a href="ref_sys_structures.html#REDUCTION_ERROR">REDUCTION-ERROR</a></td><td></td></tr>
 <tr><td><a name="TOO_FEW_PARAMS_ERR"></a>TOO_FEW_PARAMS_ERR</td><td><a href="ref_sys_structures.html#REDUCTION_ERROR">REDUCTION-ERROR</a></td><td></td></tr>
 <tr><td><a name="TOO_MANY_PARAMS_ERR"></a>TOO_MANY_PARAMS_ERR</td><td><a href="ref_sys_structures.html#REDUCTION_ERROR">REDUCTION-ERROR</a></td><td></td></tr>
@@ -203,7 +218,7 @@
 <tr><td><a name="EDGE_LISTENER"></a>EDGE_LISTENER</td><td><a href="ref_sys_structures.html#CPOINTER">CPOINTER</a></td><td></td></tr>
 <tr><td><a name="ITERATE_ON_SYMBOL"></a>ITERATE_ON_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
 <tr><td><a name="ITERATION_DATA"></a>ITERATION_DATA</td><td><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></td><td>    data to iterate over</td></tr>
-<tr><td><a name="BLOCK"></a>BLOCK</td><td><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></td><td>    set of processes for DO</td></tr>
+<tr><td><a name="SCOPE"></a>SCOPE</td><td><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></td><td>    set of processes for DO/CONVERSE</td></tr>
 <tr><td><a name="PARAM_PATH"></a>PARAM_PATH</td><td><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></td><td></td></tr>
 <tr><td><a name="PARAM_LABEL"></a>PARAM_LABEL</td><td><a href="ref_sys_structures.html#STRUCTURE_OF_CSTRING">STRUCTURE-OF-CSTRING</a></td><td></td></tr>
 <tr><td><a name="PARAMETER_REFERENCE"></a>PARAMETER_REFERENCE</td><td><a href="ref_sys_structures.html#LOGICAL_OR_OF_PARAM_PATH_AND_PARAM_LABEL">LOGICAL-OR-OF-PARAM-PATH-AND-PARAM-LABEL</a></td><td>  a way of refering to the parameter to be</td></tr>
@@ -215,7 +230,13 @@
 <tr><td><a name="TRANSCODE_ITEMS"></a>TRANSCODE_ITEMS</td><td><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></td><td></td></tr>
 <tr><td><a name="LABEL_SYMBOL"></a>LABEL_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
 <tr><td><a name="LABEL_TYPE"></a>LABEL_TYPE</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>   should be limmited to symbols of type CSTRING by validator...</td></tr>
+<tr><td><a name="COND_PAIR"></a>COND_PAIR</td><td><a href="ref_sys_structures.html#PAIR_OF_ANY_SYMBOL">PAIR-OF-ANY-SYMBOL</a></td><td></td></tr>
+<tr><td><a name="COND_ELSE"></a>COND_ELSE</td><td><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></td><td></td></tr>
+<tr><td><a name="CONDITIONS"></a>CONDITIONS</td><td><a href="ref_sys_structures.html#TUPLE_OF_ZERO_OR_MORE_OF_COND_PAIR_AND_COND_ELSE">TUPLE-OF-ZERO-OR-MORE-OF-COND-PAIR-AND-COND-ELSE</a></td><td></td></tr>
 <tr><td><a name="EQUALITY_TEST_SYMBOL"></a>EQUALITY_TEST_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>  a symbol to use when testing the symbol equality</td></tr>
+<tr><td><a name="POP_COUNT"></a>POP_COUNT</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
+<tr><td><a name="CONTINUE_LOCATION"></a>CONTINUE_LOCATION</td><td><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></td><td></td></tr>
+<tr><td><a name="CONTINUE_VALUE"></a>CONTINUE_VALUE</td><td><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></td><td></td></tr>
 <tr><td><a name="STX_SL"></a>STX_SL</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
 <tr><td><a name="STX_OP"></a>STX_OP</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
 <tr><td><a name="STX_CP"></a>STX_CP</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
@@ -261,13 +282,25 @@
 <tr><td><a name="SPANISH_LABEL"></a>SPANISH_LABEL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="FRENCH_LABEL"></a>FRENCH_LABEL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="GERMAN_LABEL"></a>GERMAN_LABEL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="P_OP"></a>P_OP</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
+<tr><td><a name="P_CP"></a>P_CP</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
+<tr><td><a name="P_COLON"></a>P_COLON</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
+<tr><td><a name="P_INTERPOLATE"></a>P_INTERPOLATE</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
+<tr><td><a name="P_LABEL"></a>P_LABEL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="P_VAL_S"></a>P_VAL_S</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="P_VAL_C"></a>P_VAL_C</td><td><a href="ref_sys_structures.html#CHAR">CHAR</a></td><td></td></tr>
+<tr><td><a name="P_VAL_I"></a>P_VAL_I</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
+<tr><td><a name="P_VAL_F"></a>P_VAL_F</td><td><a href="ref_sys_structures.html#FLOAT">FLOAT</a></td><td></td></tr>
+<tr><td><a name="P_VAL_PATH"></a>P_VAL_PATH</td><td><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></td><td></td></tr>
+<tr><td><a name="P_TOKENS"></a>P_TOKENS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_LOGICAL_OR_OF_P_OP_AND_P_CP_AND_P_COLON_AND_P_LABEL_AND_P_VAL_S_AND_P_VAL_C_AND_P_VAL_I_AND_P_VAL_F_AND_P_VAL_PATH">ZERO-OR-MORE-OF-LOGICAL-OR-OF-P-OP-AND-P-CP-AND-P-COLON-AND-P-LABEL-AND-P-VAL-S-AND-P-VAL-C-AND-P-VAL-I-AND-P-VAL-F-AND-P-VAL-PATH</a></td><td></td></tr>
 <tr><td><a name="REQUESTER"></a>REQUESTER</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
 <tr><td><a name="RESPONDER"></a>RESPONDER</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
-<tr><td><a name="REQUEST_DATA"></a>REQUEST_DATA</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
-<tr><td><a name="RESPONSE_DATA"></a>RESPONSE_DATA</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
+<tr><td><a name="REQUEST_TYPE"></a>REQUEST_TYPE</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
+<tr><td><a name="RESPONSE_TYPE"></a>RESPONSE_TYPE</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
 <tr><td><a name="CHANNEL"></a>CHANNEL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
-<tr><td><a name="RESPONSE_HANDLER"></a>RESPONSE_HANDLER</td><td><a href="ref_sys_structures.html#PROCESS">PROCESS</a></td><td></td></tr>
 <tr><td><a name="REQUEST_HANDLER"></a>REQUEST_HANDLER</td><td><a href="ref_sys_structures.html#PROCESS">PROCESS</a></td><td></td></tr>
+<tr><td><a name="RESPONSE_HANDLER"></a>RESPONSE_HANDLER</td><td><a href="ref_sys_structures.html#PROCESS">PROCESS</a></td><td></td></tr>
+<tr><td><a name="RESPONSE_HANDLER_PARAMETERS"></a>RESPONSE_HANDLER_PARAMETERS</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
 <tr><td><a name="backnforth"></a>backnforth</td><td><a href="ref_sys_structures.html#INTERACTION">INTERACTION</a></td><td></td></tr>
 <tr><td><a name="RECOGNIZER"></a>RECOGNIZER</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
 <tr><td><a name="RECOGNIZEE"></a>RECOGNIZEE</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
@@ -293,7 +326,7 @@
 <tr><td><a name="MEMBER"></a>MEMBER</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
 <tr><td><a name="enrollment"></a>enrollment</td><td><a href="ref_sys_structures.html#INTERACTION">INTERACTION</a></td><td></td></tr>
 <tr><td><a name="converse"></a>converse</td><td><a href="ref_sys_structures.html#INTERACTION">INTERACTION</a></td><td></td></tr>
-<tr><td><a name="MESSAGE"></a>MESSAGE</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="MESSAGE_TEXT"></a>MESSAGE_TEXT</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="TEST_INT_SYMBOL"></a>TEST_INT_SYMBOL</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
 <tr><td><a name="TEST_INT_SYMBOL2"></a>TEST_INT_SYMBOL2</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
 <tr><td><a name="TEST_INT64_SYMBOL"></a>TEST_INT64_SYMBOL</td><td><a href="ref_sys_structures.html#INTEGER64">INTEGER64</a></td><td></td></tr>
@@ -340,11 +373,6 @@
 <tr><td><a name="MEDIA_TYPE_SEPARATOR"></a>MEDIA_TYPE_SEPARATOR</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
 <tr><td><a name="HEADER_SEPARATOR"></a>HEADER_SEPARATOR</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
 <tr><td><a name="CONTENT_ENCODING"></a>CONTENT_ENCODING</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td>  cstring for now, add semantic later.</td></tr>
-<tr><td><a name="HTTP_REQUEST_METHOD"></a>HTTP_REQUEST_METHOD</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
-<tr><td><a name="HTTP_REQUEST_PATH"></a>HTTP_REQUEST_PATH</td><td><a href="ref_sys_structures.html#URI">URI</a></td><td></td></tr>
-<tr><td><a name="HTTP_REQUEST_VERSION"></a>HTTP_REQUEST_VERSION</td><td><a href="ref_sys_structures.html#VERSION">VERSION</a></td><td></td></tr>
-<tr><td><a name="HTTP_REQUEST"></a>HTTP_REQUEST</td><td><a href="ref_sys_structures.html#HTTP_REQUEST_V09">HTTP-REQUEST-V09</a></td><td></td></tr>
-<tr><td><a name="HTTP_REQUEST_HOST"></a>HTTP_REQUEST_HOST</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="HEADER_KEY"></a>HEADER_KEY</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="HEADER_VALUE"></a>HEADER_VALUE</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="LINE_HEADER"></a>LINE_HEADER</td><td><a href="ref_sys_structures.html#HEADER">HEADER</a></td><td></td></tr>
@@ -352,6 +380,16 @@
 <tr><td><a name="HTTP_RESPONSE_HEADER"></a>HTTP_RESPONSE_HEADER</td><td><a href="ref_sys_structures.html#HEADER">HEADER</a></td><td></td></tr>
 <tr><td><a name="HTTP_GENERAL_HEADER"></a>HTTP_GENERAL_HEADER</td><td><a href="ref_sys_structures.html#HEADER">HEADER</a></td><td></td></tr>
 <tr><td><a name="HTTP_ENTITY_HEADER"></a>HTTP_ENTITY_HEADER</td><td><a href="ref_sys_structures.html#LOGICAL_OR_OF_CONTENT_TYPE_AND_CONTENT_ENCODING">LOGICAL-OR-OF-CONTENT-TYPE-AND-CONTENT-ENCODING</a></td><td>    @todo plus a few more see https://www.w3.org/Protocols/rfc2616/rfc2616-sec7.html#sec7.1</td></tr>
+<tr><td><a name="HTTP_REQUEST_HOST"></a>HTTP_REQUEST_HOST</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td>  @todo, should actually be a "domain-name address:port"</td></tr>
+<tr><td><a name="HTTP_REQUEST_USER_AGENT"></a>HTTP_REQUEST_USER_AGENT</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="HTTP_REQUEST_METHOD"></a>HTTP_REQUEST_METHOD</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="HTTP_REQUEST_PATH"></a>HTTP_REQUEST_PATH</td><td><a href="ref_sys_structures.html#URI">URI</a></td><td></td></tr>
+<tr><td><a name="HTTP_REQUEST_VERSION"></a>HTTP_REQUEST_VERSION</td><td><a href="ref_sys_structures.html#VERSION">VERSION</a></td><td></td></tr>
+<tr><td><a name="HTTP_REQUEST_LINE"></a>HTTP_REQUEST_LINE</td><td><a href="ref_sys_structures.html#LIST_OF_HTTP_REQUEST_VERSION_AND_HTTP_REQUEST_METHOD_AND_HTTP_REQUEST_PATH">LIST-OF-HTTP-REQUEST-VERSION-AND-HTTP-REQUEST-METHOD-AND-HTTP-REQUEST-PATH</a></td><td></td></tr>
+<tr><td><a name="HTTP_REQUEST_BODY"></a>HTTP_REQUEST_BODY</td><td><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></td><td></td></tr>
+<tr><td><a name="HTTP_REQUEST_HEADER"></a>HTTP_REQUEST_HEADER</td><td><a href="ref_sys_structures.html#LOGICAL_OR_OF_HTTP_REQUEST_HOST_AND_HTTP_REQUEST_USER_AGENT">LOGICAL-OR-OF-HTTP-REQUEST-HOST-AND-HTTP-REQUEST-USER-AGENT</a></td><td>  @todo plus a bunch more see rfc2616 section 5.3</td></tr>
+<tr><td><a name="HTTP_REQUEST_HEADERS"></a>HTTP_REQUEST_HEADERS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_LOGICAL_OR_OF_HTTP_REQUEST_HEADER_AND_HTTP_GENERAL_HEADER_AND_HTTP_ENTITY_HEADER">ZERO-OR-MORE-OF-LOGICAL-OR-OF-HTTP-REQUEST-HEADER-AND-HTTP-GENERAL-HEADER-AND-HTTP-ENTITY-HEADER</a></td><td></td></tr>
+<tr><td><a name="HTTP_REQUEST"></a>HTTP_REQUEST</td><td><a href="ref_sys_structures.html#LIST_OF_HTTP_REQUEST_LINE_AND_HTTP_REQUEST_HEADERS_AND_HTTP_REQUEST_BODY">LIST-OF-HTTP-REQUEST-LINE-AND-HTTP-REQUEST-HEADERS-AND-HTTP-REQUEST-BODY</a></td><td></td></tr>
 <tr><td><a name="HTTP_RESPONSE_BODY"></a>HTTP_RESPONSE_BODY</td><td><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></td><td></td></tr>
 <tr><td><a name="HTTP_RESPONSE_STATUS"></a>HTTP_RESPONSE_STATUS</td><td><a href="ref_sys_structures.html#STATUS">STATUS</a></td><td></td></tr>
 <tr><td><a name="HTTP_HEADER"></a>HTTP_HEADER</td><td><a href="ref_sys_structures.html#LOGICAL_OR_OF_HTTP_GENERAL_HEADER_AND_HTTP_RESPONSE_HEADER_AND_HTTP_ENTITY_HEADER">LOGICAL-OR-OF-HTTP-GENERAL-HEADER-AND-HTTP-RESPONSE-HEADER-AND-HTTP-ENTITY-HEADER</a></td><td></td></tr>
@@ -391,5 +429,5 @@
 <tr><td><a name="HTTP_SERVER"></a>HTTP_SERVER</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
 <tr><td><a name="HTTP_REQUEST_PARSER"></a>HTTP_REQUEST_PARSER</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
 <tr><td><a name="HTTP_ASPECT"></a>HTTP_ASPECT</td><td><a href="ref_sys_structures.html#ASPECT">ASPECT</a></td><td></td></tr>
-<tr><td><a name="HTTP_RESPONSE_HANDLER"></a>HTTP_RESPONSE_HANDLER</td><td><a href="ref_sys_structures.html#PROCESS">PROCESS</a></td><td></td></tr>
+<tr><td><a name="HTTP_REQUEST_HANDLER"></a>HTTP_REQUEST_HANDLER</td><td><a href="ref_sys_structures.html#PROCESS">PROCESS</a></td><td></td></tr>
 </table>

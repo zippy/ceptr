@@ -86,11 +86,19 @@ Process _p_get_transcoder(SemTable *sem,Symbol src_sym,Symbol to_sym) {
     }
     else if (semeq(CONTENT_TYPE,src_sym) && semeq(LINE,to_sym))
         return content_type_2_line;
+    else if (semeq(ASCII_CHARS,src_sym) && semeq(HTTP_REQUEST,to_sym))
+        return ascii_chars_2_http_req;
     else {
         Structure src_s = _sem_get_symbol_structure(sem,src_sym);
         Structure to_s = _sem_get_symbol_structure(sem,to_sym);
         if (semeq(src_s,DATE) && semeq(to_s,CSTRING)) {
             return date2usshortdate;
+        }
+        if (semeq(src_s,TIME) && semeq(to_s,CSTRING)) {
+            return time2shortime;
+        }
+        if (semeq(HTTP_RESPONSE_STATUS,src_sym) && semeq(to_s,CSTRING)) {
+            return http_response_status_2_ascii_str;
         }
     }
     return NULL_PROCESS;
@@ -175,7 +183,7 @@ int _p_transcode(SemTable *sem, T* src,Symbol to_sym, Structure to_s,T **result)
                             T *xx = __t_newr(x,LINES,true);
                             T *k,*r;
                             int e;
-                            while (k = _t_detach_by_idx(src,1)) {
+                            while ((k = _t_detach_by_idx(src,1))) {
                                 e = _p_transcode(sem,k,to_sym,to_s,&r);
                                 if (e && e != redoReduction) {
                                     _t_free(src);
@@ -196,41 +204,65 @@ int _p_transcode(SemTable *sem, T* src,Symbol to_sym, Structure to_s,T **result)
                 // @todo generalize
                 // get the definition of the structure of the src and dest
                 T *sdef = _sem_get_def(sem,src_s);
-                sdef = _t_child(sdef,2);
+                sdef = _t_child(sdef,SymbolDefStructureIdx);
                 debug(D_TRANSCODE,"source def: %s\n",t2s(sdef));
                 Symbol sdef_sym = _t_symbol(sdef);
 
                 T *tdef = _sem_get_def(sem,to_s);
-                tdef = _t_child(tdef,2);
+                tdef = _t_child(tdef,SymbolDefStructureIdx);
                 debug(D_TRANSCODE,"to def: %s\n",t2s(tdef));
                 Symbol tdef_sym = _t_symbol(tdef);
 
                 T *k;
-                Symbol k_sym;
-                if (semeq(tdef_sym,sdef_sym) &&
-                    (semeq(tdef_sym,STRUCTURE_ZERO_OR_MORE)||
-                     semeq(tdef_sym,STRUCTURE_ZERO_OR_ONE)||
-                     semeq(tdef_sym,STRUCTURE_ONE_OR_MORE)) &&
-                    semeq(k_sym = _t_symbol(k = _t_child(tdef,1)),
-                          _t_symbol( _t_child(sdef,1))) &&
-                    semeq(k_sym,STRUCTURE_SYMBOL)) {
-                    x = __t_newr(0,to_sym,true);
-                    T *m,*r;
-                    int e;
-                    // the to becomes the surface of the STRUCTURE_SYMBOL def
-                    Symbol to_sym = *(Symbol *)_t_surface(k);
-                    Structure to_s = _sem_get_symbol_structure(sem,to_sym);
-                    while (m = _t_detach_by_idx(src,1)) {
-                        e = _p_transcode(sem,m,to_sym,to_s,&r);
-                        if (e && e != redoReduction) {
-                            _t_free(src);
-                            return e;
+                Symbol k_sym = _t_symbol(k = _t_child(tdef,1));
+                bool tsym_isa_simple_list = (semeq(tdef_sym,STRUCTURE_ZERO_OR_MORE)||
+                                             semeq(tdef_sym,STRUCTURE_ZERO_OR_ONE)||
+                                             semeq(tdef_sym,STRUCTURE_ONE_OR_MORE)) &&
+                                            semeq(k_sym,STRUCTURE_SYMBOL);
+                x = NULL;
+                if (tsym_isa_simple_list) {
+                    Symbol to_list_of_sym = *(Symbol *)_t_surface(k);
+                    if (semeq(tdef_sym,sdef_sym) &&
+                        semeq(_t_symbol( _t_child(sdef,1)),STRUCTURE_SYMBOL)) {
+                        debug(D_TRANSCODE,"transcoding elements of simple list\n");
+                        x = __t_newr(0,to_sym,true);
+                        T *m,*r;
+                        int e;
+                        // the to becomes the surface of the STRUCTURE_SYMBOL def
+
+                        Structure to_s = _sem_get_symbol_structure(sem,to_list_of_sym);
+                        while ((m = _t_detach_by_idx(src,1))) {
+                            e = _p_transcode(sem,m,to_list_of_sym,to_s,&r);
+                            if (e && e != redoReduction) {
+                                _t_free(src);
+                                return e;
+                            }
+                            _t_add(x,r);
                         }
-                        _t_add(x,r);
+                        err = redoReduction;
                     }
-                    err = redoReduction;
+                    else {
+                        // if the to is a simple list but the src isn't then if the
+                        // src happens to be of the right type we can simply added it as a
+                        // singleton to the list.  Otherwise we first have to try transcoding it
+                        debug(D_TRANSCODE,"transcoding singleton into simple list\n");
+                        T *singleton = src;
+                        if (!semeq(src_sym,to_list_of_sym)) {
+                            debug(D_TRANSCODE,"src doesn't match, recurring..\n");
+                            int e;
+                            e = _p_transcode(sem,src,to_list_of_sym,_sem_get_symbol_structure(sem,to_list_of_sym),&singleton);
+                            if (e && e != redoReduction) {
+                                _t_free(src);
+                                return e;
+                            }
+                            err = redoReduction;
+                        }
+                        x = __t_newr(0,to_sym,true);
+                        _t_add(x,singleton);
+                        dofree=false;
+                    }
                 }
-                else {
+                if (!x) {
                     debug(D_TRANSCODE,"unable to match\n");
                     _t_free(src);
                     return incompatibleTypeReductionErr;
@@ -291,7 +323,7 @@ Error __p_check_signature(SemTable *sem,Process p,T *code,T *sem_map) {
                 else if(semeq(_t_symbol(sig),SIGNATURE_SYMBOL)) {
                     Symbol ss = *(Symbol *)_t_surface(sig);
                     if (!semeq(ss,_t_symbol(param)))
-                        raise_error("signatureMismatchReductionErr");
+                        raise_error("signatureMismatchReductionErr expected:%s got:%s\n",_sem_get_name(sem,ss),_t2s(sem,param));
                     //                    return signatureMismatchReductionErr;
                 }
                 else if(semeq(_t_symbol(sig),SIGNATURE_ANY)) {
@@ -299,7 +331,7 @@ Error __p_check_signature(SemTable *sem,Process p,T *code,T *sem_map) {
                 else if(semeq(_t_symbol(sig),SIGNATURE_PROCESS)) {
                     Symbol expected = *(Symbol *)_t_surface(sig);
                     Symbol actual = _t_symbol(param);
-                    if (!semeq(expected,expected)) {
+                    if (!semeq(expected,actual)) {
                         raise_error("expecting process to reduce to %s, got: %s\n",_sem_get_name(sem,expected),_t2s(sem,param));
                     }
                 }
@@ -346,6 +378,14 @@ Error __p_check_signature(SemTable *sem,Process p,T *code,T *sem_map) {
     return 0;
 }
 
+/* low level function to unwind a run-tree to a specific point*/
+void __p_unwind_to_point(R *context,T *code_point,T *with) {
+    T *p = _t_parent(code_point);
+    _t_replace(p,_t_node_index(code_point), with);
+    context->parent = p;
+    context->node_pointer = with;
+}
+
 /**
  * reduce system level processes in a run tree.  Assumes that the children have already been
  * reduced and all parameters have been filled in
@@ -384,6 +424,46 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             }
         }
         break;
+    case DEF_SYMBOL_ID:
+        {
+            T *def = _t_detach_by_idx(code,1);
+            //@todo some kind of validation of the def??
+            SemanticID ns = _d_define(sem,def, SEM_TYPE_SYMBOL,q->r->context);
+            x = __t_news(0,RESULT_SYMBOL,ns,true);
+        }
+        break;
+    case DEF_STRUCTURE_ID:
+        {
+            T *def = _t_detach_by_idx(code,1);
+            //@todo some kind of validation of the def??
+            SemanticID ns = _d_define(sem,def, SEM_TYPE_STRUCTURE,q->r->context);
+            x = __t_news(0,RESULT_STRUCTURE,ns,true);
+        }
+        break;
+    case DEF_PROCESS_ID:
+        {
+            T *def = _t_detach_by_idx(code,1);
+            //@todo some kind of validation of the def??
+            SemanticID ns = _d_define(sem,def, SEM_TYPE_PROCESS,q->r->context);
+            x = __t_news(0,RESULT_PROCESS,ns,true);
+        }
+        break;
+    case DEF_RECEPTOR_ID:
+        {
+            T *def = _t_detach_by_idx(code,1);
+            //@todo some kind of validation of the def??
+            SemanticID ns = __d_define_receptor(sem,def,q->r->context);
+            x = __t_news(0,RESULT_RECEPTOR,ns,true);
+        }
+        break;
+    case DEF_PROTOCOL_ID:
+        {
+            T *def = _t_detach_by_idx(code,1);
+            //@todo some kind of validation of the def??
+            SemanticID ns = _d_define(sem,def,SEM_TYPE_PROTOCOL,q->r->context);
+            x = __t_news(0,RESULT_PROTOCOL,ns,true);
+        }
+        break;
     case NEW_ID:
         {
             T *t = _t_detach_by_idx(code,1);
@@ -403,19 +483,67 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
         }
         break;
     case DO_ID:
+    case CONVERSE_ID:
         {
-            // all of the blocks children should have been reduced
+            // all of the scope's children should have been reduced
             // so all we need to do is return the last one.
-            T *block = _t_detach_by_idx(code,1);
-            int p = _t_children(block);
-            x = _t_detach_by_idx(block,p);
-            _t_free(block);
+            T *scope = _t_detach_by_idx(code,1);
+            int p = _t_children(scope);
+            x = _t_detach_by_idx(scope,p);
+            _t_free(scope);
+            if (s.id == CONVERSE_ID) {
+                //pop off the last conversation reference
+                if (context->conversation)
+                    context->conversation = context->conversation->next;
+            }
+            T *t;
+            while ((t = _t_detach_by_idx(code,1))) {
+                if (semeq(_t_symbol(t),BOOLEAN)) {
+                    if (*(int *)_t_surface(t)) {
+                        err = Block;
+                    }
+                }
+                _t_free(t);
+            }
         }
         break;
     case IF_ID:
         t = _t_child(code,1);
         b = (*(int *)_t_surface(t)) ? 2 : 3;
         x = _t_detach_by_idx(code,b);
+        break;
+    case COND_ID:
+        // COND is a special case, we have to check the phase to see what to do
+        // after the children have been evaluated.
+        {
+            CondState *state = *(CondState **)_t_surface(code);
+            // get the condition or else results into x
+            x = _t_detach_by_idx(code,1);
+            if (state->phase == EvalCondCondtions) {
+                // if the condition was true, then we have to load the body for evaluation
+                T *cond_pair = _t_detach_by_idx(state->conditions,1);
+                if (*(int *)_t_surface(x)) {
+                    _t_add(code,_t_detach_by_idx(cond_pair,1));
+                    state->phase = EvalCondResult;
+                } else  {
+                    // otherwise we have to move on to the next condition or the Else
+                    T *c = _t_child(state->conditions,1);
+                    _t_add(code,_t_detach_by_idx(c,1));
+                    if (semeq(_t_symbol(c),COND_ELSE)) {
+                        state->phase = EvalCondResult;
+                    }
+                }
+                _t_free(cond_pair);
+                _t_free(x);
+                return Eval;
+            }
+            else {
+                // cleanup the state before returning.
+                _t_free(state->conditions);
+                free(state);
+                code->contents.size = 0;
+            }
+        }
         break;
     case EQ_SYM_ID:
         x = __t_newi(0,BOOLEAN,
@@ -486,6 +614,19 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
         c = *(int *)_t_surface(_t_child(code,1));
         *((int *)&x->contents.surface) = *((int *)&x->contents.surface)>=c;
         x->contents.symbol = BOOLEAN;
+        break;
+    case POP_PATH_ID:
+        {
+            x = _t_detach_by_idx(code,1);
+            T *as = _t_child(code,1);
+            T *count = _t_child(code,2);
+            x->contents.symbol = *(Symbol *)_t_surface(as);
+            int i = count ? *(int *)_t_surface(count) : 1;
+            int *path = (int *)_t_surface(x);
+            int d = _t_path_depth(path);
+            if (i>d) path[0] = TREE_PATH_TERMINATOR;
+            else path[d-i] = TREE_PATH_TERMINATOR;
+        }
         break;
     case CONTRACT_STR_ID:
     case CONCAT_STR_ID:
@@ -565,13 +706,15 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             Symbol carrier = *(Symbol*)_t_surface(t);
             _t_free(t);
             T *response_contents = _t_detach_by_idx(code,1);
-            T *envelope = _t_child(signal,SignalEnvelopeIdx);
-            ReceptorAddress to = __r_get_addr(_t_child(envelope,EnvelopeFromIdx)); // from and to reverse in response
-            ReceptorAddress from = __r_get_addr(_t_child(envelope,EnvelopeToIdx));
-            Aspect a = *(Aspect *)_t_surface(_t_child(envelope,EnvelopeAspectIdx));
-            UUIDt uuid = *(UUIDt *)_t_surface(_t_child(envelope,EnvelopeUUIDIdx));
+            T *head = _t_getv(signal,SignalMessageIdx,MessageHeadIdx,TREE_PATH_TERMINATOR);
 
-            T *response = __r_make_signal(from,to,a,carrier,response_contents,&uuid,0);
+            ReceptorAddress to = __r_get_addr(_t_child(head,HeadFromIdx)); // from and to reverse in response
+            ReceptorAddress from = __r_get_addr(_t_child(head,HeadToIdx));
+            Aspect a = *(Aspect *)_t_surface(_t_child(head,HeadAspectIdx));
+            T *su = _t_getv(signal,SignalEnvelopeIdx,EnvelopeSignalUUIDIdx,TREE_PATH_TERMINATOR);
+            UUIDt uuid = *(UUIDt *)_t_surface(su);
+
+            T *response = __r_make_signal(from,to,a,carrier,response_contents,&uuid,0,context->conversation ? context->conversation->cid : NULL);
             x = _r_send(q->r,response);
         }
         break;
@@ -605,7 +748,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             T *signal;
 
             if (s.id == SAY_ID) {
-                signal = __r_make_signal(from,to,aspect,carrier,signal_contents,0,0);
+                signal = __r_make_signal(from,to,aspect,carrier,signal_contents,0,0,context->conversation ? context->conversation->cid : NULL);
                 x = _r_send(q->r,signal);
             }
             else if (s.id == REQUEST_ID) {
@@ -637,9 +780,80 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                 else {
                     raise_error("request callback not implemented for %s",t2s(callback));
                 }
-                signal = __r_make_signal(from,to,aspect,carrier,signal_contents,0,until);
+                T *cid = context->conversation ? context->conversation->cid : NULL;
+                signal = __r_make_signal(from,to,aspect,carrier,signal_contents,0,until,cid);
 
-                x = _r_request(q->r,signal,response_carrier,response_point,context->id);
+                x = _r_request(q->r,signal,response_carrier,response_point,context->id,cid);
+            }
+        }
+        break;
+    case THIS_SCOPE_ID:
+        // @todo make this return an error that would invoke the error handler
+        if (!context->conversation)
+            raise_error("whoa THIS_SCOPE executed outside CONVERSE!");
+        x = _t_rclone(context->conversation->cid);
+        break;
+    case CONTINUE_ID:
+        {
+            T *at = _t_detach_by_idx(code,1);
+            T *with = _t_detach_by_idx(_t_child(code,1),1);
+            int *path = (int *)_t_surface(at);
+            // @todo validate that the path is on ok path to unwind to...
+            T *c = _t_get(context->run_tree,path);
+            if (!c) raise_error("continue at point invalid");
+            __p_unwind_to_point(context,c,with);
+            return(noErr);
+        }
+        break;
+    case COMPLETE_ID:
+        {
+            T *with = _t_detach_by_idx(code,1);
+            T *cid = _t_detach_by_idx(code,1);
+
+            // @todo think about if this would cause other arbitrary weirdness, like what about any pending wakeups (from requests) that point to spots in the code that's getting unwound.
+            if (!cid) {
+                // in the case no conversation id parameter then we need to look in
+                // we get it from the context
+                // @todo make this return an error that would invoke the error handler
+                if (!context->conversation)
+                    raise_error("COMPLETE invoked without conversation id outside of CONVERSE");
+                cid = context->conversation->cid;
+                UUIDt *cuuid = __cid_getUUID(cid);
+                T *w = __r_cleanup_conversation(q->r,cuuid);
+                if (w) _t_free(w);
+
+                // now move the execution point up to the CONVERSE root.
+                // @todo maybe only use the wakeup_ref (like below) and don't store converse_pointer?
+                T *c = context->conversation->converse_pointer;
+                __p_unwind_to_point(context,c,with);
+                return(noErr);
+            }
+            else {
+                // if the conversation param was specified we need to get it from
+
+                UUIDt *cuuid = __cid_getUUID(cid);
+                T *w = __r_cleanup_conversation(q->r,cuuid);
+                // restart the CONVERSE instruction that spawned this conversation
+                if (w) {
+                    int *code_path = (int *)_t_surface(_t_child(w,WakeupReferenceCodePathIdx));
+                    int process_id = *(int *)_t_surface(_t_child(w,WakeupReferenceProcessIdentIdx));
+                    debug(D_LOCK,"complete LOCK\n");
+                    pthread_mutex_lock(&q->mutex);
+                    Qe *e = __p_find_context(q->blocked,process_id);
+                    if (e) {
+                        if (with) {
+                            T *c = _t_get(e->context->run_tree,code_path);
+                            if (!c) raise_error("failed to find code path when completing converse!");
+                            __p_unwind_to_point(e->context,c,with);
+                        }
+                        debug(D_SIGNALS,"unblocking CONVERSE\n");
+                        __p_unblock(q,e,noReductionErr);
+                    }
+                    else if (with) _t_free(with);
+                    pthread_mutex_unlock(&q->mutex);
+                    debug(D_LOCK,"complete UNLOCK\n");
+                }
+                x = cid;
             }
         }
         break;
@@ -647,8 +861,9 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
         {
             T *params = _t_detach_by_idx(code,1);
             if (!params) return signatureMismatchReductionErr;
-            T *to = _t_child(params,1);
+            T *to = _t_detach_by_idx(params,1);
             if (!to) return signatureMismatchReductionErr;
+            _t_free(params);
 
             Symbol to_sym = *(Symbol *)_t_surface(to);
             _t_free(to);
@@ -658,7 +873,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             if (!items) return signatureMismatchReductionErr;
             T *t = __t_newr(0,PARAMS,true);  //holder for the transcoding children
             T *src;
-            while (src = _t_detach_by_idx(items,1)) {
+            while ((src = _t_detach_by_idx(items,1))) {
                 int e = _p_transcode(sem,src,to_sym,to_s,&x);
                 if (e != noReductionErr) {
                     if (e != redoReduction) return e;
@@ -751,22 +966,30 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                 if (semeq(RESULT_SYMBOL,sy)) {
                     sy = *(Symbol *)_t_surface(s);
                     _t_free(s);
-                    if (semeq(sy,ASCII_CHARS)) {
-                        int l = _st_data_size(st);
-                        char *c = _st_data(st);
-                        x = __t_newr(0,ASCII_CHARS,true);
-                        while (l--) {
-                            __t_newc(x,ASCII_CHAR,*c,true);
-                            c++;
-                        }
-                    }
-                    else {
-                        debug(D_STREAM,"creating %s '%.*s'\n",_sem_get_name(sem,sy),(int)_st_data_size(st),_st_data(st));
+                    size_t l = _st_data_size(st);
+                    char *c = _st_data(st);
+
+                    Structure to_s = _sem_get_symbol_structure(sem,sy);
+                    if (semeq(to_s,CSTRING)) {
+                        debug(D_STREAM,"creating CSTRING: %s '%.*s'\n",_sem_get_name(sem,sy),(int)l,c);
                         // @todo fix this to be a flag instruction to __t_new
                         // currently it only works because that value is the newline in the
                         // read buffer.
-                        _st_data(st)[_st_data_size(st)] = 0;
-                        x = __t_new(0,sy,_st_data(st),_st_data_size(st)+1,1);
+                        _st_data(st)[l] = 0;
+                        x = __t_new(0,sy,c,l+1,1);
+                    }
+                    else {
+                        debug(D_STREAM,"non CSTRING RESULT_SYMBOL so converting to ASCII_CHARS and transcoding to %s \n",_sem_get_name(sem,sy));
+                        T *src = __t_newr(0,ASCII_CHARS,true);
+                        while (l--) {
+                            __t_newc(src,ASCII_CHAR,*c,true);
+                            c++;
+                        }
+                        int e = _p_transcode(sem,src,sy,to_s,&x);
+                        if (e != noReductionErr) {
+                            if (e != redoReduction) return e;
+                            else err = e;
+                        }
                     }
                     _st_data_consumed(st);
                 }
@@ -795,7 +1018,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             Stream *st = _t_surface(s);
             _t_free(s);
             // get the data to write as string
-            while(s = _t_detach_by_idx(code,1)) {
+            while ((s = _t_detach_by_idx(code,1))) {
                 int err = _t_write(sem,s,st);
                 _t_free(s);
                 if (err == 0) return unixErrnoReductionErr;
@@ -966,19 +1189,20 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                 _t_news(s,USAGE,NULL_SYMBOL);
             }
 
+            T *cid = context && context->conversation ? _t_clone(context->conversation->cid) : NULL;
             // @todo add SEMANTIC_MAP into LISTEN
             if (act) {
-                _r_add_expectation(q->r,aspect,carrier,match,act,with,until,NULL);
+                _r_add_expectation(q->r,aspect,carrier,match,act,with,until,NULL,cid);
                 x = __t_news(0,REDUCTION_ERROR_SYMBOL,NULL_SYMBOL,1);
                 debug(D_LISTEN,"adding expectation\n");
             }
             else {
-                act = __r_build_wakeup_info(code,context->id);
+                act = __p_build_wakeup_info(code,context->id);
                 if (!until) {
                     until = _t_new_root(END_CONDITIONS);
                     _t_newi(until,COUNT,1);
                 }
-                _r_add_expectation(q->r,aspect,carrier,match,act,with,until,NULL);
+                _r_add_expectation(q->r,aspect,carrier,match,act,with,until,NULL,cid);
                 debug(D_LISTEN,"adding expectation and blocking at %d,%s\n",context->id,_td(q->r,code));
                 return Block;
             }
@@ -989,12 +1213,11 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             T *protocol = _t_detach_by_idx(code,1);
             T *interaction = _t_detach_by_idx(code,1);
             T *bindings = _t_detach_by_idx(code,1);
-            _o_initiate(q->r,*(SemanticID *)_t_surface(protocol),*(SemanticID *)_t_surface(interaction),bindings);
+	    T *sem_map;
+	    x = __o_initiate(q->r,*(SemanticID *)_t_surface(protocol),*(SemanticID *)_t_surface(interaction),bindings,&sem_map);
             _t_free(protocol);
             _t_free(interaction);
-
-            /// @todo what should this really return?
-            x = __t_news(0,REDUCTION_ERROR_SYMBOL,NULL_SYMBOL,1);
+	    err = redoReduction;
         }
         break;
     case SELF_ADDR_ID:
@@ -1104,7 +1327,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
         _t_free(code);
         // then loop through x's children inserting them in the parent
         T *c;
-        while (c = _t_detach_by_idx(x,1)) {
+        while ((c = _t_detach_by_idx(x,1))) {
             _t_insert_at(parent,path,c);
             path[0]++;
         }
@@ -1131,6 +1354,8 @@ R *__p_make_context(T *run_tree,R *caller,int process_id,T *sem_map) {
     context->idx = 1;
     context->caller = caller;
     context->sem_map = sem_map;
+    // copy in the callers conversation context too.
+    context->conversation = caller ? caller->conversation : NULL;
     if (caller) caller->callee = context;
     return context;
 }
@@ -1188,11 +1413,11 @@ Qe *__p_find_context(Qe *e,int process_id) {
 }
 
 // low level unblock. Should be called only when q mutex is locked
-void __p_unblock(Q *q,Qe *e) {
+void __p_unblock(Q *q,Qe *e,Error err) {
     __p_dequeue(q->blocked,e);
     __p_enqueue(q->active,e);
     q->contexts_count++;
-    e->context->state = Eval;
+    e->context->state = err ? err : Eval;
 }
 
 /**
@@ -1205,7 +1430,7 @@ Error _p_unblock(Q *q,int id) {
     pthread_mutex_lock(&q->mutex);
     Qe *e = __p_find_context(q->blocked,id);
     if (e) {
-        __p_unblock(q,e);
+        __p_unblock(q,e,noReductionErr);
     }
     else {
         // if the process has been completed then return err 2 otherwise 1
@@ -1219,6 +1444,48 @@ Error _p_unblock(Q *q,int id) {
     pthread_mutex_unlock(&q->mutex);
     debug(D_LOCK,"unblock UNLOCK\n");
     return err;
+}
+
+
+/**
+ * wakeup a process that's been paused
+ *
+ * @param[in] q the processing q in which to search for the process
+ * @param[in] wakeup the WAKEUP_REF tree that identifies what needs waking up
+ * @param[in] with a value to replace the current node_pointer with (i.e. a result)
+ * @param[in] err an error value if the wakeup should trigger the error handler instead of resuming processing
+ */
+void _p_wakeup(Q *q,T *wakeup, T *with,Error err) {
+    int process_id = *(int *)_t_surface(_t_child(wakeup,WakeupReferenceProcessIdentIdx));
+    //int *code_path = (int *)_t_surface(_t_child(wakeup,WakeupReferenceCodePathIdx));
+
+    debug(D_LOCK,"wakeup LOCK\n");
+    pthread_mutex_lock(&q->mutex);
+    Qe *e = __p_find_context(q->blocked,process_id);
+    if (e) {
+        // code_path is something I thought I needed to restart execution at the right place
+        // I currently think that was a mistake, because a blocked process should really only
+        // be blocked at ONE place, wherever the node_pointer is.
+        /* T *t = _t_get(e->context->run_tree,code_path); */
+        /* if (!t) raise_error("failed to find code path when waking up expectation!"); */
+        /* if (t != e->context->node_pointer) */
+        /*     raise_error("wakeup ref and node_pointer don't match"); */
+        if (with) {
+            if (!(with->context.flags & TFLAG_RUN_NODE)) {
+                T *w = _t_rclone(with);
+                _t_free(with);
+                with = w;
+            }
+            T *t = e->context->node_pointer;
+            T *p = _t_parent(t);
+            _t_replace(p,_t_node_index(t), with);
+            e->context->node_pointer = with;
+        }
+        __p_unblock(q,e,err);
+    }
+    else { if (with) _t_free(with);}
+    pthread_mutex_unlock(&q->mutex);
+    debug(D_LOCK,"wakeup UNLOCK\n");
 }
 
 /**
@@ -1278,6 +1545,7 @@ T * __p_buildErr(R *context) {
     case missingSemanticMapReductionErr: se=MISSING_SEMANTIC_MAP_ERR;break;
     case mismatchSemanticMapReductionErr: se=MISMATCH_SEMANTIC_MAP_ERR;break;
     case structureMismatchReductionErr: se=STRUCTURE_MISMATCH_ERR;break;
+        //    case conversatonCompletedReductionErr: se=CONVERSATION_COMPLETED_ERR;break;
     case unixErrnoReductionErr:
         se=UNIX_ERRNO_ERR;
         extra = _t_new_str(0,TEST_STR_SYMBOL,strerror(errno));
@@ -1320,7 +1588,7 @@ Error _p_step(Q *q, R **contextP) {
         // if this was the successful reduction by an error handler
         // move the value to the 1st child
         if (context->err) {
-            T *t = _t_detach_by_idx(context->run_tree,3);
+            T *t = _t_detach_by_idx(context->run_tree,RunTreeErrorCodeIdx);
             if (t) {
                 _t_replace(context->run_tree,1,t);
 
@@ -1421,7 +1689,9 @@ Error _p_step(Q *q, R **contextP) {
                 }
                 T *param = _t_get(sig,(int *)_t_surface(np));
                 if (!param) {
-                    raise_error("request for non-existent signal portion");
+                    char buf[1000];
+
+                    raise_error("request for non-existent signal portion.  signal was: %s \n path was:%s\n",t2s(sig),_t_sprint_path((int *)_t_surface(np),buf));
                 }
                 context->node_pointer = np = _t_rclone(param);
                 _t_replace(context->parent, context->idx,np);
@@ -1443,8 +1713,7 @@ Error _p_step(Q *q, R **contextP) {
                 else
 #endif
                     context->state = Ascend;
-            } else
-                {
+            } else {
                 if (semeq(s,ITERATE)) {
                     // if first time we are hitting this iteration
                     // then we need to set up the state data to track the iteration
@@ -1458,9 +1727,73 @@ Error _p_step(Q *q, R **contextP) {
                         state->type = IterateTypeUnknown;
                         *((IterationState **)&np->contents.surface) = state;
                         np->contents.size = sizeof(IterationState *);
+
                         // we start in condition phase so throw away the code copy
                         T *x = _t_detach_by_idx(np,3);
                         _t_free(x);
+                    }
+                }
+                else if (semeq(s,COND)) {
+                    // if first time we are hitting the cond
+                    // the we need to set up the state data to track flow control
+                    if (_t_size(np) == 0) {
+                        CondState *state = malloc(sizeof(CondState));
+                        // remove the conditions and store them in state
+                        T *c = state->conditions = _t_detach_by_idx(np,1);
+                        c = _t_child(c,1);
+                        // we add the first child of the COND_PAIR or the COND_ELSE
+                        // to the code for reduction and set the phase appropriately
+                        _t_add(np,_t_detach_by_idx(c,1));
+                        if (semeq(_t_symbol(c),COND_PAIR)) {
+                            state->phase = EvalCondCondtions;
+                        }
+                        else {
+                            state->phase = EvalCondResult;
+                        }
+                        *((CondState **)&np->contents.surface) = state;
+                        np->contents.size = sizeof(CondState *);
+                    }
+                }
+                else if (semeq(s,CONVERSE)) {
+                    // if first time we are hitting the CONVERSE instruction
+                    // in the tree (i.e. on the way down) we need to register
+                    // the conversation IDs and make the tree
+                    if (_t_size(np) == 0) {
+                        UUIDt cuuid = __uuid_gen();
+                        T *until,*wait = NULL;  //@todo wait set but not used... what was I doing here?
+                        //@todo get these value semantically i.e _t_get_siganture_child(np,"until");
+                        until =_t_child(np,2);
+                        if (until) {
+                            if (semeq(_t_symbol(until),BOOLEAN)) {
+                                wait = until;
+                                until = NULL;
+                            }
+                            else wait = _t_child(np,3);
+                        }
+
+                        UUIDt *parent_u;
+                        if (context->conversation) {
+                            parent_u = __cid_getUUID(context->conversation->cid);
+                        }
+                        else {
+                            parent_u = NULL;
+                        }
+
+                        T *c = _r_add_conversation(q->r,parent_u,&cuuid,until?_t_clone(until):NULL,
+                                                   __p_build_wakeup_info(np,context->id)
+                                                   );
+
+                        ConversationState *state = malloc(sizeof(ConversationState));
+                        state->converse_pointer = np;  // save the node pointer for later COMPLETEs
+                        state->cid = _t_child(c,ConversationIdentIdx);
+                        *((ConversationState **)&np->contents.surface) = state;
+                        np->contents.size = sizeof(ConversationState *);
+                        np->context.flags |= TFLAG_ALLOCATED;
+
+                        // register the conversation with the context linking an existing conversation
+                        // to the new one if it exists
+                        state->next = context->conversation;
+                        context->conversation = state;
                     }
                 }
                 if (count == get_rt_cur_child(q->r,np) || semeq(s,QUOTE)) {
@@ -1496,9 +1829,30 @@ Error _p_step(Q *q, R **contextP) {
 
                         Error e = __p_reduce_sys_proc(context,s,np,q);
                         if (e == redoReduction) {
-                            context->state = Eval;
-                            context->node_pointer = _t_child(context->parent,context->idx);
-                            set_rt_cur_child(q->r,context->node_pointer,RUN_TREE_NOT_EVAULATED); // reset the current child count on the code
+                            // reset the node_pointer
+                            np = context->node_pointer = _t_child(context->parent,context->idx);
+                            // there are two reasons to redoReduction, one because the call to reduce_sys_proc
+                            // added more code to the runtree that just still needs to be reduced
+                            // or because it added a new run-tree, which needs to be treated as a function
+                            // call and thus adding a new context
+                            if (semeq(RUN_TREE,_t_symbol(np))) {
+                                context->state = Pushed;
+                                // swap out the RUN_TREE for a dummy proc
+                                // @todo really the error returned by reduce_sys_proc should be a struct
+                                // with the RUN_TREE in it so we don't have store it in the actual tree
+                                int i = _t_node_index(np);
+                                T *p = _t_parent(np);
+                                T *dummy = __t_newr(0,NOOP,true);
+                                p->structure.children[i-1] = dummy;
+                                dummy->structure.parent = p;
+                                np->structure.parent = NULL;
+                                *contextP = __p_make_context(np,context,context->id,context->sem_map);
+                                debug(D_REDUCE,"Redoing with a new context for: %s\n\n",_t2s(sem,np));
+                            }
+                            else {
+                                context->state = Eval;
+                                set_rt_cur_child(q->r,np,RUN_TREE_NOT_EVAULATED); // reset the current child count on the code
+                            }
                         }
                         else context->state = e ? e : Ascend;
                     }
@@ -1568,6 +1922,19 @@ Error _p_step(Q *q, R **contextP) {
         }
     }
     return context->state;
+}
+
+
+/**
+ * low level function to build a WAKEUP_REFERENCE symbol used for unblocking a process
+ */
+T* __p_build_wakeup_info(T *code_point,int process_id) {
+    T *wakeup = _t_new_root(WAKEUP_REFERENCE);
+    _t_newi(wakeup,PROCESS_IDENT,process_id);
+    int *path = _t_get_path(code_point);
+    _t_new(wakeup,CODE_PATH,path,sizeof(int)*(_t_path_depth(path)+1));
+    free(path);
+    return wakeup;
 }
 
 /**
@@ -1686,7 +2053,6 @@ void _p_free_elements(Qe *e) {
  * @param[in] q the queue to be freed
  */
 void _p_freeq(Q *q) {
-    Qe *e = q->active;
     _p_free_elements(q->active);
     _p_free_elements(q->completed);
     _p_free_elements(q->blocked);
@@ -1721,8 +2087,6 @@ Qe *__p_addrt2q(Q *q,T *run_tree,T *sem_map) {
  * @param[in] q the queue to be processed
  */
 void *_p_reduceq_thread(void *arg){
-    Q *q = (Q*)arg;
-
     int err;
     err = _p_reduceq((Q *)arg);
     pthread_exit(NULL);
@@ -1809,7 +2173,7 @@ Error _p_reduceq(Q *q) {
             // remove from the round-robin
             __p_dequeue(q->active,qe);
 
-            debug(D_REDUCEV,"Just completed:\n");
+            debug(D_REDUCEV,"Just completed:%d\n",qe->id);
 
             // add to the completed list
             __p_enqueue(q->completed,qe);
@@ -1884,7 +2248,7 @@ T *__p_make_form(Symbol sym,char *output_label,Symbol output_type,SemanticID out
     else {
         _t_news(o,output_type,output_sem);
     }
-    while (label = va_arg(params,char*)) {
+    while ((label = va_arg(params,char*))) {
         type = va_arg(params,Symbol);
         if (semeq(type,SIGNATURE_OPTIONAL)) {
             optional = 1;

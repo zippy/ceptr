@@ -16,7 +16,8 @@
 char __d_extra_buf[100];
 
 int semeq(SemanticID s1,SemanticID s2) {
-    return (memcmp(&s1,&s2,sizeof(SemanticID))==0);
+    return (s1.context == s2.context)&&(s1.semtype == s2.semtype)&&(s1.id==s2.id);
+    //    return (memcmp(&s1,&s2,sizeof(SemanticID))==0);
 }
 
 // used to find the semantic address for a def when building a SemanticID
@@ -184,13 +185,17 @@ size_t _sys_structure_size(int id,void *surface) {
     case TREE_ID:
     case NULL_STRUCTURE_ID: return 0;
         //      case SEMTREX: return
-    case SYMBOL_ID: return sizeof(Symbol);
+    case PROCESS_ID:
+    case PROTOCOL_ID:
+    case STRUCTURE_ID:
+    case SYMBOL_ID: return sizeof(SemanticID);
     case BIT_ID:
     case INTEGER_ID: return sizeof(int);
     case INTEGER64_ID: return sizeof(uint64_t);
     case FLOAT_ID: return sizeof(float);
     case CSTRING_ID: return strlen(surface)+1;
     case XADDR_ID: return sizeof(Xaddr);
+    case UUID_ID: return sizeof(UUIDt);
     case CPOINTER_ID:
     case RECEPTOR_ID:
     case SCAPE_ID:
@@ -354,6 +359,64 @@ Protocol _d_define_protocol(SemTable *sem,T *def,Context c) {
     return _d_define(sem,def,SEM_TYPE_PROTOCOL,c);
 }
 
+T *__d_build_def_semtrex(SemTable *sem,T *def,T *stx) {
+    Symbol def_sym = _t_symbol(def);
+    if (semeq(def_sym,STRUCTURE_SYMBOL)) {
+        Symbol sym = *(Symbol *)_t_surface(def);
+        if (!semeq(NULL_SYMBOL,sym))
+            stx = _d_build_def_semtrex(sem,sym,stx);
+    }
+    else if (semeq(def_sym,STRUCTURE_SEQUENCE)) {
+        int i,c = _t_children(def);
+        if (c > 0) {
+            stx = _t_newr(stx,SEMTREX_SEQUENCE);
+            for(i=1;i<=c;i++) {
+                __d_build_def_semtrex(sem,_t_child(def,i),stx);
+            }
+        }
+    }
+    else if (semeq(def_sym,STRUCTURE_OR)) {
+        int i,c = _t_children(def);
+        if (c == 1) {
+            stx = _t_newr(stx,SEMTREX_ZERO_OR_ONE);
+            __d_build_def_semtrex(sem,_t_child(def,1),stx);
+        }
+        else if (c > 1) {
+            // semtrex OR is binary whereas structure def or is a set,
+            // so we have to build up a binary tree OR structure
+            // so, we build it up from the bottom first, building from the
+            // last child backwards.
+            T *last = __d_build_def_semtrex(sem,_t_child(def,c),NULL);
+            for(i=c-1;i>=1;i--) {
+                T *or = _t_new_root(SEMTREX_OR);
+                __d_build_def_semtrex(sem,_t_child(def,i),or);
+                _t_add(or,last);
+                last = or;
+            }
+            if (stx) _t_add(stx,last);
+            stx = last;
+        }
+    }
+    else if (semeq(def_sym,STRUCTURE_ANYTHING)) {
+        stx = _t_newr(stx,SEMTREX_ZERO_OR_MORE);
+        stx = _t_newr(stx,SEMTREX_SYMBOL_ANY);
+        if (_t_children(def))
+            __d_build_def_semtrex(sem,_t_child(def,1),stx);
+    }
+    else if (semeq(def_sym,STRUCTURE_ZERO_OR_MORE)) {
+        stx = _t_newr(stx,SEMTREX_ZERO_OR_MORE);
+        __d_build_def_semtrex(sem,_t_child(def,1),stx);
+    }
+    else if (semeq(def_sym,STRUCTURE_ONE_OR_MORE)) {
+        stx = _t_newr(stx,SEMTREX_ONE_OR_MORE);
+        __d_build_def_semtrex(sem,_t_child(def,1),stx);
+    }
+    else {
+        raise_error("translation from %s not implemented\n",_sem_get_name(sem,def_sym));
+    }
+    return stx;
+}
+
 /**
  * Walks the definition of a symbol to build a semtrex that would match that definiton
  *
@@ -370,24 +433,18 @@ Protocol _d_define_protocol(SemTable *sem,T *def,Context c) {
 T * _d_build_def_semtrex(SemTable *sem,Symbol s,T *parent) {
     T *stx = _sl(parent,s);
 
+    //printf("building semtrex for %s\n",_sem_get_name(sem,s));
     Structure st = _sem_get_symbol_structure(sem,s);
-    if (!(is_sys_structure(st))) {
-        T *structure = _d_get_structure_def(_sem_get_defs(sem,st),st);
-        T *parts = _t_child(structure,2);
-        int i,c = _t_children(parts);
-        if (c > 0) {
-            T *seq = _t_newr(stx,SEMTREX_SEQUENCE);
-            for(i=1;i<=c;i++) {
-                T *p = _t_child(parts,i);
-                _d_build_def_semtrex(sem,*(Symbol *)_t_surface(p),seq);
-            }
-        }
+    if (!semeq(st,NULL_STRUCTURE)) {
+        T *structure = _sem_get_def(sem,st);
+        T *def = _t_child(structure,StructureDefDefIdx);
+        __d_build_def_semtrex(sem,def,stx);
     }
     return stx;
 }
 
 /**
- * define a new receptor
+ * helper to define a new receptor
  *
  * this call creates a receptor as a new semantic context inside given context
  *
@@ -397,25 +454,42 @@ T * _d_build_def_semtrex(SemTable *sem,Symbol s,T *parent) {
  * @paran[in] the context in which to define this receptor
  *
  */
-SemanticID _d_define_receptor(SemTable *sem,char *label,T *def,Context c) {
+SemanticID _d_define_receptor(SemTable *sem,char *label,T *definitions,Context c) {
+
+    T *def = _t_new_root(RECEPTOR_DEFINITION);
+    T *l=_t_newr(def,RECEPTOR_LABEL);
+    _t_new_str(l,ENGLISH_LABEL,label);
+    _t_add(def,definitions);
+
+    return __d_define_receptor(sem,def,c);
+}
+
+/**
+ * helper to define a new receptor
+ *
+ * this call creates a receptor as a new semantic context inside given context
+ *
+ * @param[in] sem the SemanticTable of contexts
+ * @param[in] def a human readable name for this receptor
+ * @param[in] def RECEPTOR_DEFINITION for the receptor
+ * @paran[in] the context in which to define this receptor
+ *
+ */
+SemanticID __d_define_receptor(SemTable *sem,T *def,Context c) {
+
+    T *definitions = _t_child(def,ReceptorDefinitionDefsIdx);
 
     bool vmhost_special_case = (c == SYS_CONTEXT) && (!sem->contexts);
     //__d_validate_receptor(sem,def); //@todo
     // @todo recursively add definitions for any receptors defined in def
-    if (_t_children(_t_child(def,SEM_TYPE_RECEPTOR))) {
+    if (_t_children(_t_child(definitions,SEM_TYPE_RECEPTOR))) {
         raise_error("recursive receptor definition not yet implemented");
     }
-    Context new_context = _sem_new_context(sem,def);
-
-    T *d = _t_new_root(RECEPTOR_DEFINITION);
+    Context new_context = _sem_new_context(sem,definitions);
 
     // big trick!! put the context number in the surface of the definition so
     // we can get later in _d_get_receptor_address
-    (*(int *)_t_surface(d)) = new_context;
-
-    T *l=_t_newr(d,RECEPTOR_LABEL);
-    _t_new_str(l,ENGLISH_LABEL,label);
-    _t_add(d,def);
+    (*(int *)_t_surface(def)) = new_context;
 
     // account for the one exception where the VMHost is defined inside itself
     // we can't use _d_define because when it tries to look up the newly added
@@ -426,7 +500,7 @@ SemanticID _d_define_receptor(SemTable *sem,char *label,T *def,Context c) {
         SemanticID sid = {c,SEM_TYPE_RECEPTOR,0};
         return sid;
     }
-    return _d_define(sem,d,SEM_TYPE_RECEPTOR,c);
+    return _d_define(sem,def,SEM_TYPE_RECEPTOR,c);
 }
 
 // this works because when a receptor gets defined the semantic context get jammed into the definition surface!
@@ -460,15 +534,16 @@ char *_indent_line(int level,char *buf) {
     return buf;
 }
 
+#include "ansicolor.h"
 #define MAX_LEVEL 100
-
+T *G_cursor = NULL;
 char * __t_dump(SemTable *sem,T *t,int level,char *buf) {
     if (!t) return "";
     Symbol s = _t_symbol(t);
     char b[255];
     char tbuf[2000];
     int i;
-    char *c;
+    char *c,*obuf;
     Xaddr x;
     buf = _indent_line(level,buf);
 
@@ -484,6 +559,8 @@ char * __t_dump(SemTable *sem,T *t,int level,char *buf) {
     /* } */
 
     char *n = _sem_get_name(sem,s);
+    obuf = buf;
+    if (t && (t == G_cursor)) {sprintf(buf,KRED);buf += strlen(buf);}
 
     if (is_process(s)) {
         sprintf(buf,"(process:%s",n);
@@ -496,6 +573,9 @@ char * __t_dump(SemTable *sem,T *t,int level,char *buf) {
         else {
             raise_error("bad node flags for receptor semtype!");
         }
+    }
+    else if (semeq(s,NULL_SYMBOL)) {
+        sprintf(buf,"(NULL_SYMBOL");
     }
     else {
         Structure st = _sem_get_symbol_structure(sem,s);
@@ -579,9 +659,11 @@ char * __t_dump(SemTable *sem,T *t,int level,char *buf) {
             }
         }
     }
+    if (t&&(t == G_cursor)) {sprintf(buf+strlen(buf),KNRM);}
+
     DO_KIDS(t,__t_dump(sem,_t_child(t,i),level < 0 ? level-1 : level+1,buf+strlen(buf)));
     sprintf(buf+strlen(buf),")");
-    return buf;
+    return obuf;
 }
 
 /** @}*/

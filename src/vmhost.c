@@ -47,6 +47,8 @@ VMHost * _v_new() {
     Receptor *r = _r_new(sem,SYS_RECEPTOR);
     VMHost *v = __v_init(r,sem);
 
+    load_contexts(sem);
+
     r = _r_new(sem,COMPOSITORY);
     _v_new_receptor(v,v->r,COMPOSITORY,r);
 
@@ -57,7 +59,6 @@ VMHost * _v_new() {
     _v_new_receptor(v,v->r,TEST_RECEPTOR,r);
 
     _r_defineClockReceptor(sem);
-
 
     return v;
 }
@@ -191,7 +192,7 @@ void _v_activate(VMHost *v, Xaddr x) {
  * @snippet spec/vmhost_spec.h testVMHostActivateReceptor
  */
 void _v_send(VMHost *v,ReceptorAddress from,ReceptorAddress to,Aspect aspect,Symbol carrier,T *contents) {
-    T *s = __r_make_signal(from,to,aspect,carrier,contents,0,0);
+    T *s = __r_make_signal(from,to,aspect,carrier,contents,0,0,0);
     T *x = _r_send(v->r,s);
     _t_free(x);
 }
@@ -236,10 +237,10 @@ void _v_deliver_signals(VMHost *v, Receptor *sender) {
 
     while(_t_children(signals)>0) {
         T *s = _t_detach_by_idx(signals,1);
-        T *envelope = _t_child(s,1);
-        //      T *contents = _t_child(s,2);
-        ReceptorAddress *toP = (ReceptorAddress *)_t_surface(_t_child(_t_child(envelope,EnvelopeToIdx),1));
-        ReceptorAddress *fromP = (ReceptorAddress *)_t_surface(_t_child(_t_child(envelope,EnvelopeFromIdx),1));
+        T *head = _t_getv(s,SignalMessageIdx,MessageHeadIdx,TREE_PATH_TERMINATOR);
+
+        ReceptorAddress *toP = (ReceptorAddress *)_t_surface(_t_child(_t_child(head,HeadToIdx),1));
+        ReceptorAddress *fromP = (ReceptorAddress *)_t_surface(_t_child(_t_child(head,HeadFromIdx),1));
 
         // if the from or to address is "self" (-1) we find the senders self
         // fix the values in the signal we are about to deliver.

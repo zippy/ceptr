@@ -20,7 +20,7 @@ function loadTree(file_name,completedFN) {
     });
 }
 function getSymbolByID(id) {
-    Object.keys(TE.LABEL_TABLE).forEach(function(k) {var sem = TE.LABEL_TABLE[k].sem; if (sem.id == id &&sem.type==2) console.log(k);})
+    Object.keys(TE.LABEL_TABLE).forEach(function(k) {var sem = TE.LABEL_TABLE[k].sem; if (sem.id == id &&sem.type==2) console.log(k);});
 }
 var JQ = $;  //jquery if needed for anything complicated, trying to not have dependency on jq
 (function () {
@@ -36,14 +36,14 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         var me = this;
         var handle_keys = true;
 
-	// instance properties
+        // instance properties
         this.elem = $(elem);
         this.elem.te = this;  // stick a copy of this in the element for reference
 
         o = o || {};
-	configure.call(this, {
+        configure.call(this, {
             structVisible : false
-	}, o);
+        }, o);
 
         // Create necessary elements
         var caret = $.create("span",{
@@ -56,7 +56,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         this.caret = caret;
 
         // Bind events
-	$.bind(caret, {
+        $.bind(caret, {
             "keypress": function(e) {
                 if (!handle_keys) {
                     return;
@@ -88,7 +88,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
                     caret.focus();
                     e.preventDefault();
                 }
-            },
+            }
         });
         $.bind(this.elem, {
             "click": function(e) {
@@ -170,6 +170,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
             var struct = $.getOrCreate('struct',sem_elem);
             this.structVisible ? $.show(struct) : $.hide(struct);
             struct.innerHTML=getSemName(getSymbolStruct(sem));
+            label.setAttribute("title",struct.innerHTML);
         }
     }
 
@@ -191,7 +192,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
 
                 // this represents a SemanticID by it's name:
                 if (o.hasOwnProperty("ctx") && o.hasOwnProperty("id") && o.hasOwnProperty("type")) {
-                    surface.innerHTML = "&lt;"+getSemName(tree.surface)+"&gt;"
+                    surface.innerHTML = "&lt;"+getSemName(tree.surface)+"&gt;";
                 }
                 else {
                     surface.innerHTML = "some-object";
@@ -247,7 +248,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
                     if (getSemName(c.sem) === "STRUCTURE_SYMBOL") {
                         s.push(getSemName(c.surface));
                     }
-                    else {structure_type = "complex"};
+                    else {structure_type = "complex";};
                 });
                 if (structure_type === "fixed") symbols = s;
             }
@@ -300,7 +301,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
             before:label
         });
         var a = new Awesomplete(input, {
-	    list: SYMBOLS.concat(PROCESSES),
+            list: SYMBOLS.concat(PROCESSES),
             minChars: 1
         });
         input.value=v;
@@ -324,33 +325,33 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
             me.showCaret();
         }
         $.bind(input,{
-            "blur":close_a,
+            "blur":close_a
         });
         return a;
     }
 
     function configure(properties, o) {
-	for (var i in properties) {
-	    var initial = properties[i],
-		attrValue = this.elem.getAttribute("data-" + i.toLowerCase());
+        for (var i in properties) {
+            var initial = properties[i],
+                attrValue = this.elem.getAttribute("data-" + i.toLowerCase());
 
-	    if (typeof initial === "number") {
-		this[i] = parseInt(attrValue);
-	    }
-	    else if (initial === false) { // Boolean options must be false by default anyway
-		this[i] = attrValue !== null;
-	    }
-	    else if (initial instanceof Function) {
-		this[i] = null;
-	    }
-	    else {
-		this[i] = attrValue;
-	    }
+            if (typeof initial === "number") {
+                this[i] = parseInt(attrValue);
+            }
+            else if (initial === false) { // Boolean options must be false by default anyway
+                this[i] = attrValue !== null;
+            }
+            else if (initial instanceof Function) {
+                this[i] = null;
+            }
+            else {
+                this[i] = attrValue;
+            }
 
-	    if (!this[i] && this[i] !== 0) {
-		this[i] = (i in o)? o[i] : initial;
-	    }
-	}
+            if (!this[i] && this[i] !== 0) {
+                this[i] = (i in o)? o[i] : initial;
+            }
+        }
     }
 
     // Helpers
@@ -358,52 +359,52 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
     var slice = Array.prototype.slice;
 
     function $(expr, con) {
-	return typeof expr === "string"? (con || document).querySelector(expr) : expr || null;
+        return typeof expr === "string"? (con || document).querySelector(expr) : expr || null;
     }
 
     function $$(expr, con) {
-	return slice.call((con || document).querySelectorAll(expr));
+        return slice.call((con || document).querySelectorAll(expr));
     }
 
     $.bind = function(element, o) {
-	if (element) {
-	    for (var event in o) {
-		var callback = o[event];
+        if (element) {
+            for (var event in o) {
+                var callback = o[event];
 
-		event.split(/\s+/).forEach(function (event) {
-		    element.addEventListener(event, callback);
-		});
-	    }
-	}
+                event.split(/\s+/).forEach(function (event) {
+                    element.addEventListener(event, callback);
+                });
+            }
+        }
     };
 
     $.create = function(tag, o) {
-	var element = document.createElement(tag);
+        var element = document.createElement(tag);
 
-	for (var i in o) {
-	    var val = o[i];
+        for (var i in o) {
+            var val = o[i];
 
-	    if (i === "inside") {
-		$(val).appendChild(element);
-	    }
-            else if (i === "before") {
-		var ref = $(val);
-		ref.parentNode.insertBefore(element, ref);
+            if (i === "inside") {
+                $(val).appendChild(element);
             }
-	    else if (i === "around") {
-		var ref = $(val);
-		ref.parentNode.insertBefore(element, ref);
-		element.appendChild(ref);
-	    }
-	    else if (i in element) {
-		element[i] = val;
-	    }
-	    else {
-		element.setAttribute(i, val);
-	    }
-	}
+            else if (i === "before") {
+                var ref = $(val);
+                ref.parentNode.insertBefore(element, ref);
+            }
+            else if (i === "around") {
+                var ref = $(val);
+                ref.parentNode.insertBefore(element, ref);
+                element.appendChild(ref);
+            }
+            else if (i in element) {
+                element[i] = val;
+            }
+            else {
+                element.setAttribute(i, val);
+            }
+        }
 
-	return element;
+        return element;
     };
 
     $.getOrCreate = function(tag,elem) {
@@ -412,12 +413,12 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
             e = $.create(tag,{inside:elem});
         }
         return e;
-    }
+    };
 
     $.remove = function(tag,elem) {
         var e = $(tag,elem);
         if (e) e.remove();
-    }
+    };
 
     $.hide = function(e) {
         var elem  = $(e);
@@ -426,12 +427,12 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
             elem.__TEolddisplay = display;
             elem.style.display="none";
         }
-    }
+    };
 
     $.show = function(e) {
         var elem  = $(e);
         elem.style.display= elem.__TEolddisplay || "";
-    }
+    };
 
     var SEM_TYPE_STRUCTURE=1;
     var SEM_TYPE_SYMBOL=2;
@@ -454,11 +455,12 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         if (id.id == 0) {
             return "NULL_"+type_names[id.type];
         }
-        return CONTEXTS[id.ctx].children[id.type-1].children[id.id-1].children[0].surface;
+        return CONTEXTS[id.ctx].children[id.type-1].children[id.id-1].children[0].children[0].surface;
     }
     _.getSemName = getSemName;
     function getSymbolStruct(id){
         if (id.type != SEM_TYPE_SYMBOL) {throw "expecting symbol";}
+        if (id.id == 0) return {ctx:0,type:SEM_TYPE_STRUCTURE,id:0};
         return CONTEXTS[id.ctx].children[SEM_TYPE_SYMBOL-1].children[id.id-1].children[1].surface;
     }
     _.getSymbolStruct = getSymbolStruct;
@@ -483,14 +485,15 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
     function newSymbol(label,struct) {
         var symbols = CONTEXTS[DEV_COMPOSITORY_CONTEXT].children[SEM_TYPE_SYMBOL-1];
         var def = Tnew(symbols,LABEL_TABLE["SYMBOL_DEFINITION"].sem);
-        Tnew(def,LABEL_TABLE["SYMBOL_LABEL"].sem,label);
+        var sym_label = Tnew(def,LABEL_TABLE["SYMBOL_LABEL"].sem);
+        Tnew(sym_label,LABEL_TABLE["ENGLISH_LABEL"].sem,label);
         Tnew(def,LABEL_TABLE["SYMBOL_STRUCTURE"].sem,struct);
         var sem = {ctx:DEV_COMPOSITORY_CONTEXT,type:SEM_TYPE_SYMBOL,id:symbols.children.length};
         LABEL_TABLE[label]= {"sem":sem,type:'symbol',structure:getSemName(struct)};
         SYMBOLS.push(label);
         if (_.lt_elem) {
             var lt = makeLabelTableElem(label,LABEL_TABLE[label]);
-            _.lt_elem.insertBefore(lt,_.lt_elem.firstChild)
+            _.lt_elem.insertBefore(lt,_.lt_elem.firstChild);
         }
         return sem;
     }
@@ -503,7 +506,8 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
     function newStructure(label,symbols) {
         var structures = CONTEXTS[DEV_COMPOSITORY_CONTEXT].children[SEM_TYPE_STRUCTURE-1];
         var def = Tnew(structures,LABEL_TABLE["STRUCTURE_DEFINITION"].sem);
-        Tnew(def,LABEL_TABLE["STRUCTURE_LABEL"].sem,label);
+        var st_label = Tnew(def,LABEL_TABLE["STRUCTURE_LABEL"].sem);
+        Tnew(st_label,LABEL_TABLE["ENGLISH_LABEL"].sem,label);
         var parts = Tnew(def,LABEL_TABLE["STRUCTURE_SEQUENCE"].sem);
         var sem = {ctx:DEV_COMPOSITORY_CONTEXT,type:SEM_TYPE_STRUCTURE,id:structures.children.length};
         var s = [];
@@ -515,7 +519,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         STRUCTURES.push(label);
         if (_.lt_elem) {
             var lt = makeLabelTableElem(label,LABEL_TABLE[label]);
-            _.lt_elem.insertBefore(lt,_.lt_elem.firstChild)
+            _.lt_elem.insertBefore(lt,_.lt_elem.firstChild);
         }
         return sem;
     }
@@ -526,7 +530,8 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         if (defs) {
             var num_defs = defs.length;
             for (var i=0;i<num_defs;i++) {
-                label = defs[i].children[0].surface;
+                // get the label from the first element which is the default.
+                var label = defs[i].children[0].children[0].surface;
                 var lt_entry = func(i,defs[i]);
                 LABEL_TABLE[label] = lt_entry;
             }
@@ -565,10 +570,10 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
                 type:'process'
                 //                    intention:symbol_def.children[1].surface;
             };
-            var signatures = process_def.children[3].children
+            var signatures = process_def.children[3].children;
             var params = [];
             for (var j=1;j<signatures.length;j++) {
-                var n = signatures[j].children[0].surface;
+                var n = signatures[j].children[0].children[0].surface;
                 params.push(n);
             }
             if (params.length>0) def.params = params;
@@ -585,9 +590,9 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
    }
     // Initialization
     function init() {
-	$$(".TE").forEach(function (elem) {
-	    new _(elem);
-	});
+        $$(".TE").forEach(function (elem) {
+            new _(elem);
+        });
         loadTree("sysdefs",function(d){
             setupContext(SYS_CONTEXT,d);
 
@@ -605,14 +610,14 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
 
     // Are we in a browser? Check for Document constructor
     if (typeof Document !== 'undefined') {
-	// DOM already loaded?
-	if (document.readyState !== "loading") {
-	    init();
-	}
-	else {
-	    // Wait for it
-	    document.addEventListener("DOMContentLoaded", init);
-	}
+        // DOM already loaded?
+        if (document.readyState !== "loading") {
+            init();
+        }
+        else {
+            // Wait for it
+            document.addEventListener("DOMContentLoaded", init);
+        }
     }
 
     // static methods and variables
@@ -662,14 +667,14 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
                 });
                 // for some reason the awesomeplete didn't work
                 // new Awesomplete(i, {
-	        //     list: STRUCTURES,
+                //     list: STRUCTURES,
                 //     minChars: 1
                 // });
 
                 //@todo, covert this to work similarly for defining structures where
                 // it just works because you can just edit a STRUCTURE_DEFINITION element
                 new Awesomplete($('#newsem-structsym1'), {
-	            list: SYMBOLS,
+                    list: SYMBOLS,
                     minChars: 1
                 });
             }
@@ -695,35 +700,37 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
 
         $.bind($('#newsem-ok'), {
             "click": function(e) {
+                var label,s;
                 switch($('#newsem-type').value) {
                 case "symbol":
-                    var s = $('#newsem-sym [semid="'+getSemIDText('SYMBOL_STRUCTURE')+'"] surface select').value;
+                    s = $('#newsem-sym [semid="'+getSemIDText('SYMBOL_STRUCTURE')+'"] surface select').value;
                     if (!LABEL_TABLE[s]) {
                         alert("unknown structure:"+s);
                         return;
                     }
 
-                    var label = $('#newsem-sym [semid="'+getSemIDText('SYMBOL_LABEL')+'"] surface').innerHTML;
+                    label = $('#newsem-sym [semid="'+getSemIDText('SYMBOL_LABEL')+'"] surface').innerHTML;
                     newSymbol(label,LABEL_TABLE[s].sem);
                     break;
                 case "structure":
                     var symbols = [];
                     var i=1;
                     var ss;
-                    while (ss=$('#newsem-structsym'+i)) {
+                    while ((ss=$('#newsem-structsym'+i))) {
                         i++;
-                        var s =ss.value;
+                        s =ss.value;
                         if (!LABEL_TABLE[s]) {
                             alert("unknown symbol:"+s);
                             return;
                         }
                         symbols.push(LABEL_TABLE[s].sem);
                     }
-                    var label = $('#newsem-structlabel').value;
+                    label = $('#newsem-structlabel').value;
                     newStructure(label,symbols);
-                    $('#newsem-structlabel').value = "";
-                    var i=2;var ss;
-                    while (ss=$('#newsem-structsym'+i)) {i++;ss.remove()};
+                           $('#newsem-structlabel').value = "";
+                    i=2;
+                    while ((ss=$('#newsem-structsym'+i))) {
+                        i++;ss.remove();};
                     $('#newsem-structsym1').value="";
                     break;
                 }
@@ -744,23 +751,22 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
                 }
             }
         });
-
-    }
+    };
     function makeLabelTableElem(key,i) {
         var e = $.create('ul');
         e.setAttribute("type",i.type);
         var h = "<ltlabel>"+key+"</ltlabel>";
         if (i.type == "symbol") {
-            h += "<ltstructure>" + i.structure+ "</ltstructure>"
+            h += "<ltstructure>" + i.structure+ "</ltstructure>";
         }
         if (i.type === "structure") {
             if (i.symbols) {
-                h += "<ltsymbols>" + i.symbols.join(",")+ "</ltsymbols>"
+                h += "<ltsymbols>" + i.symbols.join(",")+ "</ltsymbols>";
             }
         }
         if (i.type == "process") {
             if (i.params) {
-                h += "<ltparams>" + i.params.join(",")+ "</ltparams>"
+                h += "<ltparams>" + i.params.join(",")+ "</ltparams>";
             }
         }
         e.innerHTML=h;
@@ -776,7 +782,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
     }
     // Make sure to export TE on self when in a browser
     if (typeof self !== 'undefined') {
-	self.TE = _;
+        self.TE = _;
     }
 
 

@@ -12,14 +12,7 @@ void testRunTree() {
 
     // a process that would look something like this in lisp:
     // (defun my_if (true_branch false_branch condition) (if (condition) (true_branch) (false_branch)))
-    code = _t_new_root(IF);                             // IF is a system process
-    int pt1[] = {2,1,TREE_PATH_TERMINATOR};
-    int pt2[] = {2,2,TREE_PATH_TERMINATOR};
-    int pt3[] = {2,3,TREE_PATH_TERMINATOR};
-
-    _t_new(code,PARAM_REF,pt3,sizeof(int)*4);
-    _t_new(code,PARAM_REF,pt1,sizeof(int)*4);
-    _t_new(code,PARAM_REF,pt2,sizeof(int)*4);
+    code = _t_parse(G_sem,0,"(IF (PARAM_REF:/2/3) (PARAM_REF:/2/1) (PARAM_REF:/2/2))");
 
     T *signature = __p_make_signature("result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,
                                    "condition",SIGNATURE_PROCESS,BOOLEAN,
@@ -32,7 +25,7 @@ void testRunTree() {
 
     Process p = _d_define_process(G_sem,code,"myif","a duplicate of the sys if process with params in different order",signature,NULL,TEST_CONTEXT);
 
-    T *params = _t_build(G_sem,0,PARAMS,TEST_INT_SYMBOL,123,TEST_INT_SYMBOL,321,BOOLEAN,1,NULL_SYMBOL);
+    T *params = _t_parse(G_sem,0,"(PARAMS (TEST_INT_SYMBOL:123) (TEST_INT_SYMBOL:321) (BOOLEAN:1))");
 
     T *r = _p_make_run_tree(G_sem,p,params,NULL);
     _t_free(params);
@@ -45,7 +38,7 @@ void testRunTree() {
 
     _t_free(r);
 
-    params = _t_build(G_sem,0,PARAMS,TEST_INT_SYMBOL,123,TEST_INT_SYMBOL,321,NULL_SYMBOL);
+    params = _t_parse(G_sem,0,"(PARAMS (TEST_INT_SYMBOL:123) (TEST_INT_SYMBOL:321))");
     // you can also create a run tree with a system process
 
     r = _p_make_run_tree(G_sem,ADD_INT,params,NULL);
@@ -133,13 +126,54 @@ void testProcessNew() {
     _r_free(r);
 }
 
+void testProcessDefine() {
+    Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
+
+    T *p = _t_parse(r->sem,0,"(DEF_SYMBOL (SYMBOL_DEFINITION (SYMBOL_LABEL (ENGLISH_LABEL:\"age\")) (SYMBOL_STRUCTURE:INTEGER)))");
+    spec_is_equal(__p_reduce_sys_proc(0,DEF_SYMBOL,p,r->q),noReductionErr);
+    spec_is_str_equal(t2s(p),"(RESULT_SYMBOL:age)");
+    T *d = _sem_get_def(r->sem,*(Symbol *)_t_surface(p));
+    spec_is_str_equal(t2s(d),"(SYMBOL_DEFINITION (SYMBOL_LABEL (ENGLISH_LABEL:age)) (SYMBOL_STRUCTURE:INTEGER))");
+    _t_free(p);
+
+    p = _t_parse(r->sem,0,"(DEF_STRUCTURE (STRUCTURE_DEFINITION (STRUCTURE_LABEL (ENGLISH_LABEL:\"age_pair\")) (STRUCTURE_SEQUENCE (STRUCTURE_SYMBOL:age) (STRUCTURE_SYMBOL:age)))");
+    spec_is_equal(__p_reduce_sys_proc(0,DEF_STRUCTURE,p,r->q),noReductionErr);
+    spec_is_str_equal(t2s(p),"(RESULT_STRUCTURE:age_pair)");
+    d = _sem_get_def(r->sem,*(Symbol *)_t_surface(p));
+    spec_is_str_equal(t2s(d),"(STRUCTURE_DEFINITION (STRUCTURE_LABEL (ENGLISH_LABEL:age_pair)) (STRUCTURE_SEQUENCE (STRUCTURE_SYMBOL:age) (STRUCTURE_SYMBOL:age)))");
+    _t_free(p);
+
+    p = _t_parse(r->sem,0,"(DEF_PROCESS (PROCESS_DEFINITION (PROCESS_NAME (ENGLISH_LABEL:\"power\")) (PROCESS_INTENTION:\"takes the mathematical power of the two params\") (NOOP) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL (ENGLISH_LABEL:\"result\")) (SIGNATURE_SYMBOL:NULL_SYMBOL)) (INPUT_SIGNATURE (SIGNATURE_LABEL (ENGLISH_LABEL:\"val\")) (SIGNATURE_STRUCTURE:INTEGER)) (INPUT_SIGNATURE (SIGNATURE_LABEL (ENGLISH_LABEL:\"exponent\")) (SIGNATURE_STRUCTURE:INTEGER))) (PROCESS_LINK (PROCESS_OF_STRUCTURE:INTEGER) (PROCESS_TYPE (OPERATOR))))");
+    spec_is_equal(__p_reduce_sys_proc(0,DEF_PROCESS,p,r->q),noReductionErr);
+    spec_is_str_equal(t2s(p),"(RESULT_PROCESS:power)");
+    d = _sem_get_def(r->sem,*(Symbol *)_t_surface(p));
+    spec_is_str_equal(t2s(d),"(PROCESS_DEFINITION (PROCESS_NAME (ENGLISH_LABEL:power)) (PROCESS_INTENTION:takes the mathematical power of the two params) (process:NOOP) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL (ENGLISH_LABEL:result)) (SIGNATURE_SYMBOL:NULL_SYMBOL)) (INPUT_SIGNATURE (SIGNATURE_LABEL (ENGLISH_LABEL:val)) (SIGNATURE_STRUCTURE:INTEGER)) (INPUT_SIGNATURE (SIGNATURE_LABEL (ENGLISH_LABEL:exponent)) (SIGNATURE_STRUCTURE:INTEGER))) (PROCESS_LINK (PROCESS_OF_STRUCTURE:INTEGER) (PROCESS_TYPE (OPERATOR))))");
+    _t_free(p);
+
+    p = _t_parse(r->sem,0,"(DEF_RECEPTOR (RECEPTOR_DEFINITION (RECEPTOR_LABEL (ENGLISH_LABEL:\"streamscapes\")) (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (RECEPTORS) (PROTOCOLS) (SCAPES)))");
+    spec_is_equal(__p_reduce_sys_proc(0,DEF_RECEPTOR,p,r->q),noReductionErr);
+    spec_is_str_equal(t2s(p),"(RESULT_RECEPTOR:streamscapes)");
+    d = _sem_get_def(r->sem,*(Symbol *)_t_surface(p));
+    spec_is_str_equal(t2s(d),"(RECEPTOR_DEFINITION (RECEPTOR_LABEL (ENGLISH_LABEL:streamscapes)) (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (RECEPTORS) (PROTOCOLS) (SCAPES)))");
+    _t_free(p);
+
+    _d_define_symbol(G_sem,RECEPTOR_ADDRESS,"agent",r->context);
+    _d_define_symbol(G_sem,PROCESS,"process",r->context);
+    _d_define_symbol(G_sem,SYMBOL,"data",r->context);
+    _d_define_symbol(G_sem,INTERACTION,"act",r->context);
+
+    p = _t_parse(r->sem,0,"(DEF_PROTOCOL (PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:\"do\")) (PROTOCOL_SEMANTICS (ROLE:agent) (GOAL:process) (USAGE:data)) (act (EXPECT (ROLE:agent) (SOURCE (ROLE:agent)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SLOT (USAGE:data) (SLOT_IS_VALUE_OF:SEMTREX_SYMBOL)))) (SLOT (GOAL:process) (SLOT_IS_VALUE_OF:ACTION))))))");
+    spec_is_equal(__p_reduce_sys_proc(0,DEF_PROTOCOL,p,r->q),noReductionErr);
+    spec_is_str_equal(t2s(p),"(RESULT_PROTOCOL:do)");
+    d = _sem_get_def(r->sem,*(Symbol *)_t_surface(p));
+    spec_is_str_equal(t2s(d),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:do)) (PROTOCOL_SEMANTICS (ROLE:agent) (GOAL:process) (USAGE:data)) (act (EXPECT (ROLE:agent) (SOURCE (ROLE:agent)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SLOT (USAGE:data) (SLOT_IS_VALUE_OF:SEMTREX_SYMBOL)))) (SLOT (GOAL:process) (SLOT_IS_VALUE_OF:ACTION)))))");
+    _t_free(p);
+
+    _r_free(r);
+}
+
 void testProcessDo() {
-    T *code = _t_build(G_sem,0,
-                       DO,BLOCK,
-                       TEST_INT_SYMBOL,1,
-                       TEST_INT_SYMBOL,2,
-                       NULL_SYMBOL,NULL_SYMBOL);
-    spec_is_str_equal(t2s(code),"(process:DO (BLOCK (TEST_INT_SYMBOL:1) (TEST_INT_SYMBOL:2)))");
+    T *code = _t_parse(G_sem,0,"(DO (SCOPE (TEST_INT_SYMBOL:1) (TEST_INT_SYMBOL:2)))");
     spec_is_equal(__p_reduce_sys_proc(0,DO,code,0),noReductionErr);
     spec_is_str_equal(t2s(code),"(TEST_INT_SYMBOL:2)");
     _t_free(code);
@@ -150,58 +184,45 @@ void testProcessTranscode() {
 
     // transcode of same structure should just change the symbol type
     T *n;
-    n = _t_build(G_sem,0,TRANSCODE,TRANSCODE_PARAMS,TRANSCODE_TO,TEST_INT_SYMBOL,NULL_SYMBOL,
-                 TRANSCODE_ITEMS,TEST_INT_SYMBOL2,314,NULL_SYMBOL,NULL_SYMBOL);
+    n = _t_parse(G_sem,0,"(TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:TEST_INT_SYMBOL)) (TRANSCODE_ITEMS (TEST_INT_SYMBOL2:314)))");
     spec_is_equal(__p_reduce_sys_proc(0,TRANSCODE,n,r->q),noReductionErr);
     spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:314)");
     _t_free(n);
 
     // transcode of INTEGER to CSTRING
-    n = _t_build(G_sem,0,TRANSCODE,TRANSCODE_PARAMS,TRANSCODE_TO,TEST_STR_SYMBOL,NULL_SYMBOL,
-                 TRANSCODE_ITEMS,TEST_INT_SYMBOL,314,NULL_SYMBOL,NULL_SYMBOL);
+    n = _t_parse(G_sem,0,"(TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:TEST_STR_SYMBOL)) (TRANSCODE_ITEMS (TEST_INT_SYMBOL2:314)))");
     spec_is_equal(__p_reduce_sys_proc(0,TRANSCODE,n,r->q),noReductionErr);
     spec_is_str_equal(t2s(n),"(TEST_STR_SYMBOL:314)");
     _t_free(n);
 
     // transcode of FLOAT to CSTRING
-    n = _t_build(G_sem,0,TRANSCODE,TRANSCODE_PARAMS,TRANSCODE_TO,TEST_STR_SYMBOL,NULL_SYMBOL,
-                 TRANSCODE_ITEMS,TEST_FLOAT_SYMBOL,3.14159,NULL_SYMBOL,NULL_SYMBOL);
+    n = _t_parse(G_sem,0,"(TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:TEST_STR_SYMBOL)) (TRANSCODE_ITEMS (TEST_FLOAT_SYMBOL:3.14159)))");
     spec_is_equal(__p_reduce_sys_proc(0,TRANSCODE,n,r->q),noReductionErr);
     spec_is_str_equal(t2s(n),"(TEST_STR_SYMBOL:3.141590)");
     _t_free(n);
 
     // transcode of CHAR to CSTRING
-    n = _t_build(G_sem,0,TRANSCODE,TRANSCODE_PARAMS,TRANSCODE_TO,TEST_STR_SYMBOL,NULL_SYMBOL,
-                 TRANSCODE_ITEMS,ASCII_CHAR,'x',NULL_SYMBOL,NULL_SYMBOL);
-     spec_is_equal(__p_reduce_sys_proc(0,TRANSCODE,n,r->q),noReductionErr);
+    n = _t_parse(G_sem,0,"(TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:TEST_STR_SYMBOL)) (TRANSCODE_ITEMS (ASCII_CHAR:'x')))");
+    spec_is_equal(__p_reduce_sys_proc(0,TRANSCODE,n,r->q),noReductionErr);
     spec_is_str_equal(t2s(n),"(TEST_STR_SYMBOL:x)");
     _t_free(n);
 
     // transcode of CSTRING to INTEGER
-    n = _t_build(G_sem,0,TRANSCODE,TRANSCODE_PARAMS,TRANSCODE_TO,TEST_INT_SYMBOL,NULL_SYMBOL,
-                 TRANSCODE_ITEMS,TEST_STR_SYMBOL,"314",NULL_SYMBOL,NULL_SYMBOL);
+    n = _t_parse(G_sem,0,"(TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:TEST_INT_SYMBOL)) (TRANSCODE_ITEMS (TEST_STR_SYMBOL:\"314\")))");
     spec_is_equal(__p_reduce_sys_proc(0,TRANSCODE,n,r->q),noReductionErr);
     spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:314)");
     _t_free(n);
 
     //debug_enable(D_TRANSCODE);
     // transcode of matching optionality structures
-    n = _t_build(G_sem,0,TRANSCODE,TRANSCODE_PARAMS,TRANSCODE_TO,LINES,NULL_SYMBOL,
-                 TRANSCODE_ITEMS,TEST_INTEGERS,
-                 TEST_INT_SYMBOL,1,
-                 TEST_INT_SYMBOL,2,
-                 TEST_INT_SYMBOL,314,
-                 NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
+    n = _t_parse(G_sem,0,"(TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:LINES)) (TRANSCODE_ITEMS (TEST_INTEGERS (TEST_INT_SYMBOL:1) (TEST_INT_SYMBOL:2) (TEST_INT_SYMBOL:314))))");
     spec_is_equal(__p_reduce_sys_proc(0,TRANSCODE,n,r->q),redoReduction);
     spec_is_str_equal(t2s(n),"(LINES (LINE:1) (LINE:2) (LINE:314))");
     _t_free(n);
     debug_disable(D_TRANSCODE);
 
     //transcode of constructed symbol to CSTRING
-    n = _t_build(G_sem,0,
-                 TRANSCODE,TRANSCODE_PARAMS,TRANSCODE_TO,LINE,NULL_SYMBOL,
-                 TRANSCODE_ITEMS,CONTENT_TYPE,MEDIA_TYPE_IDENT,TEXT_MEDIA_TYPE,MEDIA_SUBTYPE_IDENT,CEPTR_TEXT_MEDIA_SUBTYPE,
-                 NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
+    n = _t_parse(G_sem,0,"(TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:LINE)) (TRANSCODE_ITEMS (CONTENT_TYPE (MEDIA_TYPE_IDENT:TEXT_MEDIA_TYPE) (MEDIA_SUBTYPE_IDENT:CEPTR_TEXT_MEDIA_SUBTYPE))))");
     Q *q = r->q;
     T *run_tree = __p_build_run_tree(n,0);
     _t_free(n);
@@ -210,10 +231,8 @@ void testProcessTranscode() {
     spec_is_str_equal(t2s(_t_child(run_tree,1)),"(LINE:Content-Type: text/ceptr)");
 
     //        debug_enable(D_REDUCE+D_REDUCEV);
-    n = _t_build(G_sem,0,
-                 TRANSCODE,TRANSCODE_PARAMS,TRANSCODE_TO,LINE,NULL_SYMBOL,
-                 TRANSCODE_ITEMS,TODAY,YEAR,2015,MONTH,1,DAY,30,NULL_SYMBOL
-                 ,NULL_SYMBOL,NULL_SYMBOL);
+    n = _t_parse(G_sem,0,"(TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:LINE)) (TRANSCODE_ITEMS (TODAY (YEAR:2015) (MONTH:1) (DAY:30))))");
+
     //    spec_is_equal(__p_reduce_sys_proc(0,TRANSCODE,n,r->q),noReductionErr);
     run_tree = __p_build_run_tree(n,0);
     _t_free(n);
@@ -222,22 +241,26 @@ void testProcessTranscode() {
     debug_disable(D_REDUCE+D_REDUCEV);
     spec_is_str_equal(t2s(_t_child(run_tree,1)),"(US_SHORT_DATE:1/30/2015)");
 
-    n = _t_build(G_sem,0,TRANSCODE,TRANSCODE_PARAMS,TRANSCODE_TO,LINES,NULL_SYMBOL,
-                 TRANSCODE_ITEMS,HTTP_HEADERS,
-                 CONTENT_TYPE,MEDIA_TYPE_IDENT,TEXT_MEDIA_TYPE,MEDIA_SUBTYPE_IDENT,CEPTR_TEXT_MEDIA_SUBTYPE,NULL_SYMBOL,
-                 CONTENT_TYPE,MEDIA_TYPE_IDENT,TEXT_MEDIA_TYPE,MEDIA_SUBTYPE_IDENT,HTML_TEXT_MEDIA_SUBTYPE,NULL_SYMBOL,
-                 NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
+    n = _t_parse(G_sem,0,"(TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:LINES)) (TRANSCODE_ITEMS (HTTP_HEADERS (CONTENT_TYPE (MEDIA_TYPE_IDENT:TEXT_MEDIA_TYPE) (MEDIA_SUBTYPE_IDENT:CEPTR_TEXT_MEDIA_SUBTYPE)) (CONTENT_TYPE (MEDIA_TYPE_IDENT:TEXT_MEDIA_TYPE) (MEDIA_SUBTYPE_IDENT:HTML_TEXT_MEDIA_SUBTYPE)))))");
     run_tree = __p_build_run_tree(n,0);
     _t_free(n);
     _p_addrt2q(q,run_tree);
     spec_is_equal(_p_reduceq(q),noReductionErr);
     spec_is_str_equal(t2s(run_tree),"(RUN_TREE (LINES (LINE:Content-Type: text/ceptr) (LINE:Content-Type: text/html)) (PARAMS))");
 
-    //debug_enable(D_TRANSCODE+D_STEP);
-    //    debug_enable(D_REDUCE+D_REDUCEV);
-    n = _t_new_root(ascii_chars_2_http_req);
-    _t_build(G_sem,n,TRANSCODE,TRANSCODE_PARAMS,TRANSCODE_TO,ASCII_CHARS,NULL_SYMBOL,
-             TRANSCODE_ITEMS,TEST_STR_SYMBOL,"GET /path/to/file.ext?name=joe&age=30 HTTP/0.9\n",NULL_SYMBOL,NULL_SYMBOL);
+    n = _t_parse(G_sem,0,"(ascii_chars_2_http_req (TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:ASCII_CHARS)) (TRANSCODE_ITEMS (TEST_STR_SYMBOL:\"GET /path/to/file.ext?name=joe&age=30 HTTP/0.9\n\"))))");
+
+    run_tree = __p_build_run_tree(n,0);
+    _t_free(n);
+    _p_addrt2q(q,run_tree);
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (HTTP_REQUEST (HTTP_REQUEST_METHOD:GET) (HTTP_REQUEST_PATH (HTTP_REQUEST_PATH_SEGMENTS (HTTP_REQUEST_PATH_SEGMENT:path) (HTTP_REQUEST_PATH_SEGMENT:to) (HTTP_REQUEST_PATH_SEGMENT:file.ext))) (HTTP_REQUEST_PATH_QUERY (HTTP_REQUEST_PATH_QUERY_PARAMS (HTTP_REQUEST_PATH_QUERY_PARAM (PARAM_KEY:name) (PARAM_VALUE:joe)) (HTTP_REQUEST_PATH_QUERY_PARAM (PARAM_KEY:age) (PARAM_VALUE:30)))) (HTTP_REQUEST_VERSION (VERSION_MAJOR:0) (VERSION_MINOR:9))) (PARAMS))");
+
+    //  debug_enable(D_TRANSCODE+D_STEP);
+    //  debug_enable(D_REDUCE+D_REDUCEV);
+
+    n = _t_parse(G_sem,0,"(TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:HTTP_REQUEST)) (TRANSCODE_ITEMS (TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:ASCII_CHARS)) (TRANSCODE_ITEMS (TEST_STR_SYMBOL:\"GET /path/to/file.ext?name=joe&age=30 HTTP/0.9\n\")))))");
+
     run_tree = __p_build_run_tree(n,0);
     _t_free(n);
     _p_addrt2q(q,run_tree);
@@ -258,8 +281,7 @@ void testProcessDissolve() {
 
     Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
 
-    n = _t_build(G_sem,0,LINES,LINE,"fish",DISSOLVE,LINES,LINE,"cat",LINE,"dog",NULL_SYMBOL,NULL_SYMBOL,CONCAT_STR,RESULT_SYMBOL,LINE,TEST_STR_SYMBOL,"sh",TEST_STR_SYMBOL,"oe",NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
-    spec_is_str_equal(t2s(n),"(LINES (LINE:fish) (process:DISSOLVE (LINES (LINE:cat) (LINE:dog))) (process:CONCAT_STR (RESULT_SYMBOL:LINE) (TEST_STR_SYMBOL:sh) (TEST_STR_SYMBOL:oe)))");
+    n = _t_parse(G_sem,0,"(LINES (LINE:\"fish\") (DISSOLVE (LINES (LINE:\"cat\") (LINE:\"dog\"))) (CONCAT_STR (RESULT_SYMBOL:LINE) (TEST_STR_SYMBOL:\"sh\") (TEST_STR_SYMBOL:\"oe\")))");
 
     Q *q = r->q;
     T *run_tree = __p_build_run_tree(n,0);
@@ -312,12 +334,7 @@ void testProcessSemtrex() {
 
 void testProcessFill() {
     Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
-    T *n = _t_new_root(FILL);
-    _t_build(G_sem,n,SLOT,GOAL,REQUEST_HANDLER,SLOT_CHILDREN,TEST_INT_SYMBOL,1,SLOT,USAGE,REQUEST_DATA,NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
-    _t_build(G_sem,n,SEMANTIC_MAP,
-             SEMANTIC_LINK,USAGE,REQUEST_DATA,REPLACEMENT_VALUE,TEST_INT_SYMBOL,32,NULL_SYMBOL,NULL_SYMBOL,
-             SEMANTIC_LINK,GOAL,REQUEST_HANDLER,REPLACEMENT_VALUE,ACTUAL_PROCESS,ADD_INT,NULL_SYMBOL,NULL_SYMBOL,
-             NULL_SYMBOL);
+    T *n = _t_parse(G_sem,0,"(FILL (SLOT (GOAL:RESPONSE_HANDLER) (SLOT_CHILDREN (TEST_INT_SYMBOL:1) (SLOT (USAGE:REQUEST_TYPE)))) (SEMANTIC_MAP (SEMANTIC_LINK (USAGE:REQUEST_TYPE) (REPLACEMENT_VALUE (TEST_INT_SYMBOL:32))) (SEMANTIC_LINK (GOAL:RESPONSE_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:ADD_INT)))))");
     spec_is_equal(__p_reduce_sys_proc(0,FILL,n,r->q),noReductionErr);
 
     //@todo, should this have been reduced too?  Or should there be an explicit eval kind of thing?
@@ -339,6 +356,10 @@ void testProcessFillMatch() {
     _t_new(p2,SEMTREX_MATCH_PATH,path,2*sizeof(int));
     _t_newi(p2,SEMTREX_MATCH_SIBLINGS_COUNT,1);
     T *p3 = _t_newi(n,TEST_INT_SYMBOL2,314);
+
+    // @todo N.B. SEMTREX_MATCH is not used correctly, the structure is interpreted two different
+    // ways, as both and INT and SYMBOL, so we can't use parse because it will fail on the incorrect type
+    //n = _t_parse(G_sem,0,"(FILL_FROM_MATCH (TEST_ANYTHING_SYMBOL (SLOT (USAGE:TEST_INT_SYMBOL2))) (SEMTREX_MATCH:1 (SEMTREX_MATCH:TEST_INT_SYMBOL2) (SEMTREX_MATCH_PATH:/) (SEMTREX_MATCH_SIBLINGS_COUNT:1)) (TEST_INT_SYMBOL2:314))");
 
     T *c = _t_rclone(n);
     _t_add(t,c);
@@ -384,6 +405,28 @@ void testProcessIf() {
     __p_reduce_sys_proc(0,IF,n,0);
     spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:99)");
 
+    _t_free(n);
+}
+
+void testProcessCond(){
+    T *t = _t_new_root(RUN_TREE);
+    T *n = _t_parse(G_sem,0,"(COND (CONDITIONS (COND_PAIR (BOOLEAN:0) (ASCII_CHAR:'x')) (COND_ELSE (ASCII_CHAR:'y'))))");
+    T *c = _t_rclone(n);
+    _t_add(t,c);
+    _p_reduce(G_sem,t);
+
+    spec_is_str_equal(t2s(_t_child(t,1)),"(ASCII_CHAR:'y')");
+    _t_free(t);
+    _t_free(n);
+
+    t = _t_new_root(RUN_TREE);
+    n = _t_parse(G_sem,0,"(COND (CONDITIONS (COND_PAIR (BOOLEAN:0) (ASCII_CHAR:'x')) (COND_PAIR (BOOLEAN:1) (ASCII_CHAR:'y')) (COND_ELSE (ASCII_CHAR:'z'))))");
+    c = _t_rclone(n);
+    _t_add(t,c);
+    _p_reduce(G_sem,t);
+
+    spec_is_str_equal(t2s(_t_child(t,1)),"(ASCII_CHAR:'y')");
+    _t_free(t);
     _t_free(n);
 }
 
@@ -518,6 +561,24 @@ void testProcessIntMath() {
 
 }
 
+void testProcessPath() {
+    T *p = _t_parse(G_sem,0,"(POP_PATH (RECEPTOR_PATH:/4/1/1) (RESULT_SYMBOL:CONTINUE_LOCATION))");
+    __p_reduce_sys_proc(0,POP_PATH,p,0);
+    spec_is_str_equal(t2s(p),"(CONTINUE_LOCATION:/4/1)");
+    _t_free(p);
+    p = _t_parse(G_sem,0,"(POP_PATH (RECEPTOR_PATH:/4/1/1) (RESULT_SYMBOL:CONTINUE_LOCATION) (POP_COUNT:2))");
+    __p_reduce_sys_proc(0,POP_PATH,p,0);
+    spec_is_str_equal(t2s(p),"(CONTINUE_LOCATION:/4)");
+    _t_free(p);
+    p = _t_parse(G_sem,0,"(POP_PATH (RECEPTOR_PATH:/4/1/1) (RESULT_SYMBOL:CONTINUE_LOCATION) (POP_COUNT:3))");
+    __p_reduce_sys_proc(0,POP_PATH,p,0);
+    spec_is_str_equal(t2s(p),"(CONTINUE_LOCATION:/)");
+    _t_free(p);
+    p = _t_parse(G_sem,0,"(POP_PATH (RECEPTOR_PATH:/4/1/1) (RESULT_SYMBOL:CONTINUE_LOCATION) (POP_COUNT:10))");
+    __p_reduce_sys_proc(0,POP_PATH,p,0);
+    spec_is_str_equal(t2s(p),"(CONTINUE_LOCATION:/)");
+    _t_free(p);}
+
 void testProcessString() {
 
     T *run_tree = _t_new_root(RUN_TREE);
@@ -580,7 +641,7 @@ void testProcessRespond() {
     ReceptorAddress f = {3}; // DUMMY ADDR
     ReceptorAddress t = {4}; // DUMMY ADDR
 
-    T *s = __r_make_signal(f,t,DEFAULT_ASPECT,TESTING,signal_contents,0,defaultRequestUntil());
+    T *s = __r_make_signal(f,t,DEFAULT_ASPECT,TESTING,signal_contents,0,defaultRequestUntil(),0);
 
     T *run_tree = _t_new_root(RUN_TREE);
     T *n = _t_newr(run_tree,RESPOND);
@@ -601,9 +662,9 @@ void testProcessRespond() {
     // it should create a response signal with the source UUID as the responding to UUID
     spec_is_equal(__p_reduce_sys_proc(c,RESPOND,n,r->q),noReductionErr);
     spec_is_str_equal(t2s(n),"(SIGNAL_UUID)");
-    spec_is_str_equal(_td(r,r->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:4)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (SIGNAL_UUID) (IN_RESPONSE_TO_UUID)) (BODY:{(TEST_INT_SYMBOL:271)})))");
-    T *u1 = _t_child(_t_child(s,SignalEnvelopeIdx),EnvelopeUUIDIdx);
-    int p[] = {1,SignalEnvelopeIdx,EnvelopeExtraIdx,TREE_PATH_TERMINATOR};
+    spec_is_str_equal(_td(r,r->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:4)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (IN_RESPONSE_TO_UUID)) (BODY:{(TEST_INT_SYMBOL:271)}))))");
+    T *u1 = _t_child(_t_child(s,SignalEnvelopeIdx),EnvelopeSignalUUIDIdx);
+    int p[] = {1,SignalMessageIdx,MessageHeadIdx,HeadOptionalsIdx,TREE_PATH_TERMINATOR};
     T *u2 = _t_get(r->pending_signals,p);
     spec_is_true(__uuid_equal(_t_surface(u1),_t_surface(u2)));
 
@@ -643,7 +704,7 @@ void testProcessSay() {
 
     // say reduces to the UUID generated for the sent signal
     spec_is_str_equal(t2s(run_tree),"(RUN_TREE (SIGNAL_UUID) (PARAMS))");
-    spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:99)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (SIGNAL_UUID)) (BODY:{(TEST_INT_SYMBOL:314)})))");
+    spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:99)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING)) (BODY:{(TEST_INT_SYMBOL:314)}))))");
     _r_free(r);
 }
 
@@ -684,12 +745,12 @@ void testProcessRequest() {
 
     // request reduces to the UUID generated for the sent signal
     spec_is_str_equal(t2s(run_tree),"(RUN_TREE (SIGNAL_UUID) (PARAMS))");
-    spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:99)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (SIGNAL_UUID) (END_CONDITIONS (COUNT:1))) (BODY:{(TEST_INT_SYMBOL:314)})))");
+    spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:99)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (END_CONDITIONS (COUNT:1))) (BODY:{(TEST_INT_SYMBOL:314)}))))");
 
     // debug_enable(D_SIGNALS);
     // generate a response signal
 
-    T *s = __r_make_signal(r->addr,r->addr,DEFAULT_ASPECT,TESTING,_t_new_str(0,TEST_STR_SYMBOL,"one fish"),_t_surface(_t_child(run_tree,1)),0);
+    T *s = __r_make_signal(r->addr,r->addr,DEFAULT_ASPECT,TESTING,_t_new_str(0,TEST_STR_SYMBOL,"one fish"),_t_surface(_t_child(run_tree,1)),0,0);
     _r_deliver(r,s);
     spec_is_str_equal(_td(r,r->pending_responses),"(PENDING_RESPONSES)");
 
@@ -724,6 +785,242 @@ void testProcessRequest() {
     _t_free(code);
 }
 
+
+T *_testProcessAddSay(T *parent,int id,T *message) {
+    T *say =  _t_newr(parent,SAY);
+    ReceptorAddress to = {id}; // DUMMY ADDR
+    __r_make_addr(say,TO_ADDRESS,to);
+    _t_news(say,ASPECT_IDENT,DEFAULT_ASPECT);
+    _t_news(say,CARRIER,TESTING);
+    _t_add(say,message);
+    return say;
+}
+
+/*
+  (DO
+     (SCOPE
+       (SAY <to> <aspect> <carrier> <message> )
+       (CONVERSE
+          (SCOPE
+            (LISTEN <aspect> <carrier> <action>)
+            (SAY <to> <aspect> <carrier> <message> )
+          )
+        (END_CONDITIONS (UNLIMITED))
+      )
+    )
+  )
+*/
+
+void testProcessConverse() {
+    T *p = _t_newr(0,CONVERSE);
+    T *scope = _t_newr(p,SCOPE);
+    _t_newi(p,BOOLEAN,1);
+    _testProcessAddSay(scope,100,_t_newi(0,TEST_INT_SYMBOL,31415));
+    T *code = _testProcessAddSay(0,99,p);
+
+    T *run_tree = __p_build_run_tree(code,0);
+    _t_free(code);
+
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (process:SAY (TO_ADDRESS (RECEPTOR_ADDR:99)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (process:CONVERSE (SCOPE (process:SAY (TO_ADDRESS (RECEPTOR_ADDR:100)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (TEST_INT_SYMBOL:31415))) (BOOLEAN:1))) (PARAMS))");
+
+    Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
+
+    // add the run tree into a queue and run it
+    G_next_process_id = 0; // reset the process ids so the test will always work
+    Q *q = r->q;
+    T *cons = r->conversations;
+    T *ps = r->pending_signals;
+    Qe *e =_p_addrt2q(q,run_tree);
+    R *c = e->context;
+
+    // after reduction the context be paused because we set wait to true
+    // and there should also be a conversation recorded
+    //debug_enable(D_STEP);
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    debug_disable(D_STEP);
+    spec_is_str_equal(t2s(cons),"(CONVERSATIONS (CONVERSATION (CONVERSATION_IDENT (CONVERSATION_UUID)) (END_CONDITIONS (UNLIMITED)) (CONVERSATIONS) (WAKEUP_REFERENCE (PROCESS_IDENT:1) (CODE_PATH:/1/4))))");
+
+    //CONVERSE should be reduced to the signal UUID from the containing scope
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (process:SAY (TO_ADDRESS (RECEPTOR_ADDR:99)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (SIGNAL_UUID)) (PARAMS))");
+    spec_is_ptr_equal(q->blocked,e);
+
+    // The signal to 100 should have the conversation id in it
+    spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:100)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (CONVERSATION_IDENT (CONVERSATION_UUID))) (BODY:{(TEST_INT_SYMBOL:31415)}))))");
+
+    // now use the COMPLETE instruction to clean-up
+    code = _t_newr(0,COMPLETE);
+    _t_newi(code,TEST_INT_SYMBOL,123);
+    _t_add(code,_t_clone(_t_getv(cons,1,ConversationIdentIdx,TREE_PATH_TERMINATOR)));
+
+    T *run_tree2 = __p_build_run_tree(code,0);
+    _t_free(code);
+    Qe *e2 =_p_addrt2q(q,run_tree2);
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    spec_is_ptr_equal(q->blocked,NULL);
+    spec_is_ptr_equal(q->active,NULL);
+    spec_is_ptr_equal(q->completed,e);
+    spec_is_ptr_equal(q->completed->next,e2);
+
+    // and the conversation should be cleaned up and the CONVERSE run-tree should have reduced
+    spec_is_str_equal(t2s(cons),"(CONVERSATIONS)");
+    // and the run tree should be completed with the value from the COMPLETE instruction
+    spec_is_str_equal(t2s(run_tree2),"(RUN_TREE (CONVERSATION_IDENT (CONVERSATION_UUID)) (PARAMS))");
+
+    // and the second signal shouldn't have the conversation id in it and it's body should be the
+    // 'with' value from the COMPLETE
+    spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:100)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (CONVERSATION_IDENT (CONVERSATION_UUID))) (BODY:{(TEST_INT_SYMBOL:31415)}))) (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:99)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING)) (BODY:{(TEST_INT_SYMBOL:123)}))))");
+
+
+    // setup a case for testing the COMPLETE instruction within the CONVERSE SCOPE
+    p = _t_newr(0,CONVERSE);
+    scope = _t_newr(p,SCOPE);
+    T *complete = _t_newr(scope,COMPLETE);
+    _t_newi(complete,TEST_INT_SYMBOL,321);
+    _t_newi(scope,TEST_INT_SYMBOL,123);
+
+    run_tree = __p_build_run_tree(p,0);
+    _t_free(p);
+
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (process:CONVERSE (SCOPE (process:COMPLETE (TEST_INT_SYMBOL:321)) (TEST_INT_SYMBOL:123))) (PARAMS))");
+    e =_p_addrt2q(q,run_tree);
+    //debug_enable(D_REDUCE+D_REDUCEV);
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    debug_disable(D_STEP);
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (TEST_INT_SYMBOL:321) (PARAMS))");
+
+
+    // setup a case for testing that a conversation scope gets "inherited" by sub-contexts
+    code = _testProcessAddSay(0,100,_t_new_str(0,TEST_STR_SYMBOL,"What I said!"));
+    T *signature = __p_make_signature("result",SIGNATURE_SYMBOL,NULL_SYMBOL,NULL);
+    Process sayer = _d_define_process(G_sem,code,"sayer","sends a signal to 100",signature,0,r->context);
+
+    p = _t_newr(0,CONVERSE);
+    scope = _t_newr(p,SCOPE);
+    _t_newr(scope,sayer);
+    complete = _t_newr(scope,COMPLETE); // and make sure this scope gets cleaned up
+    _t_newi(complete,TEST_INT_SYMBOL,321);
+
+    run_tree = __p_build_run_tree(p,0);
+    _t_free(p);
+
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (process:CONVERSE (SCOPE (process:sayer) (process:COMPLETE (TEST_INT_SYMBOL:321)))) (PARAMS))");
+    e =_p_addrt2q(q,run_tree);
+    //debug_enable(D_STEP);
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    debug_disable(D_STEP);
+    // the say inside the function call should also be part of the conversation
+    spec_is_str_equal(t2s(_t_child(ps,_t_children(ps))),"(SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:100)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (CONVERSATION_IDENT (CONVERSATION_UUID))) (BODY:{(TEST_STR_SYMBOL:What I said!)})))");
+
+    // test conversation nesting
+    p = _t_newr(0,CONVERSE);
+    scope = _t_newr(p,SCOPE);
+    T *p2 = _t_newr(scope,CONVERSE);
+    p2 = _t_newr(p2,SCOPE);
+    _t_newr(p2,sayer);
+
+    run_tree = __p_build_run_tree(p,0);
+    _t_free(p);
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (process:CONVERSE (SCOPE (process:CONVERSE (SCOPE (process:sayer))))) (PARAMS))");
+
+    e =_p_addrt2q(q,run_tree);
+    //debug_enable(D_STEP);
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    debug_disable(D_STEP);
+    // the conversation uuid in the signal should match the sub-conversations uuid
+    T *last_sig = _t_child(ps,_t_children(ps));
+    T *head =_t_getv(last_sig,SignalMessageIdx,MessageHeadIdx,TREE_PATH_TERMINATOR);
+    T *s_cid = __t_find(head,CONVERSATION_IDENT,HeadOptionalsIdx);
+    T *cid =_t_getv(r->conversations,1,ConversationConversationsIdx,1,ConversationIdentIdx,TREE_PATH_TERMINATOR);
+    spec_is_true(__uuid_equal(__cid_getUUID(cid),__cid_getUUID(s_cid)));
+
+    _r_free(r);
+}
+
+void testProcessConverseListen() {
+
+    T *code = _t_parse(G_sem,0,"(NEW (NEW_TYPE:TEST_INT_SYMBOL) (PARAM_REF:/2/1))");
+
+    T *signature = __p_make_signature("result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,
+                                      "int",SIGNATURE_SYMBOL,TEST_INT_SYMBOL,
+                                      NULL);
+    Process p = _d_define_process(G_sem,code,"new_int","",signature,NULL,TEST_CONTEXT);
+
+    code = _t_parse(G_sem,0,"(CONVERSE (SCOPE (LISTEN (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TEST_INT_SYMBOL) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_INT_SYMBOL))) (ACTION:new_int (TEST_INT_SYMBOL:314)))) (BOOLEAN:1))");
+
+    T *run_tree = __p_build_run_tree(code,0);
+    _t_free(code);
+
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (process:CONVERSE (SCOPE (process:LISTEN (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TEST_INT_SYMBOL) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_INT_SYMBOL))) (ACTION:new_int (TEST_INT_SYMBOL:314)))) (BOOLEAN:1)) (PARAMS))");
+
+    Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
+
+    // add the run tree into a queue and run it
+    G_next_process_id = 0; // reset the process ids so the test will always work
+    Q *q = r->q;
+    T *cons = r->conversations;
+    T *ps = r->pending_signals;
+    Qe *e =_p_addrt2q(q,run_tree);
+    R *c = e->context;
+
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    spec_is_ptr_equal(q->blocked,e);
+
+    T *ex = __r_get_expectations(r,DEFAULT_ASPECT);
+    spec_is_str_equal(t2s(ex),"(EXPECTATIONS (EXPECTATION (CARRIER:TEST_INT_SYMBOL) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_INT_SYMBOL))) (ACTION:new_int (TEST_INT_SYMBOL:314)) (PARAMS (SLOT (USAGE:NULL_SYMBOL))) (END_CONDITIONS (UNLIMITED)) (CONVERSATION_IDENT (CONVERSATION_UUID))))");
+
+    T *t = _t_newi(0,TEST_INT_SYMBOL,314);
+    //    debug_enable(D_LISTEN+D_SIGNALS);
+    T *s = __r_make_signal(r->addr,r->addr,DEFAULT_ASPECT,TEST_INT_SYMBOL,t,0,0,0);
+    _r_deliver(r,s);
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    // we should have no instances in the instance store, because the signal wasn't part of the conversation
+    spec_is_str_equal(t2s(r->instances),"");
+
+    T *cid = _t_clone(_t_getv(cons,1,ConversationIdentIdx,TREE_PATH_TERMINATOR));
+    s = __r_make_signal(r->addr,r->addr,DEFAULT_ASPECT,TEST_INT_SYMBOL,_t_clone(t),0,0,cid);
+    _r_deliver(r,s);
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    debug_disable(D_LISTEN+D_SIGNALS);
+    spec_is_str_equal(t2s(r->instances),"(INSTANCE_STORE (INSTANCES (SYMBOL_INSTANCES:TEST_INT_SYMBOL (TEST_INT_SYMBOL:314))))");
+
+
+    // test __r_cleanup (should actually be testing it via a call to COMPLETE)
+    __r_cleanup_conversation(r,__cid_getUUID(cid));
+    spec_is_str_equal(t2s(ex),"(EXPECTATIONS)");
+
+    _r_free(r);
+}
+
+void testProcessThisScope() {
+    T *code = _t_new_root(CONVERSE);
+    T *scope = _t_newr(code,SCOPE);
+    _t_newr(scope,THIS_SCOPE);
+
+    Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
+
+    T *run_tree = __p_build_run_tree(code,0);
+    _t_free(code);
+
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (process:CONVERSE (SCOPE (process:THIS_SCOPE))) (PARAMS))");
+
+    // add the run tree into a queue and run it
+    G_next_process_id = 0; // reset the process ids so the test will always work
+    Q *q = r->q;
+    T *cons = r->conversations;
+    Qe *e =_p_addrt2q(q,run_tree);
+    R *c = e->context;
+
+    //debug_enable(D_STEP);
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    debug_disable(D_STEP);
+    spec_is_str_equal(t2s(cons),"(CONVERSATIONS (CONVERSATION (CONVERSATION_IDENT (CONVERSATION_UUID)) (END_CONDITIONS (UNLIMITED)) (CONVERSATIONS) (WAKEUP_REFERENCE (PROCESS_IDENT:1) (CODE_PATH:/1))))");
+
+    // should reduce to the conversations ID because of the THIS_SCOPE instruction
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (CONVERSATION_IDENT (CONVERSATION_UUID)) (PARAMS))");
+    _r_free(r);
+
+}
+
 void testProcessQuote() {
     T *t = _t_new_root(RUN_TREE);
 
@@ -749,7 +1046,7 @@ void testProcessStream() {
     Q *q = r->q;
 
     FILE *stream;
-    char buffer[500] = "line1\nabc\n";
+    char buffer[500] = "line1\nabc\nGET /path/to/file.ext HTTP/0.9\n";
     stream = fmemopen(buffer, 500, "r+");
 
     // test the basic case of the STREAM_ALIVE process which returns
@@ -799,6 +1096,19 @@ void testProcessStream() {
     spec_is_equal(_p_reduceq(q),noReductionErr);
     spec_is_str_equal(t2s(run_tree),"(RUN_TREE (ASCII_CHARS (ASCII_CHAR:'a') (ASCII_CHAR:'b') (ASCII_CHAR:'c')) (PARAMS))");
 
+    // now test reading again but this time into a symbol that requires transcoding
+    n = _t_new_root(STREAM_READ);
+    _t_new_cptr(n,EDGE_STREAM,st);
+    _t_news(n,RESULT_SYMBOL,HTTP_REQUEST);
+
+    run_tree = __p_build_run_tree(n,0);
+    _t_free(n);
+    e = _p_addrt2q(q,run_tree);
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    while(!(st->flags&StreamHasData) && st->flags&StreamAlive ) {sleepms(1);};
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (HTTP_REQUEST (HTTP_REQUEST_METHOD:GET) (HTTP_REQUEST_PATH (HTTP_REQUEST_PATH_SEGMENTS (HTTP_REQUEST_PATH_SEGMENT:path) (HTTP_REQUEST_PATH_SEGMENT:to) (HTTP_REQUEST_PATH_SEGMENT:file.ext))) (HTTP_REQUEST_VERSION (VERSION_MAJOR:0) (VERSION_MINOR:9))) (PARAMS))");
+
     // test writing to the stream
     fseek(stream,strlen(buffer),SEEK_SET);
     n = _t_new_root(STREAM_WRITE);
@@ -816,7 +1126,7 @@ void testProcessStream() {
 
     spec_is_equal(_p_reduceq(q),noReductionErr);
 
-    char *expected_result = "line1\nabc\nfish\ncow\nthing1\nthing2\n(TEST_INT_SYMBOL:314)";
+    char *expected_result = "line1\nabc\nGET /path/to/file.ext HTTP/0.9\nfish\ncow\nthing1\nthing2\n(TEST_INT_SYMBOL:314)";
 
     spec_is_str_equal(buffer,expected_result);
 
@@ -882,7 +1192,8 @@ void testProcessStreamClose() {
 void testProcessInitiate(){
     Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
     Q *q = r->q;
-    Protocol time = _sem_get_by_label(G_sem,"time",CLOCK_CONTEXT);
+    Protocol time;
+    __sem_get_by_label(G_sem,"time",&time,CLOCK_CONTEXT);
 
     T *n = _t_new_root(INITIATE_PROTOCOL);
     T *p = _t_news(n,PNAME,time);
@@ -899,19 +1210,23 @@ void testProcessInitiate(){
     __r_make_addr(w,ACTUAL_RECEPTOR,clock_addr);
     res = _t_newr(bindings,RESOLUTION);
     w = _t_newr(res,WHICH_PROCESS);
-    _t_news(w,GOAL,REQUEST_HANDLER);
+    _t_news(w,GOAL,RESPONSE_HANDLER);
     T *noop = _t_new_root(NOOP);
-    Process proc = _r_define_process(r,noop,"do nothing","long desc...",NULL,NULL);
-    _t_news(w,ACTUAL_PROCESS,proc);
+    _t_newi(noop,TEST_INT_SYMBOL,314);
+    //    Process proc = _r_define_process(r,noop,"do nothing","long desc...",NULL,NULL);
+    _t_news(w,ACTUAL_PROCESS,NOOP);
 
     T *run_tree = __p_build_run_tree(n,0);
     _t_free(n);
     Qe *e = _p_addrt2q(q,run_tree);
 
     spec_is_str_equal(_td(r,r->pending_signals),"(PENDING_SIGNALS)");
+    //debug_enable(D_STEP+D_REDUCE+D_REDUCEV);
     spec_is_equal(_p_reduceq(q),noReductionErr);
+    debug_disable(D_REDUCE+D_STEP+D_REDUCEV);
     spec_is_equal(_t_children(r->pending_signals),1);
-
+    spec_is_str_equal(t2s(run_tree),"");
+    // DEBUGGER;
     _r_free(r);
 }
 
@@ -990,20 +1305,7 @@ void testProcessReduce() {
 void testProcessParameter() {
     Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
 
-    T *n = _t_build(G_sem,0,TEST_ANYTHING_SYMBOL,DISSOLVE,
-                    PARAMETER,
-                    PARAMETER_REFERENCE,PARAM_PATH,2,1,TREE_PATH_TERMINATOR,
-                    PARAMETER_RESULT,RESULT_VALUE,NULL_SYMBOL,
-                    NULL_SYMBOL,
-                    PARAMETER,
-                    PARAMETER_REFERENCE,PARAM_PATH,2,2,TREE_PATH_TERMINATOR,
-                    PARAMETER_RESULT,RESULT_SYMBOL,TEST_SYMBOL_SYMBOL,NULL_SYMBOL,
-                    PARAMETER,
-                    PARAMETER_REFERENCE,PARAM_PATH,2,1,TREE_PATH_TERMINATOR,
-                    PARAMETER_RESULT,RESULT_LABEL,ENGLISH_LABEL,NULL_SYMBOL,
-                    NULL_SYMBOL,NULL_SYMBOL);
-
-    spec_is_str_equal(t2s(n), "(TEST_ANYTHING_SYMBOL (process:DISSOLVE (process:PARAMETER (PARAMETER_REFERENCE (PARAM_PATH:/2/1)) (PARAMETER_RESULT (RESULT_VALUE)))) (process:PARAMETER (PARAMETER_REFERENCE (PARAM_PATH:/2/2)) (PARAMETER_RESULT (RESULT_SYMBOL:TEST_SYMBOL_SYMBOL))) (process:PARAMETER (PARAMETER_REFERENCE (PARAM_PATH:/2/1)) (PARAMETER_RESULT (RESULT_LABEL:ENGLISH_LABEL))))");
+    T *n = _t_parse(G_sem,0,"(TEST_ANYTHING_SYMBOL (DISSOLVE (PARAMETER (PARAMETER_REFERENCE (PARAM_PATH:/2/1)) (PARAMETER_RESULT (RESULT_VALUE)))) (PARAMETER (PARAMETER_REFERENCE (PARAM_PATH:/2/2)) (PARAMETER_RESULT (RESULT_SYMBOL:TEST_SYMBOL_SYMBOL))) (PARAMETER (PARAMETER_REFERENCE (PARAM_PATH:/2/1)) (PARAMETER_RESULT (RESULT_LABEL:ENGLISH_LABEL))))");
 
     T *p1 = _t_newi(0,TEST_INT_SYMBOL,314);
     T *p2 = _t_new_str(0,TEST_STR_SYMBOL,"314");
@@ -1025,7 +1327,7 @@ void testProcessRefs() {
     Q *q = r->q;
 
     int pt1[] = {2,1,TREE_PATH_TERMINATOR};
-    int pt2[] = {SignalBodyIdx,0,TREE_PATH_TERMINATOR};
+    int pt2[] = {SignalMessageIdx,MessageBodyIdx,0,TREE_PATH_TERMINATOR};
 
     T *n = _t_newr(0,NOOP);
     T *t = _t_newr(n,TEST_ANYTHING_SYMBOL);
@@ -1037,7 +1339,7 @@ void testProcessRefs() {
     _t_free(t);
     ReceptorAddress fm = {3}; // DUMMY ADDR
     ReceptorAddress to = {4}; // DUMMY ADDR
-    T *signal = __r_make_signal(fm,to,DEFAULT_ASPECT,TESTING,_t_new_str(0,TEST_STR_SYMBOL,"foo"),0,0);
+    T *signal = __r_make_signal(fm,to,DEFAULT_ASPECT,TESTING,_t_new_str(0,TEST_STR_SYMBOL,"foo"),0,0,0);
 
     // simulate that this run-tree is on the flux.
     _t_add(signal,run_tree);
@@ -1062,29 +1364,7 @@ Process G_ifeven;
  */
 //! [defIfEven]
 void _defIfEven() {
-    T *code;
-
-    /* a process that would look something like this in lisp:
-       (defun if_even (val true_branch false_branch) (if (eq (mod val 2 ) 0) (true_branch) (false_branch)))
-
-       or something like this in c:
-
-       void if_even(int val,void (*true_branch)(),void (*false_branch)() ){
-           if (val%2==0) (*true_branch)();
-       else (*false_branch)();
-       }
-    */
-    code = _t_new_root(IF);                       // IF is a system process
-    T *eq = _t_newr(code,EQ_INT);
-    T *mod = _t_newr(eq,MOD_INT);
-    int p1[] = {2,1,TREE_PATH_TERMINATOR};        // paths to the parameter refrences in the run tree: second branch, b1
-    int p2[] = {2,2,TREE_PATH_TERMINATOR};        // second branch, b2
-    int p3[] = {2,3,TREE_PATH_TERMINATOR};        // second branch, b3
-    _t_new(mod,PARAM_REF,p1,sizeof(int)*3);       // param_ref should be a path_param_ref, also to be added is a label_param_ref
-    _t_newi(mod,TEST_INT_SYMBOL,2);
-    _t_newi(eq,TEST_INT_SYMBOL,0);
-    _t_new(code,PARAM_REF,p2,sizeof(int)*3);
-    _t_new(code,PARAM_REF,p3,sizeof(int)*3);
+    T *code = _t_parse(G_sem,0,"(IF (EQ_INT (MOD_INT (PARAM_REF:/2/1) (TEST_INT_SYMBOL:2)) (TEST_INT_SYMBOL:0)) (PARAM_REF:/2/2) (PARAM_REF:/2/3))");
 
     T *signature = __p_make_signature("result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,
                                       "val",SIGNATURE_STRUCTURE,INTEGER,
@@ -1190,24 +1470,24 @@ void testProcessSignatureMatching() {
     // test map without matching expected slots
     spec_is_equal(__p_check_signature(G_sem,send_request,n,sm),mismatchSemanticMapReductionErr);
     _t_free(sm);
-    //(TEMPLATE_SIGNATURE (EXPECTED_SLOT (ROLE:RESPONDER)) (EXPECTED_SLOT (USAGE:REQUEST_DATA)) (EXPECTED_SLOT (USAGE:RESPONSE_DATA)) (EXPECTED_SLOT (GOAL:REQUEST_HANDLER)))
+    //(TEMPLATE_SIGNATURE (EXPECTED_SLOT (ROLE:RESPONDER)) (EXPECTED_SLOT (USAGE:REQUEST_TYPE)) (EXPECTED_SLOT (USAGE:RESPONSE_TYPE)) (EXPECTED_SLOT (GOAL:RESPONSE_HANDLER)))
     sm = _t_build(G_sem,0,
                   SEMANTIC_MAP,
                   SEMANTIC_LINK,
-                  USAGE,REQUEST_DATA,
+                  USAGE,REQUEST_TYPE,
                   REPLACEMENT_VALUE,ACTUAL_SYMBOL,PING,NULL_SYMBOL,NULL_SYMBOL,
                   SEMANTIC_LINK,
-                  USAGE,RESPONSE_DATA,
+                  USAGE,RESPONSE_TYPE,
                   REPLACEMENT_VALUE,ACTUAL_SYMBOL,PING,NULL_SYMBOL,NULL_SYMBOL,
-                  SEMANTIC_LINK,
-                  GOAL,RESPONSE_HANDLER,
-                  REPLACEMENT_VALUE,ACTUAL_PROCESS,NOOP,NULL_SYMBOL,NULL_SYMBOL,
                   SEMANTIC_LINK,
                   GOAL,REQUEST_HANDLER,
+                  REPLACEMENT_VALUE,ACTUAL_PROCESS,NOOP,NULL_SYMBOL,NULL_SYMBOL,
+                  SEMANTIC_LINK,
+                  GOAL,RESPONSE_HANDLER,
                   REPLACEMENT_VALUE,ACTUAL_PROCESS,NOOP,NULL_SYMBOL,
                   NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL
              );
-    spec_is_str_equal(t2s(sm),"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:PING))) (SEMANTIC_LINK (USAGE:RESPONSE_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:PING))) (SEMANTIC_LINK (GOAL:RESPONSE_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:NOOP))) (SEMANTIC_LINK (GOAL:REQUEST_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:NOOP))))");
+    spec_is_str_equal(t2s(sm),"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:REQUEST_TYPE) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:PING))) (SEMANTIC_LINK (USAGE:RESPONSE_TYPE) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:PING))) (SEMANTIC_LINK (GOAL:REQUEST_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:NOOP))) (SEMANTIC_LINK (GOAL:RESPONSE_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:NOOP))))");
 
     spec_is_equal(__p_check_signature(G_sem,send_request,n,sm),mismatchSemanticMapReductionErr);
 
@@ -1216,7 +1496,7 @@ void testProcessSignatureMatching() {
              ROLE,RECOGNIZER,
              REPLACEMENT_VALUE,ACTUAL_RECEPTOR,FROM_ADDRESS,RECEPTOR_ADDR,3,NULL_SYMBOL,NULL_SYMBOL);
 
-    spec_is_str_equal(t2s(sm),"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:PING))) (SEMANTIC_LINK (USAGE:RESPONSE_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:PING))) (SEMANTIC_LINK (GOAL:RESPONSE_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:NOOP))) (SEMANTIC_LINK (GOAL:REQUEST_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:NOOP))) (SEMANTIC_LINK (ROLE:RECOGNIZER) (REPLACEMENT_VALUE (ACTUAL_RECEPTOR (FROM_ADDRESS (RECEPTOR_ADDR:3))))))");
+    spec_is_str_equal(t2s(sm),"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:REQUEST_TYPE) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:PING))) (SEMANTIC_LINK (USAGE:RESPONSE_TYPE) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:PING))) (SEMANTIC_LINK (GOAL:REQUEST_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:NOOP))) (SEMANTIC_LINK (GOAL:RESPONSE_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:NOOP))) (SEMANTIC_LINK (ROLE:RECOGNIZER) (REPLACEMENT_VALUE (ACTUAL_RECEPTOR (FROM_ADDRESS (RECEPTOR_ADDR:3))))))");
 
     spec_is_equal(__p_check_signature(G_sem,send_request,n,sm),mismatchSemanticMapReductionErr);
 
@@ -1232,10 +1512,11 @@ void testProcessSignatureMatching() {
              USAGE,CHANNEL,
              REPLACEMENT_VALUE,ASPECT_IDENT,DEFAULT_ASPECT,NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
 
-    spec_is_str_equal(t2s(sm),"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:PING))) (SEMANTIC_LINK (USAGE:RESPONSE_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:PING))) (SEMANTIC_LINK (GOAL:RESPONSE_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:NOOP))) (SEMANTIC_LINK (GOAL:REQUEST_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:NOOP))) (SEMANTIC_LINK (ROLE:RESPONDER) (REPLACEMENT_VALUE (ACTUAL_RECEPTOR (FROM_ADDRESS (RECEPTOR_ADDR:3))))) (SEMANTIC_LINK (USAGE:CHANNEL) (REPLACEMENT_VALUE (ASPECT_IDENT:DEFAULT_ASPECT))))");
+    _t_parse(G_sem,sm,"(SEMANTIC_LINK (USAGE:RESPONSE_HANDLER_PARAMETERS) (REPLACEMENT_VALUE (NULL_SYMBOL)))");
+
+    spec_is_str_equal(t2s(sm),"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:REQUEST_TYPE) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:PING))) (SEMANTIC_LINK (USAGE:RESPONSE_TYPE) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:PING))) (SEMANTIC_LINK (GOAL:REQUEST_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:NOOP))) (SEMANTIC_LINK (GOAL:RESPONSE_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:NOOP))) (SEMANTIC_LINK (ROLE:RESPONDER) (REPLACEMENT_VALUE (ACTUAL_RECEPTOR (FROM_ADDRESS (RECEPTOR_ADDR:3))))) (SEMANTIC_LINK (USAGE:CHANNEL) (REPLACEMENT_VALUE (ASPECT_IDENT:DEFAULT_ASPECT))) (SEMANTIC_LINK (USAGE:RESPONSE_HANDLER_PARAMETERS) (REPLACEMENT_VALUE (NULL_SYMBOL))))");
 
     spec_is_equal(__p_check_signature(G_sem,send_request,n,sm),noReductionErr);
-
     _t_free(n);
     _t_free(sm);
 
@@ -1248,17 +1529,14 @@ void testProcessSignatureMatching() {
 
 void testProcessError() {
     T *t = _t_new_root(RUN_TREE);
-    T *n = _t_new_root(NOOP);
-    T *d = _t_newr(n,DIV_INT);
-    _t_newi(d,TEST_INT_SYMBOL,100);
-    _t_newi(d,TEST_INT_SYMBOL,0);
+    T *n = _t_parse(G_sem,0,"(NOOP (DIV_INT (TEST_INT_SYMBOL:100) (TEST_INT_SYMBOL:0)))");
     T *c = _t_rclone(n);
     _t_add(t,c);
     T *ps = _t_newr(t,PARAMS);
 
-    // error routine is just a param ref to pass back the error tree
-    int pt[] = {4,1,TREE_PATH_TERMINATOR};
-    __t_new(t,PARAM_REF,pt,sizeof(int)*4,1);
+    // error routine is just a param ref to pass back the reduction error
+    int pt[] = {RunTreeErrorParamsIdx,1,TREE_PATH_TERMINATOR};
+    __t_new(t,PARAM_REF,pt,sizeof(int)*4,true);
 
     Error e = _p_reduce(G_sem,t);
     spec_is_equal(e,noReductionErr);
@@ -1281,9 +1559,9 @@ void testProcessRaise() {
     _t_add(t,c);
     T *ps = _t_newr(t,PARAMS);
 
-    // error routine is just a param ref to pass back the error tree
-    int pt[] = {4,1,TREE_PATH_TERMINATOR};
-    __t_new(t,PARAM_REF,pt,sizeof(int)*4,1);
+    // error routine is just a param ref to pass back the reduction error
+    int pt[] = {RunTreeErrorParamsIdx,1,TREE_PATH_TERMINATOR};
+    __t_new(t,PARAM_REF,pt,sizeof(int)*4,true);
 
     Error e = _p_reduce(G_sem,t);
     spec_is_equal(e,noReductionErr);
@@ -1300,16 +1578,8 @@ void testProcessIterate() {
     output = open_memstream(&output_data,&size);
 
     // an iterate process that writes to a stream and 3 times
-    T *code = _t_new_root(ITERATE);
-    T *params = _t_newr(code,PARAMS);
-    _t_newi(code,TEST_INT_SYMBOL,3);
-
-    T *x = _t_newr(code,STREAM_WRITE);
     Stream *st = _st_new_unix_stream(output,0);
-    _t_new_cptr(x,EDGE_STREAM,st);
-    _t_new_str(x,LINE,"testing");
-
-    spec_is_str_equal(t2s(code),"(process:ITERATE (PARAMS) (TEST_INT_SYMBOL:3) (process:STREAM_WRITE (EDGE_STREAM) (LINE:testing)))");
+    T *code = _t_parse(G_sem,0,"(ITERATE (PARAMS) (TEST_INT_SYMBOL:3) (STREAM_WRITE % (LINE:\"testing\")))",_t_new_cptr(0,EDGE_STREAM,st));
 
     T *t = __p_build_run_tree(code,0);
     Error e = _p_reduce(G_sem,t);
@@ -1318,18 +1588,11 @@ void testProcessIterate() {
     //    spec_is_str_equal(t2s(t),"xxx"); @todo something here when we figure out return value
 
     _t_free(t);
+    _t_free(code);
 
     // now test iteration with a condition instead of an INTEGER
     //  a condition that checks to see if the param is less than 3
-    x = _t_newr(0,LT_INT);
-    int p[] = {1,1,1,TREE_PATH_TERMINATOR};
-    _t_new(x,PARAM_REF,p,sizeof(int)*4);
-    _t_newi(x,TEST_INT_SYMBOL,3);
-
-    _t_newi(params,TEST_INT_SYMBOL,314);
-
-    _t_replace(code,2,x);
-    spec_is_str_equal(t2s(code),"(process:ITERATE (PARAMS (TEST_INT_SYMBOL:314)) (process:LT_INT (PARAM_REF:/1/1/1) (TEST_INT_SYMBOL:3)) (process:STREAM_WRITE (EDGE_STREAM) (LINE:testing)))");
+    code = _t_parse(G_sem,0,"(ITERATE (PARAMS (TEST_INT_SYMBOL:314)) (LT_INT (PARAM_REF:/1/1/1) (TEST_INT_SYMBOL:3)) (STREAM_WRITE % (LINE:\"testing\")))",_t_new_cptr(0,EDGE_STREAM,st));
 
     t = __p_build_run_tree(code,0);
     e = _p_reduce(G_sem,t);
@@ -1350,25 +1613,15 @@ void testProcessIterateOnSymbol() {
     output = open_memstream(&output_data,&size);
 
     // an iterate process that writes to a stream and 3 times
-    T *code = _t_new_root(ITERATE);
-    T *params = _t_newr(code,PARAMS);
-
-    _t_news(code,ITERATE_ON_SYMBOL,TEST_STR_SYMBOL);
-
-    T *t = _t_newr(code,STREAM_WRITE);
     Stream *st = _st_new_unix_stream(output,0);
-    _t_new_cptr(t,EDGE_STREAM,st);
-    int p[] = {1,1,1,1,TREE_PATH_TERMINATOR};
-    _t_new(t,PARAM_REF,p,sizeof(int)*5);
-
-    spec_is_str_equal(t2s(code),"(process:ITERATE (PARAMS) (ITERATE_ON_SYMBOL:TEST_STR_SYMBOL) (process:STREAM_WRITE (EDGE_STREAM) (PARAM_REF:/1/1/1/1)))");
+    T *code = _t_parse(G_sem,0,"(ITERATE (PARAMS) (ITERATE_ON_SYMBOL:TEST_STR_SYMBOL) (STREAM_WRITE % (PARAM_REF:/1/1/1/1)))",_t_new_cptr(0,EDGE_STREAM,st));
     T *run_tree = __p_build_run_tree(code,0);
-    _t_free(t);
+    _t_free(code);
 
     Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
 
     Xaddr x;
-    t = _t_new_str(0,TEST_STR_SYMBOL,"thing1 ");
+    T *t = _t_new_str(0,TEST_STR_SYMBOL,"thing1 ");
     x = _r_new_instance(r,t);
     t = _t_new_str(0,TEST_STR_SYMBOL,"thing2 ");
     x = _r_new_instance(r,t);
@@ -1391,13 +1644,7 @@ void testProcessListen() {
     Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
 
     // test regular asynchronous listening.
-    T *n = _t_new_root(LISTEN);
-    _t_news(n,ASPECT_IDENT,DEFAULT_ASPECT);
-    _t_news(n,CARRIER,TICK);
-    T *match = _t_newr(n,PATTERN);
-    _sl(match,TICK);
-    T *a = _t_newp(n,ACTION,NOOP);
-    _t_newi(a,TEST_INT_SYMBOL,314);
+    T *n = _t_parse(G_sem,0,"(LISTEN (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TICK) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TICK))) (ACTION:NOOP (TEST_INT_SYMBOL:314)))");
     spec_is_equal(__p_reduce_sys_proc(0,LISTEN,n,r->q),noReductionErr);
     spec_is_str_equal(t2s(n),"(REDUCTION_ERROR_SYMBOL:NULL_SYMBOL)"); //@todo is this right??
     _t_free(n);
@@ -1408,11 +1655,7 @@ void testProcessListen() {
     _r_remove_expectation(r, _t_child(ex,1));
 
     // test listen that blocks
-    n = _t_new_root(LISTEN);
-    _t_news(n,ASPECT_IDENT,DEFAULT_ASPECT);
-    _t_news(n,CARRIER,TESTING);
-    match = _t_newr(n,PATTERN);
-    _sl(match,TEST_STR_SYMBOL);
+    n = _t_parse(G_sem,0,"(LISTEN (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_STR_SYMBOL))))");
 
     G_next_process_id = 0; // reset the process ids so the test will always work
     T *run_tree = __p_build_run_tree(n,0);
@@ -1428,7 +1671,7 @@ void testProcessListen() {
 
     spec_is_str_equal(t2s(__r_get_expectations(r,DEFAULT_ASPECT)),"(EXPECTATIONS (EXPECTATION (CARRIER:TESTING) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_STR_SYMBOL))) (WAKEUP_REFERENCE (PROCESS_IDENT:1) (CODE_PATH:/1)) (PARAMS (SLOT (USAGE:NULL_SYMBOL))) (END_CONDITIONS (COUNT:1))))");
 
-    T *s = __r_make_signal(r->addr,r->addr,DEFAULT_ASPECT,TESTING,_t_new_str(0,TEST_STR_SYMBOL,"fishy!"),0,0);
+    T *s = __r_make_signal(r->addr,r->addr,DEFAULT_ASPECT,TESTING,_t_new_str(0,TEST_STR_SYMBOL,"fishy!"),0,0,0);
     _r_deliver(r,s);
     spec_is_equal(_p_reduceq(q),noReductionErr);
 
@@ -1456,11 +1699,7 @@ void testProcessSelfAddr() {
 
 void testProcessGetLabel() {
     Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
-    T *n = _t_build(G_sem,0,GET_LABEL,
-                    LABEL_SYMBOL,CONTENT_TYPE,
-                    LABEL_TYPE,HTTP_HEADER_LABEL,
-                    RESULT_SYMBOL,LINE,
-                    NULL_SYMBOL,NULL_SYMBOL);
+    T *n = _t_parse(G_sem,0,"(GET_LABEL (LABEL_SYMBOL:CONTENT_TYPE) (LABEL_TYPE:HTTP_HEADER_LABEL) (RESULT_SYMBOL:LINE))");
     spec_is_equal(__p_reduce_sys_proc(0,GET_LABEL,n,r->q),noReductionErr);
     spec_is_str_equal(t2s(n),"(LINE:Content-Type)");
     _t_free(n);
@@ -1576,33 +1815,77 @@ void testProcessMulti() {
 void testRunTreeTemplate() {
 
     T *params = _t_new_root(PARAMS);
-    T *sm = _t_build(G_sem,0,
-                     SEMANTIC_MAP,
-                     SEMANTIC_LINK,
-                     USAGE,CHANNEL,
-                     REPLACEMENT_VALUE,ASPECT_IDENT,DEFAULT_ASPECT,NULL_SYMBOL,NULL_SYMBOL,
-                     SEMANTIC_LINK,
-                     USAGE,REQUEST_DATA,
-                     REPLACEMENT_VALUE,PING,NULL_SYMBOL,
-                     SEMANTIC_LINK,
-                     USAGE,RESPONSE_DATA,
-                     REPLACEMENT_VALUE,PING,NULL_SYMBOL,
-                     SEMANTIC_LINK,
-                     ROLE,RESPONDER,
-                     REPLACEMENT_VALUE,TO_ADDRESS,RECEPTOR_ADDR,3,NULL_SYMBOL,NULL_SYMBOL,
-                     SEMANTIC_LINK,
-                     GOAL,REQUEST_HANDLER,
-                     REPLACEMENT_VALUE,NOOP,NULL_SYMBOL,
-                     NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL
-                     );
-
-    spec_is_str_equal(t2s(sm),"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:CHANNEL) (REPLACEMENT_VALUE (ASPECT_IDENT:DEFAULT_ASPECT))) (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (PING))) (SEMANTIC_LINK (USAGE:RESPONSE_DATA) (REPLACEMENT_VALUE (PING))) (SEMANTIC_LINK (ROLE:RESPONDER) (REPLACEMENT_VALUE (TO_ADDRESS (RECEPTOR_ADDR:3)))) (SEMANTIC_LINK (GOAL:REQUEST_HANDLER) (REPLACEMENT_VALUE (process:NOOP))))");
+    T *sm = _t_parse(G_sem,0,"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:RESPONSE_HANDLER_PARAMETERS) (REPLACEMENT_VALUE (NULL_SYMBOL))) (SEMANTIC_LINK (USAGE:CHANNEL) (REPLACEMENT_VALUE (ASPECT_IDENT:DEFAULT_ASPECT))) (SEMANTIC_LINK (USAGE:REQUEST_TYPE) (REPLACEMENT_VALUE (PING))) (SEMANTIC_LINK (USAGE:RESPONSE_TYPE) (REPLACEMENT_VALUE (PING))) (SEMANTIC_LINK (ROLE:RESPONDER) (REPLACEMENT_VALUE (TO_ADDRESS (RECEPTOR_ADDR:3)))) (SEMANTIC_LINK (GOAL:RESPONSE_HANDLER) (REPLACEMENT_VALUE (NOOP))))");
 
     T *r = _p_make_run_tree(G_sem,send_request,params,sm);
     _t_free(params);
     spec_is_str_equal(t2s(r),"(RUN_TREE (process:NOOP (process:REQUEST (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:backnforth) (PING) (CARRIER:backnforth))) (PARAMS))");
     _t_free(r);
     _t_free(sm);
+}
+
+void testProcessContinue() {
+
+    // CONTINUE allows you to restart reduction some other place on the tree.
+    T *t = _t_new_root(RUN_TREE);
+    T *n = _t_parse(G_sem,0,"(NOOP (IF (BOOLEAN:0) (CONTINUE (CONTINUE_LOCATION:/1) (CONTINUE_VALUE (TEST_STR_SYMBOL:\"fish\"))) (TEST_INT_SYMBOL:413)))");
+    T *c = _t_rclone(n);
+    _t_add(t,c);
+    _p_reduce(G_sem,t);
+
+    spec_is_str_equal(t2s(_t_child(t,1)),"(TEST_STR_SYMBOL:fish)");
+    _t_free(t);
+    _t_free(n);
+}
+
+void testProcessWakeup() {
+    Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
+
+    T *p = _t_parse(G_sem,0,"(NOOP (REQUEST (TO_ADDRESS (RECEPTOR_ADDR:99)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (TEST_INT_SYMBOL:314) (RESPONSE_CARRIER:TESTING) (END_CONDITIONS (COUNT:1))))");
+
+    T *code =_t_rclone(p);
+    T *run_tree = __p_build_run_tree(code,0);
+    _t_free(code);
+    spec_is_str_equal(_td(r,run_tree),"(RUN_TREE (process:NOOP (process:REQUEST (TO_ADDRESS (RECEPTOR_ADDR:99)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (TEST_INT_SYMBOL:314) (RESPONSE_CARRIER:TESTING) (END_CONDITIONS (COUNT:1)))) (PARAMS))");
+
+    // add the run tree into a queue and run it
+    G_next_process_id = 0; // reset the process ids so the test will always work
+    Q *q = r->q;
+    Qe *e =_p_addrt2q(q,run_tree);
+    R *c = e->context;
+
+    // after reduction the context should be in the blocked state
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    spec_is_equal(q->contexts_count,0);
+    spec_is_ptr_equal(q->blocked,e);
+    spec_is_equal(c->state,Block);
+    spec_is_str_equal(_td(r,r->pending_responses),"(PENDING_RESPONSES (PENDING_RESPONSE (SIGNAL_UUID) (CARRIER:TESTING) (WAKEUP_REFERENCE (PROCESS_IDENT:1) (CODE_PATH:/1/1)) (END_CONDITIONS (COUNT:1))))");
+    T *wakeup = _t_getv(r->pending_responses,1,PendingResponseWakeupIdx,TREE_PATH_TERMINATOR);
+
+    _p_wakeup(q,wakeup,NULL,divideByZeroReductionErr);
+    spec_is_equal(q->contexts_count,1);
+    spec_is_ptr_equal(q->blocked,NULL);
+    spec_is_ptr_equal(q->active,e);
+    spec_is_equal(c->state,divideByZeroReductionErr);
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    spec_is_equal(q->contexts_count,0);
+
+    code =_t_rclone(p);
+    run_tree = __p_build_run_tree(code,0);
+    _t_free(code);
+    e =_p_addrt2q(q,run_tree);
+    c = e->context;
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    wakeup = _t_getv(r->pending_responses,2,PendingResponseWakeupIdx,TREE_PATH_TERMINATOR);
+    _p_wakeup(q,wakeup,_t_newi(0,TEST_INT_SYMBOL,314),noReductionErr);
+    spec_is_ptr_equal(q->blocked,NULL);
+    spec_is_ptr_equal(q->active,e);
+    spec_is_equal(c->state,Eval);
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    spec_is_str_equal(_td(r,run_tree),"(RUN_TREE (TEST_INT_SYMBOL:314) (PARAMS))");
+
+    _t_free(p);
+    _r_free(r);
 }
 
 void testProcess() {
@@ -1612,6 +1895,7 @@ void testProcess() {
     testProcessGet();
     testProcessDel();
     testProcessNew();
+    testProcessDefine();
     testProcessDo();
     testProcessTranscode();
     testProcessDissolve();
@@ -1620,12 +1904,17 @@ void testProcess() {
     testProcessFillMatch();
     testProcessFillMatchFull();
     testProcessIf();
+    testProcessCond();
     testProcessSym();
     testProcessIntMath();
+    testProcessPath();
     testProcessString();
     testProcessRespond();
     testProcessSay();
     testProcessRequest();
+    testProcessConverse();
+    testProcessConverseListen();
+    testProcessThisScope();
     testProcessQuote();
     testProcessStream();
     testProcessStreamClose();
@@ -1644,4 +1933,6 @@ void testProcess() {
     testProcessErrorTrickleUp();
     testProcessMulti();
     testRunTreeTemplate();
+    testProcessContinue();
+    testProcessWakeup();
 }

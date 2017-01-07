@@ -39,6 +39,7 @@ Receptor * __r_init(T *t,SemTable *sem) {
     r->flux = _t_child(state,ReceptorFluxIdx);
     r->pending_signals = _t_child(state,ReceptorPendingSignalsIdx);
     r->pending_responses = _t_child(state,ReceptorPendingResponsesIdx);
+    r->conversations = _t_child(state,ReceptorConversationsIdx);
     r->edge = NULL;
     return r;
 }
@@ -56,6 +57,7 @@ T *_r_make_state() {
     __r_add_aspect(f,DEFAULT_ASPECT);
     _t_newr(t,PENDING_SIGNALS);
     _t_newr(t,PENDING_RESPONSES);
+    _t_newr(t,CONVERSATIONS);
     _t_newi(t,RECEPTOR_ELAPSED_TIME,0);
     return t;
 }
@@ -121,8 +123,14 @@ Receptor *_r_new_receptor_from_package(SemTable *sem,Symbol s,T *p,T *bindings) 
     return r;
 }
 
+T *__r_build_default_until() {
+    T *until = _t_new_root(END_CONDITIONS);
+    _t_newr(until,UNLIMITED);
+    return until;
+}
+
 // helper to build and expectation tree
-T *__r_build_expectation(Symbol carrier,T *pattern,T *action,T *with,T *until,T *using) {
+T *__r_build_expectation(Symbol carrier,T *pattern,T *action,T *with,T *until,T *using,T *cid) {
     T *e = _t_newr(0,EXPECTATION);
     _t_news(e,CARRIER,carrier);
     _t_add(e,pattern);
@@ -130,12 +138,14 @@ T *__r_build_expectation(Symbol carrier,T *pattern,T *action,T *with,T *until,T 
     if (!with) with = _t_new_root(PARAMS);
     _t_add(e,with);
     if (!until) {
-        until = _t_new_root(END_CONDITIONS);
-        _t_newr(until,UNLIMITED);
+        until = __r_build_default_until();
     }
     _t_add(e,until);
     if (using)
         _t_add(e,using);
+    if (cid) {
+        _t_add(e,cid);
+    }
     return e;
 }
 
@@ -151,8 +161,8 @@ T *__r_build_expectation(Symbol carrier,T *pattern,T *action,T *with,T *until,T 
  * @param[in] until end conditions for cleaning up this expectation
  *
  */
-void _r_add_expectation(Receptor *r,Aspect aspect,Symbol carrier,T *pattern,T *action,T *with,T *until,T *using) {
-    T *e = __r_build_expectation(carrier,pattern,action,with,until,using);
+void _r_add_expectation(Receptor *r,Aspect aspect,Symbol carrier,T *pattern,T *action,T *with,T *until,T *using,T *cid) {
+    T *e = __r_build_expectation(carrier,pattern,action,with,until,using,cid);
     __r_add_expectation(r,aspect,e);
 }
 
@@ -276,7 +286,10 @@ Protocol _r_define_protocol(Receptor *r,T *protocol_def) {
  * find a symbol by its label
  */
 Symbol _r_get_sem_by_label(Receptor *r,char *label) {
-    return _sem_get_by_label(r->sem,label,r->context);
+    SemanticID sid;
+    if (!__sem_get_by_label(r->sem,label,&sid,r->context))
+        raise_error("label not found %s",label);
+    return sid;
 }
 
 /**
@@ -492,37 +505,36 @@ ReceptorAddress __r_get_addr(T *addr) {
  * @param[in] from source Receptor Xaddr
  * @param[in] to destination Receptor Xaddr
  * @param[in] aspect Aspect over which the message will be sent
- * @param[in] signal_contents the message to be sent, which will be wrapped in a SIGNAL
- * @todo signal should have timestamps and other meta info
+ * @param[in] carrier Carrier used for matching expectations
+ * @param[in] signal_contents the message to be sent, which will be wrapped in a BODY
+ * @param[in] in_response_to optional IN_RESPONSE_TO_UUID for request response
+ * @param[in] until optional END_CONDITIONS for a request
+ * @param[in] conversation optional conversation id for signals that should be routed to a conversation
+ * @todo signal should have timestamps
  */
-T* __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,Symbol carrier,T *signal_contents,UUIDt *in_response_to,T* until) {
+T* __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,Symbol carrier,T *signal_contents,UUIDt *in_response_to,T* until,T *cid) {
     T *s = _t_new_root(SIGNAL);
     T *e = _t_newr(s,ENVELOPE);
+    T *m = _t_newr(s,MESSAGE);
+    T *h = _t_newr(m,HEAD);
     // @todo convert to paths at some point?
-    __r_make_addr(e,FROM_ADDRESS,from);
-    __r_make_addr(e,TO_ADDRESS,to);
-    _t_news(e,ASPECT_IDENT,aspect);
-    _t_news(e,CARRIER,carrier);
+    __r_make_addr(h,FROM_ADDRESS,from);
+    __r_make_addr(h,TO_ADDRESS,to);
+    _t_news(h,ASPECT_IDENT,aspect);
+    _t_news(h,CARRIER,carrier);
     UUIDt t = __uuid_gen();
     _t_new(e,SIGNAL_UUID,&t,sizeof(UUIDt));
-    T *b = _t_newt(s,BODY,signal_contents);
+    T *b = _t_newt(m,BODY,signal_contents);
 
     if (in_response_to && until) raise_error("attempt to make signal with both response_uuid and until");
     if (in_response_to)
-        _t_new(e,IN_RESPONSE_TO_UUID,in_response_to,sizeof(UUIDt));
+        _t_new(h,IN_RESPONSE_TO_UUID,in_response_to,sizeof(UUIDt));
     else if (until)
-        _t_add(e,until);
+        _t_add(h,until);
+    if (cid) {
+        _t_add(h,_t_clone(cid));
+    }
     return s;
-}
-
-// create WAKEUP_REFERENCE symbol used for unblocking a process
-T* __r_build_wakeup_info(T *code_point,int process_id) {
-    T *wakeup = _t_new_root(WAKEUP_REFERENCE);
-    _t_newi(wakeup,PROCESS_IDENT,process_id);
-    int *path = _t_get_path(code_point);
-    _t_new(wakeup,CODE_PATH,path,sizeof(int)*(_t_path_depth(path)+1));
-    free(path);
-    return wakeup;
 }
 
 // low level send, must be called with pending_signals resource locked!!
@@ -531,7 +543,7 @@ T* __r_send(Receptor *r,T *signal) {
 
     //@todo for now we return the UUID of the signal as the result.  Perhaps later we return an error condition if delivery to address is known to be impossible, or something like that.
     T *envelope = _t_child(signal,SignalEnvelopeIdx);
-    return _t_rclone(_t_child(envelope,EnvelopeUUIDIdx));
+    return _t_rclone(_t_child(envelope,EnvelopeSignalUUIDIdx));
 }
 
 /**
@@ -560,18 +572,19 @@ T* _r_send(Receptor *r,T *signal) {
  * @returns a clone of the UUID of the message sent.
  * @todo signal should have timestamps and other meta info
  */
-T* _r_request(Receptor *r,T *signal,Symbol response_carrier,T *code_point,int process_id) {
+T* _r_request(Receptor *r,T *signal,Symbol response_carrier,T *code_point,int process_id,T *cid) {
 
     //@todo lock resources
-    T *result = __r_send(r,signal);
+    T *result = __r_send(r,signal); // result is signal UUID
     T *pr = _t_newr(r->pending_responses,PENDING_RESPONSE);
     _t_add(pr,_t_clone(result));
     _t_news(pr,CARRIER,response_carrier);
-    _t_add(pr,__r_build_wakeup_info(code_point,process_id));
-    int p[] = {SignalEnvelopeIdx,EnvelopeExtraIdx,TREE_PATH_TERMINATOR};
+    _t_add(pr,__p_build_wakeup_info(code_point,process_id));
+    int p[] = {SignalMessageIdx,MessageHeadIdx,HeadOptionalsIdx,TREE_PATH_TERMINATOR};
     T *ec = _t_get(signal,p);
     if (!ec || !semeq(_t_symbol(ec),END_CONDITIONS)) raise_error("request missing END_CONDITIONS");
     _t_add(pr,_t_clone(ec));
+    if (cid) _t_add(pr,_t_clone(cid));
 
     debug(D_SIGNALS,"sending request and adding pending response: %s\n",_td(r,pr));
     //@todo unlock resources
@@ -642,17 +655,32 @@ void evaluateEndCondition(T *ec,bool *cleanup,bool *allow) {
  */
 void __r_test_expectation(Receptor *r,T *expectation,T *signal) {
     Q *q = r->q;
-    T *signal_contents = (T *)_t_surface(_t_child(signal,SignalBodyIdx));
+    int p[] = {SignalMessageIdx,MessageBodyIdx,TREE_PATH_TERMINATOR};
+    T *body = _t_get(signal,p);
+    T *signal_contents = (T *)_t_surface(body);
 
     //test carriers first because they must match
     T *e_carrier = _t_child(expectation,ExpectationCarrierIdx);
-    T *s_carrier = _t_getv(signal,SignalEnvelopeIdx,EnvelopeCarrierIdx,TREE_PATH_TERMINATOR);
+    T *head =_t_getv(signal,SignalMessageIdx,MessageHeadIdx,TREE_PATH_TERMINATOR);
+    T *s_carrier = _t_child(head,HeadCarrierIdx);
 
     debug(D_SIGNALS,"checking signal carrier %s\n",_td(q->r,s_carrier));
     debug(D_SIGNALS,"against expectation carrier %s\n",_td(q->r,e_carrier));
 
     Symbol esym = *(Symbol *)_t_surface(e_carrier);
     if (!semeq(esym,*(Symbol *)_t_surface(s_carrier)) && !semeq(esym,NULL_SYMBOL)) return;
+
+    T *s_cid = __t_find(head,CONVERSATION_IDENT,HeadOptionalsIdx);
+    T *e_cid = __t_find(expectation,CONVERSATION_IDENT,ExpectationOptionalsIdx);
+    debug(D_SIGNALS,"checking signal conversation %s\n",_td(q->r,s_cid));
+    debug(D_SIGNALS,"against expectation conversation %s\n",_td(q->r,e_cid));
+
+    // if expectation is keyed to a conversation and the signal isn't the instant no match
+    if (e_cid && !s_cid) return;
+    // if both signal and expectation are keyed to a conversation test the ids for equality
+    if (s_cid && e_cid) {
+        if (!__cid_equal(r->sem,s_cid,e_cid)) return;
+    }
 
     T *pattern,*m;
     pattern = _t_child(expectation,ExpectationPatternIdx);
@@ -682,27 +710,7 @@ void __r_test_expectation(Receptor *r,T *expectation,T *signal) {
             /* /// @todo later this should be integrated into some kind of scoping handling */
             T *params = _t_rclone(_t_child(expectation,ExpectationParamsIdx));
             _p_fill_from_match(r->sem,params,m,signal_contents);
-            int process_id = *(int *)_t_surface(_t_child(action,1));
-            int *code_path = (int *)_t_surface(_t_child(action,2));
-
-            // @todo figure out how to refactor this with the similar
-            // code in _r_deliver.
-            debug(D_LOCK,"listen LOCK\n");
-            pthread_mutex_lock(&q->mutex);
-            Qe *e = __p_find_context(q->blocked,process_id);
-            if (e) {
-                T *result = _t_get(e->context->run_tree,code_path);
-                if (!result) raise_error("failed to find code path when waking up expectation!");
-                T *p = _t_parent(result);
-                _t_replace(p,_t_node_index(result), params);
-                e->context->node_pointer = params;
-
-                __p_unblock(q,e);
-                debug(D_LISTEN+D_SIGNALS,"unblocking action at %d,%s\n",process_id,_td(q->r,p));
-            }
-            else _t_free(params);
-            pthread_mutex_unlock(&q->mutex);
-            debug(D_LOCK,"listen UNLOCK\n");
+            _p_wakeup(q,action,params,noReductionErr);
             cleanup = true; //always cleanup after a wakeup because the context is gone.
         }
         else {
@@ -711,7 +719,7 @@ void __r_test_expectation(Receptor *r,T *expectation,T *signal) {
             // _p_make_run_tree assumes rT nodes
             T *params = _t_rclone(_t_child(expectation,ExpectationParamsIdx));
             _p_fill_from_match(r->sem,params,m,signal_contents);
-            T *sm = _t_child(expectation,ExpectationSemanticMapIdx);
+            T *sm = __t_find(expectation,SEMANTIC_MAP,ExpectationOptionalsIdx);
             if (sm) sm = _t_clone(sm);
             debug(D_SIGNALS,"creating a run tree for action %s with params %s\n",_sem_get_name(r->sem,p),_t2s(r->sem,params));
             //@todo check the signature?
@@ -735,6 +743,195 @@ T* __r_sanatize_response(Receptor *r,T* response) {
     return _t_rclone(response);
 }
 
+int __r_deliver_response(Receptor *r,T *response_to,T *signal) {
+    T *head = _t_getv(signal,SignalMessageIdx,MessageHeadIdx,TREE_PATH_TERMINATOR);
+    // responses don't trigger expectation matching, instead they
+    // go through the pending_responses list to see where the signal goes
+    UUIDt *u = (UUIDt*)_t_surface(response_to);
+    debug(D_SIGNALS,"Delivering response: %s\n",_td(r,signal));
+    Symbol signal_carrier = *(Symbol *)_t_surface(_t_child(head,HeadCarrierIdx));
+
+    T *body = _t_getv(signal,SignalMessageIdx,MessageBodyIdx,TREE_PATH_TERMINATOR);
+    T *response = (T *)_t_surface(body);
+    T *l;
+    DO_KIDS(r->pending_responses,
+            l = _t_child(r->pending_responses,i);
+            if (__uuid_equal(u,(UUIDt *)_t_surface(_t_child(l,PendingResponseUUIDIdx)))) {
+
+                // get the end conditions so we can see if we should actually respond
+                T *ec = _t_child(l,PendingResponseEndCondsIdx);
+                bool allow;
+                bool cleanup;
+                evaluateEndCondition(ec,&cleanup,&allow);
+
+                if (allow) {
+                    Symbol carrier = *(Symbol *)_t_surface(_t_child(l,PendingResponseCarrierIdx));
+                    T *wakeup = _t_child(l,PendingResponseWakeupIdx);
+                    // now set up the signal so when it's freed below, the body doesn't get freed too
+                    signal->context.flags &= ~TFLAG_SURFACE_IS_TREE;
+                    if (!semeq(carrier,signal_carrier)) {
+                        debug(D_SIGNALS,"response failed carrier check, expecting %s, but got %s!\n",_r_get_symbol_name(r,carrier),_r_get_symbol_name(r,signal_carrier));
+                        //@todo what kind of logging of these kinds of events?
+                        break;
+                    }
+
+                    response = __r_sanatize_response(r,response);
+                    // if the response isn't safe just break
+                    if (!response) {
+                        //@todo figure out if this means we should throw away the pending response too
+                        break;
+                    }
+                    _p_wakeup(r->q,wakeup,response,noReductionErr);
+                }
+
+                if (cleanup) {
+                    debug(D_SIGNALS,"removing pending response: %s\n",_td(r,l));
+                    _t_detach_by_idx(r->pending_responses,i);
+                    //i--;
+                    _t_free(l);
+                }
+                break;
+            }
+            );
+    _t_free(signal);
+    return noDeliveryErr;
+}
+
+
+bool __cid_equal(SemTable *sem,T *cid1,T*cid2) {
+    UUIDt *u1 = __cid_getUUID(cid1);
+    UUIDt *u2 = __cid_getUUID(cid2);
+    return __uuid_equal(u1,u2);
+    //    return _t_hash(sem,cid1) == _t_hash(sem,cid2);
+}
+
+T *__cid_new(T *parent,UUIDt *c,T *topic) {
+    T *cid = _t_newr(parent,CONVERSATION_IDENT);
+    _t_new(cid,CONVERSATION_UUID,c,sizeof(UUIDt));
+    return cid;
+}
+
+UUIDt *__cid_getUUID(T *cid) {
+    return (UUIDt *)_t_surface(_t_child(cid,ConversationIdentUUIDIdx));
+}
+
+// registers a new conversation at the receptor level.  Note that this routine
+// expects that the until param (if provided) can be added to the conversation tree,
+// i.e. it must not be part of some other tree.
+T * _r_add_conversation(Receptor *r,UUIDt *parent_u,UUIDt *u,T *until,T *wakeup) {
+    T *c = _t_new_root(CONVERSATION);
+    T *cu = __cid_new(c,u,0);
+
+    _t_add(c, until ? until : __r_build_default_until());
+    _t_newr(c,CONVERSATIONS); // add the root for any sub-conversations
+    if (wakeup) _t_add(c,wakeup);
+
+    //@todo NOT THREAD SAFE, add locking
+    T *p;
+    if (parent_u) {
+        p = _r_find_conversation(r,parent_u);
+        p = _t_child(p,ConversationConversationsIdx);
+        if (!p) raise_error("parent conversation not found!");
+    }
+    else p = r->conversations;
+    _t_add(p,c);
+    //@todo UNLOCK
+    return c;
+}
+
+// finds a conversation searching recursively through sub-conversations
+T *__r_find_conversation(T *conversations, UUIDt *uuid) {
+    T *c,*ci;
+    bool found = false;
+
+    // @todo lock?
+    DO_KIDS(conversations,
+            c = _t_child(conversations,i);
+            UUIDt *u = __cid_getUUID(_t_child(c,ConversationIdentIdx));
+            if (__uuid_equal(uuid,u)) {
+                found = true;
+                break;
+            }
+            T *sub_conversations = _t_child(c,ConversationConversationsIdx);
+            if (_t_children(sub_conversations)) {
+                c = __r_find_conversation(sub_conversations,uuid);
+                if (c) {found = true;break;}
+            }
+            );
+    // @todo unlock
+    return found?c:NULL;
+}
+
+T *_r_find_conversation(Receptor *r, UUIDt *uuid) {
+    // @todo reimplement with semtrex?
+    return __r_find_conversation(r->conversations, uuid);
+}
+
+
+typedef void (*doConversationFn)(T *,void *);
+void __r_walk_conversation(T *conversation, doConversationFn fn,void *param) {
+    (*fn)(_t_child(conversation,ConversationIdentIdx),param);
+
+    T *conversations = _t_child(conversation,ConversationConversationsIdx);
+    if (_t_children(conversations)) {
+        T *c;
+        DO_KIDS(conversations,
+                c = _t_child(conversations,i);
+                __r_walk_conversation(c,param,fn);
+            );
+    }
+}
+
+void _cleaner(T *cid,void *p) {
+    Receptor *r = (Receptor *)p;
+    UUIDt *u = __cid_getUUID(cid);
+    T *e,*ex;
+    int i,j;
+    // remove any pending listeners that were established in the covnersation
+    // @todo implement saving expectations in conversations into a hash
+    // so we don't have to do this ugly n^2 search...
+    for(j=1;j<=_t_children(r->flux);j++) {
+        ex = _t_child(_t_child(r->flux,j),aspectExpectationsIdx);
+        for(i=1;i<=_t_children(ex);i++) {
+            e = _t_child(ex,i);
+            T *cid = __t_find(e,CONVERSATION_IDENT,ExpectationOptionalsIdx);
+            if (cid && __uuid_equal(u,__cid_getUUID(cid))) {
+                _t_detach_by_ptr(ex,e);
+                _t_free(e);
+                i--;
+            }
+        }
+    }
+    // remove any pending response handlers from requests
+    for(i=1;i<=_t_children(r->pending_responses);i++) {
+        e = _t_child(r->pending_responses,i);
+        T *cid = _t_child(e,PendingResponseConversationIdentIdx);
+        if (cid && __uuid_equal(u,__cid_getUUID(cid))) {
+            _t_detach_by_ptr(r->pending_responses,e);
+            _t_free(e);
+            i--;
+        }
+    }
+}
+
+// cleans up any pending requests, listens and the conversation record
+// returns the wakeup reference
+T * __r_cleanup_conversation(Receptor *r, UUIDt *cuuid) {
+    // @todo lock conversations?
+    T *c = _r_find_conversation(r,cuuid);
+    if (!c) {
+        raise_error("can't find conversation");
+    }
+    T *w = _t_detach_by_idx(c,ConversationWakeupIdx);
+
+    __r_walk_conversation(c,_cleaner,r);
+
+    _t_detach_by_ptr(_t_parent(c),c);
+    _t_free(c);
+    // @todo unlock conversations?
+    return w;
+}
+
 /**
  * Send a signal to a receptor
  *
@@ -755,94 +952,49 @@ T* __r_sanatize_response(Receptor *r,T* response) {
  * @snippet spec/receptor_spec.h testReceptorAction
  */
 Error _r_deliver(Receptor *r, T *signal) {
-    T *l;
 
-    T *envelope = _t_child(signal,SignalEnvelopeIdx);
+    T *head = _t_getv(signal,SignalMessageIdx,MessageHeadIdx,TREE_PATH_TERMINATOR);
 
-    // see if this is more than a plain send signal we are delivering
-    // if there are END_CONDITIONS we know this is a request
-    // if there is a an IN_RESPONSE_TO_UUID then we know it's a response
-    T *extra=_t_child(envelope,EnvelopeExtraIdx);
-    if (extra && semeq(IN_RESPONSE_TO_UUID,_t_symbol(extra))) {
-        // responses don't trigger expectation matching, instead they
-        // go through the pending_responses list to see where the signal goes
-        UUIDt *u = (UUIDt*)_t_surface(extra);
-        debug(D_SIGNALS,"Delivering response: %s\n",_td(r,signal));
-        DO_KIDS(r->pending_responses,
-                l = _t_child(r->pending_responses,i);
-                if (__uuid_equal(u,(UUIDt *)_t_surface(_t_child(l,PendingResponseUUIDIdx)))) {
+    T *conversation = NULL;
+    T *end_conditions = NULL;
+    T *response_to = NULL;
 
-                    // get the end conditions so we can see if we should actually respond
-                    T *ec = _t_child(l,PendingResponseEndCondsIdx);
-                    bool allow;
-                    bool cleanup;
-                    evaluateEndCondition(ec,&cleanup,&allow);
+    // check the optional HEAD items to see if this is more than a plain signal
+    int optionals = HeadOptionalsIdx;
+    T *extra;
+    while(extra =_t_child(head,optionals++)) {
+        Symbol sym = _t_symbol(extra);
+        if (semeq(CONVERSATION_IDENT,sym))
+            conversation = extra;
+        else if (semeq(IN_RESPONSE_TO_UUID,sym))
+            response_to = extra;
+        else if (semeq(END_CONDITIONS,sym))
+            end_conditions = extra;
+    }
 
-                    if (allow) {
-                        Symbol carrier = *(Symbol *)_t_surface(_t_child(l,PendingResponseCarrierIdx));
-                        T *wakeup = _t_child(l,PendingResponseWakeupIdx);
-                        int process_id = *(int *)_t_surface(_t_child(wakeup,WakeupReferenceProcessIdentIdx));
-                        int *code_path = (int *)_t_surface(_t_child(wakeup,WakeupReferenceCodePathIdx));
-                        T *response = (T *)_t_surface(_t_child(signal,SignalBodyIdx));
-                        // now set up the signal so when it's freed below, the body doesn't get freed too
-                        signal->context.flags &= ~TFLAG_SURFACE_IS_TREE;
-                        Symbol signal_carrier = *(Symbol *)_t_surface(_t_child(envelope,EnvelopeCarrierIdx));
-                        if (!semeq(carrier,signal_carrier)) {
-                            debug(D_SIGNALS,"response failed carrier check, expecting %s, but got %s!\n",_r_get_symbol_name(r,carrier),_r_get_symbol_name(r,signal_carrier));
-                            //@todo what kind of logging of these kinds of events?
-                            break;
-                        }
+    // if there is a conversation, check to see if we've got a scope open for it
+    if (conversation) {
+        UUIDt *cuuid = __cid_getUUID(conversation);
+        T *c = _r_find_conversation(r,cuuid);
+        if (!c) {
+            c = _r_add_conversation(r,0,cuuid,end_conditions,NULL);
+        }
+    }
 
-                        response = __r_sanatize_response(r,response);
-                        // if the response isn't safe just break
-                        if (!response) {
-                            //@todo figure out if this means we should throw away the pending response too
-                            break;
-                        }
-
-                        Q *q = r->q;
-                        debug(D_LOCK,"deliver LOCK\n");
-                        pthread_mutex_lock(&q->mutex);
-                        Qe *e = __p_find_context(q->blocked,process_id);
-                        if (e) {
-                            T *result = _t_get(e->context->run_tree,code_path);
-                            // if the code path was from a signal on the flux, it's root
-                            // will be the receptor, so the first get will fail so try again
-                            if (!result) result = _t_get(r->root,code_path);
-                            // @todo that really wasn't very pretty, and what happens if that
-                            // fails?  how do we handle it!?
-                            if (!result) raise_error("failed to find code path when delivering response!");
-
-                            debug(D_SIGNALS,"unblocking for response %s\n",_td(r,response));
-                            _t_replace(_t_parent(result),_t_node_index(result), response);
-                            e->context->node_pointer = response;
-                            debug(D_SIGNALS,"  runtree: %s\n",_td(r,e->context->run_tree));
-                            __p_unblock(q,e);
-                        }
-                        pthread_mutex_unlock(&q->mutex);
-                        debug(D_LOCK,"deliver UNLOCK\n");
-                    }
-
-                    if (cleanup) {
-                        debug(D_SIGNALS,"removing pending response: %s\n",_td(r,l));
-                        _t_detach_by_idx(r->pending_responses,i);
-                        //i--;
-                        _t_free(l);
-                    }
-                    break;
-                }
-                );
-        _t_free(signal);
+    // if there is an IN_RESPONSE_TO_UUID then we know it's a response
+    if (response_to) {
+        return __r_deliver_response(r,response_to,signal);
     }
     else {
 
-        if (extra && semeq(END_CONDITIONS,_t_symbol(extra))) {
+        // if there are END_CONDITIONS we know this is a request
+        if (end_conditions) {
             // determine if we will honor the request conditions?
             // perhaps that all happens at the protocol level
             // @todo anything specific we need to store here??
         }
 
-        Aspect aspect = *(Aspect *)_t_surface(_t_child(envelope,EnvelopeAspectIdx));
+        Aspect aspect = *(Aspect *)_t_surface(_t_child(head,HeadAspectIdx));
 
         T *as = __r_get_signals(r,aspect);
 
@@ -851,7 +1003,7 @@ Error _r_deliver(Receptor *r, T *signal) {
         // walk through all the expectations on the aspect and see if any expectations match this incoming signal
         T *es = __r_get_expectations(r,aspect);
         debug(D_SIGNALS,"Testing %d expectations\n",es ? _t_children(es) : 0);
-
+        T *l;
         DO_KIDS(es,
                 l = _t_child(es,i);
                 __r_test_expectation(r,l,signal);
@@ -927,40 +1079,53 @@ Receptor *_r_makeStreamEdgeReceptor(SemTable *sem) {
 
 void __r_listenerCallback(Stream *st,void *arg) {
     Receptor *r = (Receptor *)arg;
-    T *e = _t_child(r->edge,2);
-    Aspect a = *(Aspect *)_t_surface(_t_child(e,2));
-    _r_addReader(r,st,
-                 *(ReceptorAddress *)_t_surface(_t_child(_t_child(e,1),1)),
-                 a,
-                 *(Symbol *)_t_surface(_t_child(e,3)),
-                 *(Symbol *)_t_surface(_t_child(e,4))
-                 );
-    st->flags |= StreamCloseAfterOneWrite;
-    _r_addWriter(r,st,a);
+
+    T *code = _t_rclone(_t_child(r->edge,2));
+    T *params = _t_clone(_t_child(r->edge,3));
+    _t_new_cptr(params,EDGE_STREAM,st);
+    T *err_handler = _t_child(r->edge,4);
+
+    T *run_tree = _t_new_root(RUN_TREE);
+    _t_add(run_tree,code);
+    _t_add(run_tree,params);
+    if (err_handler) {
+        _t_add(run_tree,_t_rclone(err_handler));
+    }
+
+    _p_addrt2q(r->q,run_tree);
+
 }
 
-SocketListener *_r_addListener(Receptor *r,int port,ReceptorAddress to,Aspect aspect,Symbol carrier,Symbol result_symbol) {
+SocketListener *_r_addListener(Receptor *r,int port,T *code,T*params,T *err_handler,char *delim) {
     T *e = _t_new_root(PARAMS);
 
-    SocketListener *l = _st_new_socket_listener(port,__r_listenerCallback,r);
+    SocketListener *l = _st_new_socket_listener(port,__r_listenerCallback,r,delim);
     _t_new_cptr(e,EDGE_LISTENER,l);
+    _t_add(e,code);
+    if (!params) params = _t_newr(e,PARAMS);
+    else _t_add(e,params);
+    if (err_handler) _t_add(e,err_handler);
 
-    T *say = _t_newr(e,SAY);
-    __r_make_addr(say,TO_ADDRESS,to);
-    _t_news(say,ASPECT_IDENT,aspect);
-    _t_news(say,CARRIER,carrier);
-    _t_news(say,RESULT_SYMBOL,carrier);
     if (r->edge) raise_error("edge in use!!");
     r->edge = e;
     return l;
 }
 
-void _r_addReader(Receptor *r,Stream *st,ReceptorAddress to,Aspect aspect,Symbol carrier,Symbol result_symbol) {
+void _r_addReader(Receptor *r,Stream *st,ReceptorAddress to,Aspect aspect,Symbol carrier,Symbol result_symbol,bool conversation) {
 
     // code is something like:
     // (do (not stream eof) (send to (read_stream stream line)))
 
-    T *p = _t_new_root(ITERATE);
+    T *p,*code = NULL;
+    if (conversation) {
+        code = _t_new_root(CONVERSE);
+        p = _t_newr(code,SCOPE);
+        p = _t_newr(p,ITERATE);
+    }
+    else {
+        code = p = _t_new_root(ITERATE);
+    }
+
     T *params = _t_newr(p,PARAMS);
     T *eof = _t_newr(p,STREAM_ALIVE);
 
@@ -976,8 +1141,8 @@ void _r_addReader(Receptor *r,Stream *st,ReceptorAddress to,Aspect aspect,Symbol
     _t_new_cptr(s,EDGE_STREAM,st);
     _t_new(s,RESULT_SYMBOL,&result_symbol,sizeof(Symbol));
 
-    T *run_tree = __p_build_run_tree(p,0);
-    _t_free(p);
+    T *run_tree = __p_build_run_tree(code,0);
+    _t_free(code);
     _p_addrt2q(r->q,run_tree);
 }
 
@@ -1006,16 +1171,19 @@ void _r_addWriter(Receptor *r,Stream *st,Aspect aspect) {
     T* s = _t_newr(params,SLOT);
     _t_news(s,USAGE,NULL_SYMBOL);
 
+    Symbol echo2stream;
+    _sem_get_by_label(G_sem,"echo2stream",&echo2stream);
+
     T *act = _t_newp(0,ACTION,echo2stream);
 
-    _r_add_expectation(r,aspect,NULL_SYMBOL,expect,act,params,0,NULL);
+    _r_add_expectation(r,aspect,NULL_SYMBOL,expect,act,params,0,NULL,NULL);
 
 }
 
 void _r_defineClockReceptor(SemTable *sem) {
     Context clk_ctx =  _d_get_receptor_context(sem,CLOCK_RECEPTOR);
     T *resp = _t_new_root(RESPOND);
-    int p[] = {SignalEnvelopeIdx,EnvelopeCarrierIdx,TREE_PATH_TERMINATOR};
+    int p[] = {SignalMessageIdx,MessageHeadIdx,HeadCarrierIdx,TREE_PATH_TERMINATOR};
     _t_new(resp,SIGNAL_REF,p,sizeof(int)*4);
 
     Xaddr x = {TICK,1};
@@ -1032,7 +1200,7 @@ void _r_defineClockReceptor(SemTable *sem) {
     T *def = _o_make_protocol_def(sem,clk_ctx,"time",
                                   ROLE,TIME_TELLER,
                                   ROLE,TIME_HEARER,
-                                  GOAL,REQUEST_HANDLER,
+                                  GOAL,RESPONSE_HANDLER,
                                   INTERACTION,tell_time,
                                   INITIATE,TIME_HEARER,TIME_TELLER,req_act,
                                   EXPECT,TIME_TELLER,TIME_HEARER,pattern,act,NULL_SYMBOL,
@@ -1052,15 +1220,17 @@ Receptor *_r_makeClockReceptor(SemTable *sem) {
     T *tick = __r_make_tick();  // initial tick, will get updated by clock thread.
     Xaddr x = _r_new_instance(r,tick);
 
-    Protocol time = _sem_get_by_label(sem,"time",r->context);
+    Protocol time;
+    __sem_get_by_label(sem,"time",&time,r->context);
     _o_express_role(r,time,TIME_TELLER,DEFAULT_ASPECT,NULL);
 
 
-    /* Process proc = _sem_get_by_label(sem,"respond with current time",r->context); */
+    /* Process proc;
+       __sem_get_by_label(sem,"respond with current time",&proc,r->context); */
 
     /* T *act = _t_newp(0,ACTION,proc); */
     /* T *params = _t_new_root(PARAMS); */
-    /* _r_add_expectation(r,DEFAULT_ASPECT,CLOCK_TELL_TIME,expect,act,params,0,NULL); */
+    /* _r_add_expectation(r,DEFAULT_ASPECT,CLOCK_TELL_TIME,expect,act,params,0,NULL,NULL); */
 
     return r;
 }
@@ -1087,7 +1257,7 @@ void *___clock_thread(void *arg){
         debug(D_CLOCK,"%s\n",_td(r,tick));
         Xaddr x = {TICK,1};
         _r_set_instance(r,x,tick);
-        //        T *signal = __r_make_signal(self,self,DEFAULT_ASPECT,TICK,tick,0,0);
+        //        T *signal = __r_make_signal(self,self,DEFAULT_ASPECT,TICK,tick,0,0,0);
         //        _r_deliver(r,signal);
         sleep(1);
         /// @todo this will skip some seconds over time.... make more sophisticated

@@ -157,25 +157,32 @@ Structure _sem_get_symbol_structure(SemTable *sem,Symbol s){
 }
 
 // @todo, convert this to hash table label table!!
-SemanticID _sem_get_by_label(SemTable *sem,char *label,Context c) {
+bool __sem_get_by_label(SemTable *sem,char *label,SemanticID *sid,Context c) {
     ContextStore *ctx = __sem_context(sem,c);
     T *d = ctx->definitions;
     if (!d) raise_error("no definitions in context %s",_sem_ctx2s(sem,c));
     int i,j;
-    SemanticID sid = {c,0,0};
     for(i=1;i<=_t_children(d);i++) {
         T *defs = _t_child(d,i);
         for(j=1;j<=_t_children(defs);j++) {
             T *def = _t_child(defs,j);
             if (strcmp(label,(char *)_t_surface(_t_child(_t_child(def,DefLabelIdx),1)))==0) {
-                sid.semtype = i;
-                sid.id = j;
-                return sid;
+                sid->semtype = i;
+                sid->id = j;
+                sid->context = c;
+                return true;
             }
         }
     }
-    raise_error("implement what to do if label not found!");
-    return sid;
+    return false;
+}
+
+bool _sem_get_by_label(SemTable *sem,char *label,SemanticID *sid) {
+    int i;
+    if (!strcmp(label,"NULL_SYMBOL")) {*sid = NULL_SYMBOL; return true;}
+    for(i=0;i<sem->contexts;i++)
+        if (__sem_get_by_label(sem,label,sid,i)) return true;
+    return false;
 }
 
 /** @}*/

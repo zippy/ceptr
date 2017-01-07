@@ -245,7 +245,7 @@ void testMTreeReceptor() {
     spec_is_ptr_equal(*(Receptor **)_m_surface(hr),r);
     spec_is_ptr_equal(_t_surface(t2),r);
 
-    spec_is_str_equal(t2s(t2),"(TEST_RECEPTOR:{(RECEPTOR_INSTANCE (INSTANCE_OF:TEST_RECEPTOR) (CONTEXT_NUM:3) (PARENT_CONTEXT_NUM:0) (RECEPTOR_STATE (FLUX (DEFAULT_ASPECT (EXPECTATIONS) (SIGNALS))) (PENDING_SIGNALS) (PENDING_RESPONSES) (RECEPTOR_ELAPSED_TIME:0)))})");
+    spec_is_str_equal(t2s(t2),"(TEST_RECEPTOR:{(RECEPTOR_INSTANCE (INSTANCE_OF:TEST_RECEPTOR) (CONTEXT_NUM:3) (PARENT_CONTEXT_NUM:0) (RECEPTOR_STATE (FLUX (DEFAULT_ASPECT (EXPECTATIONS) (SIGNALS))) (PENDING_SIGNALS) (PENDING_RESPONSES) (CONVERSATIONS) (RECEPTOR_ELAPSED_TIME:0)))})");
 
     _t_free(t);
     _t_free(t2);
@@ -279,7 +279,7 @@ void testTreeConvert() {
     T *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
     H h = _m_new_from_t(t);
 
-    spec_is_symbol_equal(0,_m_symbol(h),HTTP_REQUEST);
+    spec_is_symbol_equal(0,_m_symbol(h),HTTP_REQUEST_LINE);
     H hh = h;
     hh.a.l = 1;
     spec_is_symbol_equal(0,_m_symbol(hh),HTTP_REQUEST_VERSION);

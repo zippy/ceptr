@@ -48,7 +48,7 @@ void addCommand(Receptor *r,ReceptorAddress ox,char *command,char *desc,T *code,
     Process proc = _r_define_process(r,p,desc,"long desc...",NULL,NULL);
     T *act = _t_newp(0,ACTION,proc);
 
-    _r_add_expectation(r,DEFAULT_ASPECT,SHELL_COMMAND,expect,act,0,0,NULL);
+    _r_add_expectation(r,DEFAULT_ASPECT,SHELL_COMMAND,expect,act,0,0,NULL,NULL);
 }
 
 void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp,Stream **isp,Stream **osp) {
@@ -64,7 +64,7 @@ void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp
     Stream *input_stream = *isp = _st_new_unix_stream(input,1);
 
     Receptor *i_r = *irp = _r_makeStreamEdgeReceptor(v->sem);
-    _r_addReader(i_r,input_stream,r->addr,DEFAULT_ASPECT,parse_line,LINE);
+    _r_addReader(i_r,input_stream,r->addr,DEFAULT_ASPECT,parse_line,LINE,false);
     Xaddr ix = _v_new_receptor(v,v->r,STREAM_EDGE,i_r);
     _v_activate(v,ix);
 
@@ -74,7 +74,8 @@ void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp
     _v_activate(v,ox);
 
     // set up shell to express the line parsing protocol when it receives LINES from the stream reader
-    Protocol clp = _sem_get_by_label(v->sem,"PARSE_COMMAND_FROM_LINE",DEV_COMPOSITORY_CONTEXT);
+    Protocol clp;
+    __sem_get_by_label(v->sem,"PARSE_COMMAND_FROM_LINE",&clp,DEV_COMPOSITORY_CONTEXT);
     T *bindings = _t_new_root(PROTOCOL_BINDINGS);
     T *res = _t_newr(bindings,RESOLUTION);
     T *w = _t_newr(res,WHICH_RECEPTOR);
@@ -93,7 +94,8 @@ void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp
     _t_free(bindings);
 
     // set up shell to use the CLOCK TELL_TIME protocol for the time command
-    Protocol time = _sem_get_by_label(v->sem,"time",CLOCK_CONTEXT);
+    Protocol time;
+    __sem_get_by_label(v->sem,"time",&time,CLOCK_CONTEXT);
     T *code = _t_new_root(INITIATE_PROTOCOL);
     _t_news(code,PNAME,time);
     _t_news(code,WHICH_INTERACTION,tell_time);
@@ -109,7 +111,7 @@ void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp
     __r_make_addr(w,ACTUAL_RECEPTOR,clock_addr);
     res = _t_newr(bindings,RESOLUTION);
     w = _t_newr(res,WHICH_PROCESS);
-    _t_news(w,GOAL,REQUEST_HANDLER);
+    _t_news(w,GOAL,RESPONSE_HANDLER);
 
     addCommand(r,o_r->addr,"time","get time",code,w);
 

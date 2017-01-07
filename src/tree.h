@@ -26,7 +26,7 @@
 #include "stream.h"
 
 #define TREE_CHILDREN_BLOCK 5
-#define TREE_PATH_TERMINATOR -9999
+#define TREE_PATH_TERMINATOR 0xFFFFFFFF
 
 enum TreeSurfaceFlags {TFLAG_ALLOCATED=0x0001,TFLAG_SURFACE_IS_TREE=0x0002,TFLAG_SURFACE_IS_RECEPTOR = 0x0004,TFLAG_SURFACE_IS_SCAPE=0x0008,TFLAG_SURFACE_IS_CPTR=0x0010,TFLAG_DELETED=0x0020,TFLAG_RUN_NODE=0x0040,TFLAG_REFERENCE=0x8000};
 
@@ -69,8 +69,11 @@ T *_t_rclone(T *t);
 
 T *_t_build(SemTable *sem,T *t,...);
 T *_t_build2(SemTable *sem,T *t,...);
+T *__t_tokenize(char *s);
+T *_t_parse(SemTable *sem,T *parent,char *s,...);
+
 #define _t_fill_template(t,i) __t_fill_template(t,i,false)
-void __t_fill_template(T *template, T *items,bool as_run_node);
+bool __t_fill_template(T *template, T *items,bool as_run_node);
 
 /******************** Node data accessors */
 int _t_children(T *t);
@@ -84,7 +87,8 @@ T *_t_child(T *t,int i);
 T * _t_root(T *t);
 T * _t_next_sibling(T *t);
 int _t_node_index(T *t);
-T *_t_find(T *t,Symbol sym);
+#define _t_find(t,sym) __t_find(t,sym,1)
+T *__t_find(T *t,Symbol sym,int start_child);
 
 /*****************  Tree path based accesses */
 int _t_path_equal(int *p1,int *p2);
@@ -95,6 +99,7 @@ T * _t_getv(T *t,...);
 int *_t_get_path(T *t);
 void * _t_get_surface(T *t,int *p);
 char * _t_sprint_path(int *fp,char *buf);
+T * _t_path_walk(T *t,int **pathP,int *lenP );
 
 /*****************  Tree hashing utilities */
 TreeHash _t_hash(SemTable *sem,T *t);

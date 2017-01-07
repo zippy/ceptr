@@ -27,6 +27,8 @@
 #include "debug.h"
 #include "util.h"
 
+char *DELIM_LF = "\n";
+char *DELIM_CRLF = "\r\n";
 
 void __st_realloc_reader(Stream *st) {
     st->buf_size *= 2;
@@ -58,10 +60,20 @@ size_t __st_unix_stream_load(Stream *st) {
     char *buf = st->buf+st->bytes_used;
     st->err = 0;
 
-    size_t l = fread(buf,1,max,stream);
+    size_t l;
+    if (st->flags & StreamLoadByLine) {
+        int c;
+        l = 0;
+        while(l < max && (c = fgetc(stream)) != EOF) {
+            buf[l++] = c;
+            if (c == '\n') break;
+        }
+    }
+    else l = fread(buf,1,max,stream);
     debug(D_STREAM,"loaded %ld bytes from file: %.*s\n",l,(int)l,buf);
     if (l == 0) {
         st->err = errno;
+        debug(D_STREAM,"read 0 bytes with errno: %d\n",st->err);
     }
     else {
         st->bytes_used += l;
@@ -103,29 +115,37 @@ size_t __st_socket_stream_load(Stream *st) {
     return l;
 }
 
+
 /**
  * scan a stream's buffer for a unit
  *
  * currently a unit simply is defined by a new-line char
- * @todo allow other delimiters to mark off a unit.
+ * @todo allow other delimiters, or even simply a length, to mark off a unit.
  */
 void __st_scan(Stream *st) {
+    int delim_len = st->delim_len;
+    // if this is the initial scan, then setup the unit_start to 0
     if (st->scan_state == StreamScanInitial)
         st->unit_start = 0;
+    // otherwise set the unit start the byte after the terminator from the
+    // last read (hence the +1)
     else if (st->scan_state == StreamScanSuccess)
-        st->unit_start +=  st->unit_size + 1;
+        st->unit_start +=  st->unit_size + delim_len;
+    // we have completely scanned the buffer if the unit start is >= the bytes in the buffer
     if (st->unit_start >= st->bytes_used) {
         st->scan_state = StreamScanComplete;
         return;
     }
 
-    char c;
+    // set the current read offset taking into account previous partial scans
     size_t i=  (st->scan_state == StreamScanPartial) ? st->partial : st->unit_start;
 
+    int chars_matched = 0;
     while (i<st->bytes_used) {
-        if (st->buf[i] == '\n') {
+        if (st->buf[i] == st->delim[chars_matched]) chars_matched++;
+        if (chars_matched == delim_len) {
             st->scan_state = StreamScanSuccess;
-            st->unit_size = i - st->unit_start;
+            st->unit_size = i - st->unit_start - (delim_len -1);
             return;
         }
         i++;
@@ -158,7 +178,10 @@ char *ss2str(int s) {
 void __st_stream_read(Stream *st) {
     size_t l;
 
-    if (st->bytes_used > 0) goto scan;
+    if (st->bytes_used > 0) {
+        debug(D_STREAM,"data in buffer, skipping read to continue scanning\n");
+        goto scan;
+    }
     // woot!  a good use case for gotos!
  init:
     __st_init_scan(st);
@@ -193,9 +216,12 @@ void __st_stream_read(Stream *st) {
         return;
     }
     else if (st->scan_state == StreamScanPartial) {
+        debug(D_STREAM,"partial found, trying to load more data\n");
         goto load;
     }
     else if (st->scan_state == StreamScanComplete) {
+        debug(D_STREAM,"buffer fully read, reinitialzing buffer\n");
+        st->bytes_used = 0;
         goto init;
     }
     raise_error("unknown scan state!");
@@ -228,6 +254,7 @@ void *_st_stream_read(void *arg) {
             (st->callback)(st);
         }
     } while _st_is_alive(st);
+    debug(D_STREAM,"stream reading finished.\n");
     pthread_exit(NULL);
 }
 
@@ -236,6 +263,8 @@ Stream *__st_alloc_stream() {
     Stream *s = malloc(sizeof(Stream));
     memset(s,0,sizeof(Stream));
     s->flags = StreamCloseOnFree;
+    s->delim = DELIM_LF;
+    s->delim_len = 1;
     return s;
 }
 
@@ -327,6 +356,9 @@ void *__st_socket_stream_accept(void *arg) {
         }
 
         Stream *st = _st_new_socket_stream(new_fd);
+        st->delim = l->delim;
+        st->delim_len = strlen(st->delim);
+
         (l->callback)(st,l->callback_arg);
 
     } while(l->alive);
@@ -337,7 +369,7 @@ void *__st_socket_stream_accept(void *arg) {
 /**
  * create a socket listener on a port which will generate socket streams when connections arrive
  */
-SocketListener *_st_new_socket_listener(int port,lisenterConnectionCallbackFn fn,void *callback_arg) {
+SocketListener *_st_new_socket_listener(int port,lisenterConnectionCallbackFn fn,void *callback_arg,char * delim) {
     char portstr[255];
     sprintf(portstr,"%d",port);
     SocketListener *l = malloc(sizeof(SocketListener));
@@ -345,6 +377,7 @@ SocketListener *_st_new_socket_listener(int port,lisenterConnectionCallbackFn fn
     l->callback = fn;
     l->callback_arg = callback_arg;
     l->alive = true;
+    l->delim = delim;
 
     int sockfd;  // listen on sock_fd, new connection on new_fd
     struct addrinfo hints, *servinfo, *p;
@@ -504,7 +537,12 @@ int _st_write(Stream *st,char *buf,size_t len) {
         FILE *stream = st->data.unix_stream;
         bytes_written = fwrite(buf,sizeof(char),len,stream);
         if (bytes_written > 0) {
-            fflush(stream);
+            // reading and restoring the stream position here is due to a bug in the glibc 2.23
+            // see: https://sourceware.org/bugzilla/show_bug.cgi?id=20005
+            long pos = ftell(stream);
+            int err = fflush(stream);
+            if (err) raise_error("got error on flush: %d",errno);
+            fseek(stream,pos,SEEK_SET);
         }
     }
     else if (st->type == SocketStream) {
@@ -516,4 +554,19 @@ int _st_write(Stream *st,char *buf,size_t len) {
         _st_kill(st);
     }
     return bytes_written;
+}
+
+
+/**
+ * write a line to a stream using the delim as the EOL
+ */
+int _st_writeln(Stream *stream,char *str) {
+    int len = strlen(str);
+    int err = 0;
+    if (len) err = _st_write(stream,str,len);
+    if (!len || err > 0) {
+        int e = _st_write(stream,stream->delim,stream->delim_len);
+        if (e > 0) err += e;
+    }
+    return err;
 }

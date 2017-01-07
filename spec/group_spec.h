@@ -13,7 +13,7 @@ void testGroupCreate() {
     _v_activate(G_vm,mx);
 
     spec_is_str_equal(_td(r,_t_child(r->root,1)),"(INSTANCE_OF:ceptr chat)");
-    spec_is_str_equal(_td(r,r->flux),"(FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:enrollment) (PATTERN (SEMTREX_SYMBOL_ANY)) (ACTION:enroll) (PARAMS) (END_CONDITIONS (UNLIMITED))) (EXPECTATION (CARRIER:converse) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:MESSAGE))) (ACTION:group_listen) (PARAMS (SLOT (USAGE:NULL_SYMBOL))) (END_CONDITIONS (UNLIMITED)))) (SIGNALS)))");
+    spec_is_str_equal(_td(r,r->flux),"(FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:enrollment) (PATTERN (SEMTREX_SYMBOL_ANY)) (ACTION:enroll) (PARAMS) (END_CONDITIONS (UNLIMITED))) (EXPECTATION (CARRIER:converse) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:MESSAGE_TEXT))) (ACTION:group_listen) (PARAMS (SLOT (USAGE:NULL_SYMBOL))) (END_CONDITIONS (UNLIMITED)))) (SIGNALS)))");
 
     // bindings for m to request membership
     T *bindings = _t_new_root(PROTOCOL_BINDINGS);
@@ -52,9 +52,9 @@ void testGroupCreate() {
 
     res = _t_newr(bindings,RESOLUTION);
     w = _t_newr(res,WHICH_VALUE);
-    _t_news(w,USAGE,MESSAGE);
+    _t_news(w,USAGE,MESSAGE_TEXT);
     T *val = _t_newr(w,ACTUAL_VALUE);
-    val = _t_new_str(val,MESSAGE,"hi there!");
+    val = _t_new_str(val,MESSAGE_TEXT,"hi there!");
 
 
     //debug_enable(D_PROTOCOL+D_SIGNALS+D_TREE);
@@ -66,11 +66,11 @@ void testGroupCreate() {
     _v_deliver_signals(G_vm,r);
     _p_reduceq(m->q);
 
-    spec_is_str_equal(_td(r,_t_child(__r_get_signals(r,DEFAULT_ASPECT),2)),"(SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:4)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:converse) (SIGNAL_UUID)) (BODY:{(MESSAGE:hi there!)}) (RUN_TREE (SIGNAL_UUID) (PARAMS (MESSAGE:hi there!))))");
+    spec_is_str_equal(_td(r,_t_child(__r_get_signals(r,DEFAULT_ASPECT),2)),"(SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:4)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:converse) (SIGNAL_UUID)) (BODY:{(MESSAGE_TEXT:hi there!)}) (RUN_TREE (SIGNAL_UUID) (PARAMS (MESSAGE_TEXT:hi there!))))");
 
     t = _t_new_root(ITERATION_DATA);
-    _a_get_instances(&r->instances,MESSAGE,t);
-    spec_is_str_equal(t2s(t),"(ITERATION_DATA (MESSAGE:hi there!))");
+    _a_get_instances(&r->instances,MESSAGE_TEXT,t);
+    spec_is_str_equal(t2s(t),"(ITERATION_DATA (MESSAGE_TEXT:hi there!))");
     _t_free(t);
 
     t = _t_new_root(ITERATION_DATA);
@@ -78,7 +78,7 @@ void testGroupCreate() {
     spec_is_str_equal(t2s(t),"(ITERATION_DATA (MEMBER (RECEPTOR_ADDR:4)))");
     _t_free(t);
 
-    spec_is_str_equal(_td(m,_t_child(__r_get_signals(m,DEFAULT_ASPECT),1)),"(SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:4)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:converse) (SIGNAL_UUID)) (BODY:{(MESSAGE:hi there!)}) (RUN_TREE (TEST_INT_SYMBOL:314) (PARAMS)))");
+    spec_is_str_equal(_td(m,_t_child(__r_get_signals(m,DEFAULT_ASPECT),1)),"(SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:4)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:converse) (SIGNAL_UUID)) (BODY:{(MESSAGE_TEXT:hi there!)}) (RUN_TREE (TEST_INT_SYMBOL:314) (PARAMS)))");
     debug_disable(D_PROTOCOL+D_SIGNALS);
 
     _t_free(bindings);

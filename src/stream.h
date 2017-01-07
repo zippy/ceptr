@@ -17,7 +17,7 @@
 #include <stdbool.h>
 
 enum StreamTypes {UnixStream,SocketStream};
-enum {StreamHasData=0x0001,StreamCloseOnFree=0x0002,StreamReader=0x0004,StreamWaiting=0x0008,StreamAlive=0x8000,StreamCloseAfterOneWrite=0x0010,StreamDying=0x0100};
+enum {StreamHasData=0x0001,StreamCloseOnFree=0x0002,StreamReader=0x0004,StreamWaiting=0x0008,StreamAlive=0x8000,StreamCloseAfterOneWrite=0x0010,StreamDying=0x0100,StreamLoadByLine=0x0200};
 
 typedef struct Stream Stream;
 
@@ -44,6 +44,8 @@ struct Stream {
     hasDataCallbackFn callback;
     void *callback_arg1;
     int callback_arg2;
+    char *delim;
+    int delim_len;
     // hold data for the different types of streams that are implemented
     // for now just unix_streams
     union {
@@ -62,7 +64,12 @@ struct SocketListener {
     lisenterConnectionCallbackFn callback;
     void *callback_arg;
     bool alive;
+    char *delim;
 };
+
+char *DELIM_LF;
+char *DELIM_CRLF;
+
 #define DEFAULT_READER_BUFFER_SIZE 1000
 #define _st_new_unix_stream(s,r) __st_new_unix_stream(s,r?DEFAULT_READER_BUFFER_SIZE:0)
 Stream *__st_new_unix_stream(FILE *stream,size_t reader_buffer_size);
@@ -73,7 +80,7 @@ size_t __st_unix_stream_load(Stream *st);
 
 void __st_scan(Stream *st);
 
-SocketListener *_st_new_socket_listener(int port,lisenterConnectionCallbackFn fn,void *callback_arg);
+SocketListener *_st_new_socket_listener(int port,lisenterConnectionCallbackFn fn,void *callback_arg,char * delim);
 void _st_close_listener(SocketListener *l);
 
 void _st_start_read(Stream *st);
@@ -85,6 +92,7 @@ void _st_free(Stream *);
 #define _st_data_size(st) (st)->unit_size
 
 int _st_write(Stream *stream,char *buf,size_t len);
+int _st_writeln(Stream *stream,char *buf);
 
 #endif
 /** @}*/

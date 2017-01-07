@@ -6,6 +6,8 @@
 
 #include "spec_utils.h"
 
+bool G_done = false;
+
 // write out a tree as json
 void wjson(SemTable *sem,T *t,char *n,int i) {
     char fn[100];

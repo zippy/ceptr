@@ -6,10 +6,10 @@
 
 #include "../src/protocol.h"
 void testProtocolRequesting() {
-    spec_is_str_equal(t2s(_sem_get_def(G_sem,REQUESTING)),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:REQUESTING)) (PROTOCOL_SEMANTICS (ROLE:REQUESTER) (ROLE:RESPONDER) (GOAL:REQUEST_HANDLER) (GOAL:RESPONSE_HANDLER) (USAGE:CHANNEL) (USAGE:REQUEST_DATA) (USAGE:RESPONSE_DATA)) (backnforth (INITIATE (ROLE:REQUESTER) (DESTINATION (ROLE:RESPONDER)) (ACTION:send_request)) (EXPECT (ROLE:RESPONDER) (SOURCE (ROLE:REQUESTER)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SLOT (USAGE:REQUEST_DATA) (SLOT_IS_VALUE_OF:SEMTREX_SYMBOL)))) (ACTION:send_response))))");
-    spec_is_str_equal(t2s(_sem_get_def(G_sem,send_request)),"(PROCESS_DEFINITION (PROCESS_NAME (ENGLISH_LABEL:send_request)) (PROCESS_INTENTION:send request) (SLOT (GOAL:REQUEST_HANDLER) (SLOT_CHILDREN (process:REQUEST (SLOT (ROLE:RESPONDER) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (SLOT (USAGE:CHANNEL) (SLOT_IS_VALUE_OF:ASPECT_IDENT)) (CARRIER:backnforth) (SLOT (USAGE:REQUEST_DATA)) (CARRIER:backnforth)))) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL (ENGLISH_LABEL:response)) (SIGNATURE_ANY)) (TEMPLATE_SIGNATURE (EXPECTED_SLOT (ROLE:RESPONDER) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (EXPECTED_SLOT (USAGE:CHANNEL) (SLOT_IS_VALUE_OF:ASPECT_IDENT)) (EXPECTED_SLOT (USAGE:REQUEST_DATA)) (EXPECTED_SLOT (GOAL:REQUEST_HANDLER)))))");
+    spec_is_str_equal(t2s(_sem_get_def(G_sem,REQUESTING)),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:REQUESTING)) (PROTOCOL_SEMANTICS (ROLE:REQUESTER) (ROLE:RESPONDER) (GOAL:RESPONSE_HANDLER) (GOAL:REQUEST_HANDLER) (USAGE:CHANNEL) (USAGE:REQUEST_TYPE) (USAGE:RESPONSE_TYPE) (USAGE:RESPONSE_HANDLER_PARAMETERS)) (PROTOCOL_DEFAULTS (SEMANTIC_LINK (USAGE:RESPONSE_HANDLER_PARAMETERS) (REPLACEMENT_VALUE (NULL_SYMBOL)))) (backnforth (INITIATE (ROLE:REQUESTER) (DESTINATION (ROLE:RESPONDER)) (ACTION:send_request)) (EXPECT (ROLE:RESPONDER) (SOURCE (ROLE:REQUESTER)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SLOT (USAGE:REQUEST_TYPE) (SLOT_IS_VALUE_OF:SEMTREX_SYMBOL)))) (ACTION:send_response))))");
+    spec_is_str_equal(t2s(_sem_get_def(G_sem,send_request)),"(PROCESS_DEFINITION (PROCESS_NAME (ENGLISH_LABEL:send_request)) (PROCESS_INTENTION:send request) (SLOT (GOAL:RESPONSE_HANDLER) (SLOT_CHILDREN (SLOT (USAGE:RESPONSE_HANDLER_PARAMETERS)) (process:REQUEST (SLOT (ROLE:RESPONDER) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (SLOT (USAGE:CHANNEL) (SLOT_IS_VALUE_OF:ASPECT_IDENT)) (CARRIER:backnforth) (SLOT (USAGE:REQUEST_TYPE)) (CARRIER:backnforth)))) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL (ENGLISH_LABEL:response)) (SIGNATURE_ANY)) (TEMPLATE_SIGNATURE (EXPECTED_SLOT (USAGE:RESPONSE_HANDLER_PARAMETERS)) (EXPECTED_SLOT (ROLE:RESPONDER) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (EXPECTED_SLOT (USAGE:CHANNEL) (SLOT_IS_VALUE_OF:ASPECT_IDENT)) (EXPECTED_SLOT (USAGE:REQUEST_TYPE)) (EXPECTED_SLOT (GOAL:RESPONSE_HANDLER)))))");
 
-    spec_is_str_equal(t2s(_sem_get_def(G_sem,send_response)),"(PROCESS_DEFINITION (PROCESS_NAME (ENGLISH_LABEL:send_response)) (PROCESS_INTENTION:send response) (process:RESPOND (SIGNAL_REF:/1/4) (SLOT (GOAL:RESPONSE_HANDLER))) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL (ENGLISH_LABEL:response id)) (SIGNATURE_SYMBOL:SIGNAL_UUID)) (TEMPLATE_SIGNATURE (EXPECTED_SLOT (GOAL:RESPONSE_HANDLER)))))");
+    spec_is_str_equal(t2s(_sem_get_def(G_sem,send_response)),"(PROCESS_DEFINITION (PROCESS_NAME (ENGLISH_LABEL:send_response)) (PROCESS_INTENTION:send response) (process:RESPOND (SIGNAL_REF:/2/1/4) (SLOT (GOAL:REQUEST_HANDLER))) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL (ENGLISH_LABEL:response id)) (SIGNATURE_SYMBOL:SIGNAL_UUID)) (TEMPLATE_SIGNATURE (EXPECTED_SLOT (GOAL:REQUEST_HANDLER)))))");
 
     //@todo trying to express request protocol should fail because it's not concrete enough
 
@@ -20,15 +20,15 @@ void testProtocolRecognize() {
     T *recog = _sem_get_def(G_sem,RECOGNIZE);
 
     // check the recognize protocol definition
-    spec_is_str_equal(t2s(recog),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:RECOGNIZE)) (PROTOCOL_SEMANTICS) (INCLUSION (PNAME:REQUESTING) (LINKAGE (WHICH_ROLE (ROLE:REQUESTER) (ROLE:RECOGNIZER))) (LINKAGE (WHICH_ROLE (ROLE:RESPONDER) (ROLE:RECOGNIZEE))) (LINKAGE (WHICH_GOAL (GOAL:REQUEST_HANDLER) (GOAL:RECOGNITION))) (RESOLUTION (WHICH_SYMBOL (USAGE:REQUEST_DATA) (ACTUAL_SYMBOL:are_you))) (RESOLUTION (WHICH_SYMBOL (USAGE:RESPONSE_DATA) (ACTUAL_SYMBOL:i_am))) (RESOLUTION (WHICH_SYMBOL (USAGE:CHANNEL) (ACTUAL_SYMBOL:DEFAULT_ASPECT))) (RESOLUTION (WHICH_PROCESS (GOAL:RESPONSE_HANDLER) (ACTUAL_PROCESS:fill_i_am)))))");
+    spec_is_str_equal(t2s(recog),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:RECOGNIZE)) (PROTOCOL_SEMANTICS) (INCLUSION (PNAME:REQUESTING) (LINKAGE (WHICH_ROLE (ROLE:REQUESTER) (ROLE:RECOGNIZER))) (LINKAGE (WHICH_ROLE (ROLE:RESPONDER) (ROLE:RECOGNIZEE))) (LINKAGE (WHICH_GOAL (GOAL:RESPONSE_HANDLER) (GOAL:RECOGNITION))) (RESOLUTION (WHICH_SYMBOL (USAGE:REQUEST_TYPE) (ACTUAL_SYMBOL:are_you))) (RESOLUTION (WHICH_SYMBOL (USAGE:RESPONSE_TYPE) (ACTUAL_SYMBOL:i_am))) (RESOLUTION (WHICH_SYMBOL (USAGE:CHANNEL) (ACTUAL_SYMBOL:DEFAULT_ASPECT))) (RESOLUTION (WHICH_PROCESS (GOAL:REQUEST_HANDLER) (ACTUAL_PROCESS:fill_i_am)))))");
 
     T *sem_map = _t_new_root(SEMANTIC_MAP);
     T *t = _o_unwrap(G_sem,recog,sem_map);
     // and also check how it gets unwrapped because it's defined in terms of REQUESTING
-    spec_is_str_equal(t2s(t),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:RECOGNIZE)) (PROTOCOL_SEMANTICS (ROLE:RECOGNIZER) (GOAL:RECOGNITION)) (backnforth (INITIATE (ROLE:RECOGNIZER) (DESTINATION (ROLE:RECOGNIZEE)) (ACTION:send_request)) (EXPECT (ROLE:RECOGNIZEE) (SOURCE (ROLE:RECOGNIZER)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:are_you))) (ACTION:send_response))))");
+    spec_is_str_equal(t2s(t),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:RECOGNIZE)) (PROTOCOL_SEMANTICS (ROLE:RECOGNIZER) (GOAL:RECOGNITION) (USAGE:RESPONSE_HANDLER_PARAMETERS)) (PROTOCOL_DEFAULTS (SEMANTIC_LINK (USAGE:RESPONSE_HANDLER_PARAMETERS) (REPLACEMENT_VALUE (NULL_SYMBOL)))) (backnforth (INITIATE (ROLE:RECOGNIZER) (DESTINATION (ROLE:RECOGNIZEE)) (ACTION:send_request)) (EXPECT (ROLE:RECOGNIZEE) (SOURCE (ROLE:RECOGNIZER)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:are_you))) (ACTION:send_response))))");
 
     // the unwrapping should build up a semantic map
-    spec_is_str_equal(t2s(sem_map),"(SEMANTIC_MAP (SEMANTIC_LINK (ROLE:REQUESTER) (REPLACEMENT_VALUE (ROLE:RECOGNIZER))) (SEMANTIC_LINK (ROLE:RESPONDER) (REPLACEMENT_VALUE (ROLE:RECOGNIZEE))) (SEMANTIC_LINK (GOAL:REQUEST_HANDLER) (REPLACEMENT_VALUE (GOAL:RECOGNITION))) (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:are_you))) (SEMANTIC_LINK (USAGE:RESPONSE_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:i_am))) (SEMANTIC_LINK (USAGE:CHANNEL) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:DEFAULT_ASPECT))) (SEMANTIC_LINK (GOAL:RESPONSE_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:fill_i_am))))");
+    spec_is_str_equal(t2s(sem_map),"(SEMANTIC_MAP (SEMANTIC_LINK (ROLE:REQUESTER) (REPLACEMENT_VALUE (ROLE:RECOGNIZER))) (SEMANTIC_LINK (ROLE:RESPONDER) (REPLACEMENT_VALUE (ROLE:RECOGNIZEE))) (SEMANTIC_LINK (GOAL:RESPONSE_HANDLER) (REPLACEMENT_VALUE (GOAL:RECOGNITION))) (SEMANTIC_LINK (USAGE:REQUEST_TYPE) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:are_you))) (SEMANTIC_LINK (USAGE:RESPONSE_TYPE) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:i_am))) (SEMANTIC_LINK (USAGE:CHANNEL) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:DEFAULT_ASPECT))) (SEMANTIC_LINK (GOAL:REQUEST_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:fill_i_am))))");
     _t_free(sem_map);
 
     // create a receptor to express the proctocl
@@ -56,7 +56,7 @@ void testProtocolRecognize() {
     // recognizee doesn't need any bindings because that role's completed by unwrapping
     _o_express_role(self,RECOGNIZE,RECOGNIZEE,DEFAULT_ASPECT,NULL);
     // however it does add expectation
-    spec_is_str_equal(_td(self,self->flux),"(FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:backnforth) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:are_you))) (ACTION:send_response) (PARAMS) (END_CONDITIONS (UNLIMITED)) (SEMANTIC_MAP (SEMANTIC_LINK (ROLE:REQUESTER) (REPLACEMENT_VALUE (ROLE:RECOGNIZER))) (SEMANTIC_LINK (ROLE:RESPONDER) (REPLACEMENT_VALUE (ROLE:RECOGNIZEE))) (SEMANTIC_LINK (GOAL:REQUEST_HANDLER) (REPLACEMENT_VALUE (GOAL:RECOGNITION))) (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:are_you))) (SEMANTIC_LINK (USAGE:RESPONSE_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:i_am))) (SEMANTIC_LINK (USAGE:CHANNEL) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:DEFAULT_ASPECT))) (SEMANTIC_LINK (GOAL:RESPONSE_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:fill_i_am)))))) (SIGNALS)))");
+    spec_is_str_equal(_td(self,self->flux),"(FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:backnforth) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:are_you))) (ACTION:send_response) (PARAMS) (END_CONDITIONS (UNLIMITED)) (SEMANTIC_MAP (SEMANTIC_LINK (ROLE:REQUESTER) (REPLACEMENT_VALUE (ROLE:RECOGNIZER))) (SEMANTIC_LINK (ROLE:RESPONDER) (REPLACEMENT_VALUE (ROLE:RECOGNIZEE))) (SEMANTIC_LINK (GOAL:RESPONSE_HANDLER) (REPLACEMENT_VALUE (GOAL:RECOGNITION))) (SEMANTIC_LINK (USAGE:REQUEST_TYPE) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:are_you))) (SEMANTIC_LINK (USAGE:RESPONSE_TYPE) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:i_am))) (SEMANTIC_LINK (USAGE:CHANNEL) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:DEFAULT_ASPECT))) (SEMANTIC_LINK (GOAL:REQUEST_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:fill_i_am)))))) (SIGNALS)))");
 
     VMHost *v = G_vm;
     Xaddr x = _v_new_receptor(v,v->r,TEST_RECEPTOR,self);
@@ -90,19 +90,19 @@ void testProtocolRecognize() {
     debug_disable(D_SIGNALS);
 
     // which should produce signals on the flux
-    spec_is_str_equal(t2s(_t_getv(self->pending_signals,1,SignalEnvelopeIdx,EnvelopeCarrierIdx,TREE_PATH_TERMINATOR)),"(CARRIER:backnforth)");
-    spec_is_str_equal(t2s(_t_getv(self->pending_signals,1,SignalBodyIdx,TREE_PATH_TERMINATOR)),"(BODY:{(are_you (SEMTREX_WALK))})");
+    spec_is_str_equal(t2s(_t_getv(self->pending_signals,1,SignalMessageIdx,MessageHeadIdx,HeadCarrierIdx,TREE_PATH_TERMINATOR)),"(CARRIER:backnforth)");
+    spec_is_str_equal(t2s(_t_getv(self->pending_signals,1,SignalMessageIdx,MessageBodyIdx,TREE_PATH_TERMINATOR)),"(BODY:{(are_you (SEMTREX_WALK))})");
     spec_is_str_equal(t2s(_t_getv(self->pending_responses,1,PendingResponseCarrierIdx,TREE_PATH_TERMINATOR)),"(CARRIER:backnforth)");
 
     _v_deliver_signals(v,self);
     // check the signal's envelope, body, and run-tree
     T *signals = __r_get_signals(self,DEFAULT_ASPECT);
-    T *e = _t_clone(_t_getv(signals,1,SignalEnvelopeIdx,TREE_PATH_TERMINATOR));
-    _t_free(_t_detach_by_idx(e,EnvelopeExtraIdx)); // get rid of the end conditions which are variable so we can't test them!
-    spec_is_str_equal(t2s(e),"(ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:backnforth) (SIGNAL_UUID))");
-    _t_free(e);
-    spec_is_str_equal(t2s(_t_getv(signals,1,SignalBodyIdx,TREE_PATH_TERMINATOR)),"(BODY:{(are_you (SEMTREX_WALK))})");
-    spec_is_str_equal(t2s(_t_getv(signals,1,SignalBodyIdx+1,TREE_PATH_TERMINATOR)),"(RUN_TREE (process:RESPOND (SIGNAL_REF:/1/4) (process:fill_i_am)) (PARAMS))");
+    T *h = _t_clone(_t_getv(signals,1,SignalMessageIdx,MessageHeadIdx,TREE_PATH_TERMINATOR));
+    _t_free(_t_detach_by_idx(h,HeadOptionalsIdx)); // get rid of the end conditions which are variable so we can't test them!
+    spec_is_str_equal(t2s(h),"(HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:backnforth))");
+    _t_free(h);
+    spec_is_str_equal(t2s(_t_getv(signals,1,SignalMessageIdx,MessageBodyIdx,TREE_PATH_TERMINATOR)),"(BODY:{(are_you (SEMTREX_WALK))})");
+    spec_is_str_equal(t2s(_t_getv(signals,1,SignalMessageIdx+1,TREE_PATH_TERMINATOR)),"(RUN_TREE (process:RESPOND (SIGNAL_REF:/2/1/4) (process:fill_i_am)) (PARAMS))");
 
     //    debug_enable(D_REDUCE+D_REDUCEV);
 
@@ -110,9 +110,10 @@ void testProtocolRecognize() {
     _p_reduceq(self->q);
     debug_disable(D_TREE);
     debug_disable(D_PROTOCOL);
+    debug_disable(D_STEP);
     debug_disable(D_REDUCE+D_REDUCEV);
 
-    spec_is_str_equal(_td(self,self->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:backnforth) (SIGNAL_UUID) (IN_RESPONSE_TO_UUID)) (BODY:{(i_am (RECEPTOR_LABEL (ENGLISH_LABEL:super cept)) (RECEPTOR_IDENTIFIER:314159))})))");
+    spec_is_str_equal(_td(self,self->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:backnforth) (IN_RESPONSE_TO_UUID)) (BODY:{(i_am (RECEPTOR_LABEL (ENGLISH_LABEL:super cept)) (RECEPTOR_IDENTIFIER:314159))}))))");
     _v_deliver_signals(v,self);
 
     spec_is_str_equal(t2s(self->q->active->context->run_tree),"(RUN_TREE (process:NOOP (i_am (RECEPTOR_LABEL (ENGLISH_LABEL:super cept)) (RECEPTOR_IDENTIFIER:314159))) (PARAMS))");
@@ -147,14 +148,14 @@ void testProtocolAlive() {
     // check that the expressed expectation is bound correctly to the handler
     spec_is_str_equal(_td(r2,r2->flux),"(FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:alive) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:YUP))) (ACTION:do nothing) (PARAMS) (END_CONDITIONS (UNLIMITED)) (SEMANTIC_MAP (SEMANTIC_LINK (GOAL:HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:do nothing)))))) (SIGNALS)))");
 
-    T *s = __r_make_signal(r->addr,r->addr,DEFAULT_ASPECT,alive,_t_new_root(PING),0,0);
+    T *s = __r_make_signal(r->addr,r->addr,DEFAULT_ASPECT,alive,_t_new_root(PING),0,0,0);
     //debug_enable(D_SIGNALS);
     spec_is_equal(_r_deliver(r,s),noDeliveryErr);
-    spec_is_str_equal(_td(r,r->q->active->context->run_tree),"(RUN_TREE (process:RESPOND (SIGNAL_REF:/1/4) (YUP)) (PARAMS))");  // responds on the carrier in the signal envelope
+    spec_is_str_equal(_td(r,r->q->active->context->run_tree),"(RUN_TREE (process:RESPOND (SIGNAL_REF:/2/1/4) (YUP)) (PARAMS))");  // responds on the carrier in the signal envelope
     debug_disable(D_SIGNALS);
     spec_is_equal(_p_reduceq(r->q),noReductionErr);
     spec_is_str_equal(_td(r,r->q->completed->context->run_tree),"(RUN_TREE (SIGNAL_UUID) (PARAMS))");
-    spec_is_str_equal(_td(r,r->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:alive) (SIGNAL_UUID) (IN_RESPONSE_TO_UUID)) (BODY:{(YUP)})))");
+    spec_is_str_equal(_td(r,r->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:alive) (IN_RESPONSE_TO_UUID)) (BODY:{(YUP)}))))");
 
     _r_free(r);
     _r_free(r2);
@@ -184,13 +185,7 @@ void _setupTestProtocols() {
 
     Symbol act = _d_define_symbol(G_sem,INTERACTION,"act",TEST_CONTEXT);
 
-    simple_def = _o_make_protocol_def(G_sem,TEST_CONTEXT,"do",
-                                      ROLE,agent,
-                                      GOAL,process,
-                                      USAGE,data,
-                                      INTERACTION,act,
-                                        EXPECT,agent,agent,pattern,action,
-                                      NULL_SYMBOL);
+    simple_def = _t_parse(G_sem,0,"(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:\"do\")) (PROTOCOL_SEMANTICS (ROLE:agent) (GOAL:process) (USAGE:data)) (PROTOCOL_DEFAULTS (SEMANTIC_LINK (USAGE:data) (REPLACEMENT_VALUE (USAGE:TEST_STR_SYMBOL))) (SEMANTIC_LINK (GOAL:process) (REPLACEMENT_VALUE (ACTUAL_PROCESS:NOOP)))) (act (EXPECT (ROLE:agent) (SOURCE (ROLE:agent)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SLOT (USAGE:data) (SLOT_IS_VALUE_OF:SEMTREX_SYMBOL)))) (SLOT (GOAL:process) (SLOT_IS_VALUE_OF:ACTION)))))");
     simple = _d_define_protocol(G_sem,simple_def,TEST_CONTEXT);
 
     // a protocol that's a wrapping of the simple protocol
@@ -199,14 +194,7 @@ void _setupTestProtocols() {
     shaking = _d_define_symbol(G_sem,PROCESS,"shaking",TEST_CONTEXT);
     info = _d_define_symbol(G_sem,SYMBOL,"info",TEST_CONTEXT);
 
-    shake_def = _o_make_protocol_def(G_sem,TEST_CONTEXT,"shake",
-                                     ROLE,mover,
-                                     ROLE,shaker,
-                                     INCLUSION,simple,
-                                       WHICH_ROLE,agent,mover,
-                                       WHICH_GOAL,process,shaking,
-                                       WHICH_USAGE,data,info,
-                                      NULL_SYMBOL);
+    shake_def = _t_parse(G_sem,0,"(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:\"shake\")) (PROTOCOL_SEMANTICS (ROLE:mover) (ROLE:shaker)) (PROTOCOL_DEFAULTS (SEMANTIC_LINK (USAGE:info) (REPLACEMENT_VALUE (USAGE:TEST_FLOAT_SYMBOL)))) (INCLUSION (PNAME:do) (LINKAGE (WHICH_ROLE (ROLE:agent) (ROLE:mover))) (LINKAGE (WHICH_GOAL (GOAL:process) (GOAL:shaking))) (LINKAGE (WHICH_USAGE (USAGE:data) (USAGE:info)))))");
     shake = _d_define_protocol(G_sem,shake_def,TEST_CONTEXT);
 }
 
@@ -214,18 +202,16 @@ void testProtocolResolve() {
 
     T *noop = _t_new_root(NOOP);
     _t_newi(noop,TEST_INT_SYMBOL,314);
-    Process proc = _d_define_process(G_sem,noop,"do nothing","long desc...",NULL,NULL,TEST_CONTEXT);
+    Process proc = _d_define_process(G_sem,noop,"do_nothing","long desc...",NULL,NULL,TEST_CONTEXT);
 
-    T *bindings = _t_build(G_sem,0,PROTOCOL_BINDINGS,RESOLUTION,WHICH_PROCESS,GOAL,process,ACTUAL_PROCESS,proc,NULL_SYMBOL,RESOLUTION,WHICH_SYMBOL,USAGE,data,ACTUAL_SYMBOL,TEST_INT_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
+    T *bindings = _t_parse(G_sem,0,"(PROTOCOL_BINDINGS (RESOLUTION (WHICH_PROCESS (GOAL:process) (ACTUAL_PROCESS:do_nothing))) (RESOLUTION (WHICH_SYMBOL (USAGE:data) (ACTUAL_SYMBOL:TEST_INT_SYMBOL))))");
 
-    spec_is_str_equal(t2s(bindings),"(PROTOCOL_BINDINGS (RESOLUTION (WHICH_PROCESS (GOAL:process) (ACTUAL_PROCESS:do nothing))) (RESOLUTION (WHICH_SYMBOL (USAGE:data) (ACTUAL_SYMBOL:TEST_INT_SYMBOL))))");
-    spec_is_str_equal(t2s(simple_def),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:do)) (PROTOCOL_SEMANTICS (ROLE:agent) (GOAL:process) (USAGE:data)) (act (EXPECT (ROLE:agent) (SOURCE (ROLE:agent)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SLOT (USAGE:data) (SLOT_IS_VALUE_OF:SEMTREX_SYMBOL)))) (SLOT (GOAL:process) (SLOT_IS_VALUE_OF:ACTION)))))");
     T *resolved = _t_clone(simple_def);
-    T *sem_map = _o_bindings2sem_map(bindings,NULL);
-    spec_is_str_equal(t2s(sem_map),"(SEMANTIC_MAP (SEMANTIC_LINK (GOAL:process) (REPLACEMENT_VALUE (ACTUAL_PROCESS:do nothing))) (SEMANTIC_LINK (USAGE:data) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:TEST_INT_SYMBOL))))");
+    T *sem_map = _o_bindings2sem_map(bindings,NULL,NULL);
+    spec_is_str_equal(t2s(sem_map),"(SEMANTIC_MAP (SEMANTIC_LINK (GOAL:process) (REPLACEMENT_VALUE (ACTUAL_PROCESS:do_nothing))) (SEMANTIC_LINK (USAGE:data) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:TEST_INT_SYMBOL))))");
     T *unbound = _o_resolve(G_sem,resolved,sem_map);
     spec_is_str_equal(t2s(unbound),"(PROTOCOL_SEMANTICS (ROLE:agent))");
-    spec_is_str_equal(t2s(resolved),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:do)) (PROTOCOL_SEMANTICS (ROLE:agent) (GOAL:process) (USAGE:data)) (act (EXPECT (ROLE:agent) (SOURCE (ROLE:agent)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_INT_SYMBOL))) (ACTION:do nothing))))");
+    spec_is_str_equal(t2s(resolved),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:do)) (PROTOCOL_SEMANTICS (ROLE:agent) (GOAL:process) (USAGE:data)) (PROTOCOL_DEFAULTS (SEMANTIC_LINK (USAGE:data) (REPLACEMENT_VALUE (USAGE:TEST_STR_SYMBOL))) (SEMANTIC_LINK (GOAL:process) (REPLACEMENT_VALUE (ACTUAL_PROCESS:NOOP)))) (act (EXPECT (ROLE:agent) (SOURCE (ROLE:agent)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_INT_SYMBOL))) (ACTION:do_nothing))))");
 
     _t_free(bindings);
     _t_free(sem_map);
@@ -234,16 +220,25 @@ void testProtocolResolve() {
 
 void testProtocolUnwrap() {
     T *sem_map = _t_new_root(SEMANTIC_MAP);
-    //    debug_enable(D_PROTOCOL);
+    //debug_enable(D_PROTOCOL);
     T *unwrapped = _o_unwrap(G_sem,shake_def,sem_map);
-    debug_disable(D_PROTOCOL);
+    //debug_disable(D_PROTOCOL);
     spec_is_str_equal(t2s(sem_map),"(SEMANTIC_MAP (SEMANTIC_LINK (ROLE:agent) (REPLACEMENT_VALUE (ROLE:mover))) (SEMANTIC_LINK (GOAL:process) (REPLACEMENT_VALUE (GOAL:shaking))) (SEMANTIC_LINK (USAGE:data) (REPLACEMENT_VALUE (USAGE:info))))");
     _t_free(sem_map);
-    spec_is_str_equal(t2s(unwrapped),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:shake)) (PROTOCOL_SEMANTICS (ROLE:mover) (ROLE:shaker) (GOAL:shaking) (USAGE:info)) (act (EXPECT (ROLE:mover) (SOURCE (ROLE:mover)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SLOT (USAGE:info) (SLOT_IS_VALUE_OF:SEMTREX_SYMBOL)))) (SLOT (GOAL:shaking) (SLOT_IS_VALUE_OF:ACTION)))))");
+
+    spec_is_str_equal(t2s(unwrapped),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:shake)) (PROTOCOL_SEMANTICS (ROLE:mover) (ROLE:shaker) (GOAL:shaking) (USAGE:info)) (PROTOCOL_DEFAULTS (SEMANTIC_LINK (USAGE:info) (REPLACEMENT_VALUE (USAGE:TEST_FLOAT_SYMBOL))) (SEMANTIC_LINK (GOAL:shaking) (REPLACEMENT_VALUE (ACTUAL_PROCESS:NOOP)))) (act (EXPECT (ROLE:mover) (SOURCE (ROLE:mover)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SLOT (USAGE:info) (SLOT_IS_VALUE_OF:SEMTREX_SYMBOL)))) (SLOT (GOAL:shaking) (SLOT_IS_VALUE_OF:ACTION)))))");
     _t_free(unwrapped);
 }
 
-
+void testProtocolDefaults() {
+    // protocol defaults should get added into to the semantic map for items not in the bindings
+    T *bindings = _t_parse(G_sem,0,"(PROTOCOL_BINDINGS (RESOLUTION (WHICH_SYMBOL (USAGE:data) (ACTUAL_SYMBOL:TEST_INT_SYMBOL))))");
+    T *defaults = _t_find(simple_def,PROTOCOL_DEFAULTS);
+    T *sem_map = _o_bindings2sem_map(bindings,NULL,defaults);
+    spec_is_str_equal(t2s(sem_map),"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:data) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:TEST_INT_SYMBOL))) (SEMANTIC_LINK (GOAL:process) (REPLACEMENT_VALUE (ACTUAL_PROCESS:NOOP))))");
+    _t_free(sem_map);
+    _t_free(bindings);
+}
 
 /* Symbol wrapper [(token,conversationbody)]; */
 /* Symbol open_request,close_notice ; */
@@ -277,5 +272,6 @@ void testProtocol() {
     testProtocolRequesting();
     testProtocolRecognize();
     testProtocolAlive();
+    testProtocolDefaults();
     _v_free(G_vm);
 }

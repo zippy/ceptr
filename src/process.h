@@ -15,21 +15,27 @@
 
 #include "tree.h"
 
-enum ReductionError {Ascend=-1,Descend=-2,Pushed=-3,Pop=-4,Eval=-5,Block=-6,Done=0,noReductionErr=0,redoReduction,raiseReductionErr,tooFewParamsReductionErr=TOO_FEW_PARAMS_ERR_ID,tooManyParamsReductionErr=TOO_MANY_PARAMS_ERR_ID,signatureMismatchReductionErr=SIGNATURE_MISMATCH_ERR_ID,notProcessReductionError=NOT_A_PROCESS_ERR_ID,divideByZeroReductionErr=ZERO_DIVIDE_ERR_ID,notInSignalContextReductionError=NOT_IN_SIGNAL_CONTEXT_ERR_ID,incompatibleTypeReductionErr=INCOMPATIBLE_TYPE_ERR_ID,unixErrnoReductionErr=UNIX_ERRNO_ERR_ID,deadStreamReadReductionErr=DEAD_STREAM_READ_ERR_ID,missingSemanticMapReductionErr=MISSING_SEMANTIC_MAP_ERR_ID,mismatchSemanticMapReductionErr=MISMATCH_SEMANTIC_MAP_ERR_ID,structureMismatchReductionErr=STRUCTURE_MISMATCH_ERR_ID};
+enum ReductionError {Ascend=-1,Descend=-2,Pushed=-3,Pop=-4,Eval=-5,Block=-6,Done=0,noReductionErr=0,redoReduction,raiseReductionErr,tooFewParamsReductionErr=TOO_FEW_PARAMS_ERR_ID,tooManyParamsReductionErr=TOO_MANY_PARAMS_ERR_ID,signatureMismatchReductionErr=SIGNATURE_MISMATCH_ERR_ID,notProcessReductionError=NOT_A_PROCESS_ERR_ID,divideByZeroReductionErr=ZERO_DIVIDE_ERR_ID,notInSignalContextReductionError=NOT_IN_SIGNAL_CONTEXT_ERR_ID,incompatibleTypeReductionErr=INCOMPATIBLE_TYPE_ERR_ID,unixErrnoReductionErr=UNIX_ERRNO_ERR_ID,deadStreamReadReductionErr=DEAD_STREAM_READ_ERR_ID,missingSemanticMapReductionErr=MISSING_SEMANTIC_MAP_ERR_ID,mismatchSemanticMapReductionErr=MISMATCH_SEMANTIC_MAP_ERR_ID,structureMismatchReductionErr=STRUCTURE_MISMATCH_ERR_ID//,conversatonCompletedReductionErr=CONVERSATION_COMPLETED_ERR_ID
+};
 
 enum QueueError {noErr = 0, contextNotFoundErr};
 
-enum IterationPhase {EvalCondition,EvalBody};
-enum IterationType {IterateTypeCount,IterateTypeUnknown,IterateTypeCond,IterateTypeOnSymbol};
-
 enum MagicProcesses {MagicReceptors,MagicQuit,MagicDebug};
 
+enum IterationPhase {EvalCondition,EvalBody};
+enum IterationType {IterateTypeCount,IterateTypeUnknown,IterateTypeCond,IterateTypeOnSymbol};
 typedef struct IterationState {
     T *code;
     int phase;
     int count;
     int type;
 } IterationState;
+
+enum CondPhase {EvalCondCondtions,EvalCondResult};
+typedef struct CondState {
+    int phase;
+    T *conditions;
+} CondState;
 
 T *defaultRequestUntil();
 R *__p_make_context(T *run_tree,R *caller,int process_id,T *sem_map);
@@ -39,8 +45,9 @@ Error __p_check_signature(SemTable *sem,Process p,T *params,T *sem_map);
 Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q);
 void _p_enqueue(Qe **listP,Qe *e);
 Qe *__p_find_context(Qe *e,int process_id);
-void __p_unblock(Q *q,Qe *e);
+void __p_unblock(Q *q,Qe *e,Error err);
 Error _p_unblock(Q *q,int id);
+void _p_wakeup(Q *q,T *wakeup, T *with,Error err);
 Error _p_reduce(SemTable *sem,T *run_tree);
 Q *_p_newq(Receptor *r);
 void _p_freeq(Q *q);
@@ -50,6 +57,7 @@ Qe *__p_addrt2q(Q *q,T *t,T *sem_map);
 Error _p_reduceq(Q *q);
 void *_p_reduceq_thread(void *arg);
 T *_p_make_run_tree(SemTable *sem,Process p,T *params,T *sem_map);
+T *__p_build_wakeup_info(T *code_point,int process_id);
 T *__p_build_run_tree(T* code,int num_params,...);
 void _p_cleanup(Q *q);
 #define __p_make_signature(output_label,output_type,output_sem,...) __p_make_form(PROCESS_SIGNATURE,output_label,output_type,output_sem,__VA_ARGS__)

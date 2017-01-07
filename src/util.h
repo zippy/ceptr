@@ -20,5 +20,6 @@ void *readFile(char *fn,size_t *size);
 uint64_t diff_micro(struct timespec *start, struct timespec *end);
 void sleepms(long milliseconds);
 #define sleepns(ns) nanosleep((const struct timespec[]){{0, ns}}, NULL);
+void bin_to_strhex(unsigned char *bin, unsigned int binsz, char **result);
 
 #endif

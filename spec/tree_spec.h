@@ -8,7 +8,6 @@
 #include "../src/receptor.h"
 #include "http_example.h"
 
-
 void testCreateTreeNodes() {
     /* test the creation of trees and the various function that give access to created data elements
        and basic tree structure navigation
@@ -86,7 +85,7 @@ void testTreeNewReceptor() {
     spec_is_ptr_equal(_t_surface(tr),r);
     spec_is_true(!(tr->context.flags & TFLAG_ALLOCATED));
 
-    spec_is_str_equal(t2s(t),"(TEST_ANYTHING_SYMBOL (TEST_RECEPTOR:{(RECEPTOR_INSTANCE (INSTANCE_OF:TEST_RECEPTOR) (CONTEXT_NUM:3) (PARENT_CONTEXT_NUM:0) (RECEPTOR_STATE (FLUX (DEFAULT_ASPECT (EXPECTATIONS) (SIGNALS))) (PENDING_SIGNALS) (PENDING_RESPONSES) (RECEPTOR_ELAPSED_TIME:0)))}))");
+    spec_is_str_equal(t2s(t),"(TEST_ANYTHING_SYMBOL (TEST_RECEPTOR:{(RECEPTOR_INSTANCE (INSTANCE_OF:TEST_RECEPTOR) (CONTEXT_NUM:3) (PARENT_CONTEXT_NUM:0) (RECEPTOR_STATE (FLUX (DEFAULT_ASPECT (EXPECTATIONS) (SIGNALS))) (PENDING_SIGNALS) (PENDING_RESPONSES) (CONVERSATIONS) (RECEPTOR_ELAPSED_TIME:0)))}))");
 
     _t_free(t); // note, no need to free the receptor explicitly, as _t_free knows about it
     //! [testTreeNewReceptor]
@@ -300,6 +299,57 @@ void testTreePathSprint() {
     //! [testTreePathSprint]
 }
 
+void testTreePathWalk() {
+    //! [testTreePathWalk]
+    T *x,*t = _t_parse(G_sem,0,"(Root (A) (B (C (D) (E))) (F))");
+
+    int *path = NULL;
+    int len;
+
+    x = _t_path_walk(t,&path,&len);
+    spec_is_str_equal(t2s(x),"(A)");
+    int p1[] = {1,TREE_PATH_TERMINATOR};
+    spec_is_path_equal(path,p1);
+    spec_is_equal(len,2*sizeof(int));
+
+    x = _t_path_walk(t,&path,&len);
+    spec_is_str_equal(t2s(x),"(D)");
+    int p2[] = {2,1,1,TREE_PATH_TERMINATOR};
+    spec_is_path_equal(path,p2);
+    spec_is_equal(len,4*sizeof(int));
+
+    x = _t_path_walk(t,&path,&len);
+    spec_is_str_equal(t2s(x),"(E)");
+    int p3[] = {2,1,2,TREE_PATH_TERMINATOR};
+    spec_is_path_equal(path,p3);
+
+    x = _t_path_walk(t,&path,&len);
+    spec_is_str_equal(t2s(x),"(C (D) (E))");
+    int p4[] = {2,1,TREE_PATH_TERMINATOR};
+    spec_is_path_equal(path,p4);
+
+    x = _t_path_walk(t,&path,&len);
+    spec_is_str_equal(t2s(x),"(B (C (D) (E)))");
+    int p5[] = {2,TREE_PATH_TERMINATOR};
+    spec_is_path_equal(path,p5);
+
+    x = _t_path_walk(t,&path,&len);
+    spec_is_str_equal(t2s(x),"(F)");
+    int p6[] = {3,TREE_PATH_TERMINATOR};
+    spec_is_path_equal(path,p6);
+
+    x = _t_path_walk(t,&path,&len);
+    spec_is_str_equal(t2s(x),"(Root (A) (B (C (D) (E))) (F))");
+    int p7[] = {TREE_PATH_TERMINATOR};
+    spec_is_path_equal(path,p7);
+
+    x = _t_path_walk(t,&path,&len);
+    spec_is_ptr_equal(x,NULL);
+
+    free(path);
+    //! [testTreePathSprint]
+}
+
 void testTreeNodeIndex() {
     //! [testTreeNodeIndex]
     T *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
@@ -350,7 +400,7 @@ void testTreeReplace() {
 
     _t_free(t);
 
-    t = _t_build(G_sem,0,SEMANTIC_MAP,SEMANTIC_LINK,USAGE,REQUEST_DATA,REPLACEMENT_VALUE,ACTUAL_SYMBOL,PING,NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
+    t = _t_build(G_sem,0,SEMANTIC_MAP,SEMANTIC_LINK,USAGE,REQUEST_TYPE,REPLACEMENT_VALUE,ACTUAL_SYMBOL,PING,NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
 
     T *t2 = _t_build(G_sem,0,TEST_ANYTHING_SYMBOL,TEST_INT_SYMBOL,1,TEST_INT_SYMBOL,2,TEST_INT_SYMBOL,1,TEST_INT_SYMBOL,3,NULL_SYMBOL,NULL_SYMBOL);
 
@@ -379,11 +429,14 @@ void testTreeSwap() {
     // replace the version with a new version
     T *t_version = _t_newr(0,HTTP_REQUEST_VERSION);
     _t_newi(t_version,VERSION_MAJOR,1);
-    _t_newi(t_version,VERSION_MINOR,1);
+    _t_newi(t_version,VERSION_MINOR,2);
 
+    spec_is_str_equal(t2s(_t_child(t,1)),"(HTTP_REQUEST_VERSION (VERSION_MAJOR:1) (VERSION_MINOR:1))");
     T *s = _t_swap(t,1,t_version);
-    spec_is_str_equal(t2s(s),"(HTTP_REQUEST_VERSION (VERSION_MAJOR:1) (VERSION_MINOR:0))");
+    // swap returns the node swapped out as a root node
+    spec_is_str_equal(t2s(s),"(HTTP_REQUEST_VERSION (VERSION_MAJOR:1) (VERSION_MINOR:1))");
     spec_is_ptr_equal(_t_parent(s),NULL);
+    spec_is_str_equal(t2s(_t_child(t,1)),"(HTTP_REQUEST_VERSION (VERSION_MAJOR:1) (VERSION_MINOR:2))");
 
     _t_free(s);
     _t_free(t);
@@ -559,8 +612,8 @@ void testTreeBuild() {
     //! [testTreeBuild]
 
     // tests basic structures plus the STRUCTURE_ANYTHING
-    T *t = _t_build(G_sem,0,TEST_ANYTHING_SYMBOL,ACTION,IF,TEST_ANYTHING_SYMBOL,TEST_STR_SYMBOL,"fish",NULL_SYMBOL,TEST_INT_SYMBOL,3141,SIGNAL_REF,SignalEnvelopeIdx,EnvelopeCarrierIdx,TREE_PATH_TERMINATOR,NULL_SYMBOL);
-    spec_is_str_equal(t2s(t),"(TEST_ANYTHING_SYMBOL (ACTION:IF) (TEST_ANYTHING_SYMBOL (TEST_STR_SYMBOL:fish)) (TEST_INT_SYMBOL:3141) (SIGNAL_REF:/1/4))");
+    T *t = _t_build(G_sem,0,TEST_ANYTHING_SYMBOL,ACTION,IF,TEST_ANYTHING_SYMBOL,TEST_STR_SYMBOL,"fish",NULL_SYMBOL,TEST_INT_SYMBOL,3141,SIGNAL_REF,SignalMessageIdx,MessageHeadIdx,HeadCarrierIdx,TREE_PATH_TERMINATOR,NULL_SYMBOL);
+    spec_is_str_equal(t2s(t),"(TEST_ANYTHING_SYMBOL (ACTION:IF) (TEST_ANYTHING_SYMBOL (TEST_STR_SYMBOL:fish)) (TEST_INT_SYMBOL:3141) (SIGNAL_REF:/2/1/4))");
     _t_free(t);
 
     // tests the STRUCTURE_SEQUENCE def
@@ -576,8 +629,8 @@ void testTreeBuild() {
     _t_free(t);
 
     // tests building a code tree
-    t = _t_build(G_sem,0,RESPOND,SIGNAL_REF,SignalEnvelopeIdx,EnvelopeCarrierIdx,TREE_PATH_TERMINATOR,YUP,NULL_SYMBOL);
-    spec_is_str_equal(t2s(t),"(process:RESPOND (SIGNAL_REF:/1/4) (YUP))");
+    t = _t_build(G_sem,0,RESPOND,SIGNAL_REF,SignalMessageIdx,MessageHeadIdx,HeadCarrierIdx,TREE_PATH_TERMINATOR,YUP,NULL_SYMBOL);
+    spec_is_str_equal(t2s(t),"(process:RESPOND (SIGNAL_REF:/2/1/4) (YUP))");
     _t_free(t);
 
     // test building floats
@@ -592,8 +645,8 @@ void testTreeBuild() {
 
 
     // build2 tests
-    t = _t_build2(G_sem,0,STX_OP,PROTOCOL_DEFINITION,STX_OP,PROTOCOL_LABEL,STX_OP,ENGLISH_LABEL,"RECOGNIZE",STX_CP,STX_CP,STX_OP,PROTOCOL_SEMANTICS,STX_CP,STX_OP,INCLUSION,STX_OP,PNAME,REQUESTING,STX_CP,STX_OP,LINKAGE,STX_OP,WHICH_ROLE,STX_OP,ROLE,REQUESTER,STX_CP,STX_OP,ROLE,RECOGNIZER,STX_CP,STX_CP,STX_CP,STX_OP,LINKAGE,STX_OP,WHICH_ROLE,STX_OP,ROLE,RESPONDER,STX_CP,STX_OP,ROLE,RECOGNIZEE,STX_CP,STX_CP,STX_CP,STX_OP,LINKAGE,STX_OP,WHICH_GOAL,STX_OP,GOAL,REQUEST_HANDLER,STX_CP,STX_OP,GOAL,RECOGNITION,STX_CP,STX_CP,STX_CP,STX_OP,RESOLUTION,STX_OP,WHICH_SYMBOL,STX_OP,USAGE,REQUEST_DATA,STX_CP,STX_OP,ACTUAL_SYMBOL,are_you,STX_CP,STX_CP,STX_CP,STX_OP,RESOLUTION,STX_OP,WHICH_SYMBOL,STX_OP,USAGE,RESPONSE_DATA,STX_CP,STX_OP,ACTUAL_SYMBOL,i_am,STX_CP,STX_CP,STX_CP,STX_OP,RESOLUTION,STX_OP,WHICH_PROCESS,STX_OP,GOAL,RESPONSE_HANDLER,STX_CP,STX_OP,ACTUAL_PROCESS,fill_i_am,STX_CP,STX_CP,STX_CP,STX_CP,STX_CP);
-    spec_is_str_equal(t2s(t),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:RECOGNIZE)) (PROTOCOL_SEMANTICS) (INCLUSION (PNAME:REQUESTING) (LINKAGE (WHICH_ROLE (ROLE:REQUESTER) (ROLE:RECOGNIZER))) (LINKAGE (WHICH_ROLE (ROLE:RESPONDER) (ROLE:RECOGNIZEE))) (LINKAGE (WHICH_GOAL (GOAL:REQUEST_HANDLER) (GOAL:RECOGNITION))) (RESOLUTION (WHICH_SYMBOL (USAGE:REQUEST_DATA) (ACTUAL_SYMBOL:are_you))) (RESOLUTION (WHICH_SYMBOL (USAGE:RESPONSE_DATA) (ACTUAL_SYMBOL:i_am))) (RESOLUTION (WHICH_PROCESS (GOAL:RESPONSE_HANDLER) (ACTUAL_PROCESS:fill_i_am)))))");
+    t = _t_build2(G_sem,0,STX_OP,PROTOCOL_DEFINITION,STX_OP,PROTOCOL_LABEL,STX_OP,ENGLISH_LABEL,"RECOGNIZE",STX_CP,STX_CP,STX_OP,PROTOCOL_SEMANTICS,STX_CP,STX_OP,INCLUSION,STX_OP,PNAME,REQUESTING,STX_CP,STX_OP,LINKAGE,STX_OP,WHICH_ROLE,STX_OP,ROLE,REQUESTER,STX_CP,STX_OP,ROLE,RECOGNIZER,STX_CP,STX_CP,STX_CP,STX_OP,LINKAGE,STX_OP,WHICH_ROLE,STX_OP,ROLE,RESPONDER,STX_CP,STX_OP,ROLE,RECOGNIZEE,STX_CP,STX_CP,STX_CP,STX_OP,LINKAGE,STX_OP,WHICH_GOAL,STX_OP,GOAL,RESPONSE_HANDLER,STX_CP,STX_OP,GOAL,RECOGNITION,STX_CP,STX_CP,STX_CP,STX_OP,RESOLUTION,STX_OP,WHICH_SYMBOL,STX_OP,USAGE,REQUEST_TYPE,STX_CP,STX_OP,ACTUAL_SYMBOL,are_you,STX_CP,STX_CP,STX_CP,STX_OP,RESOLUTION,STX_OP,WHICH_SYMBOL,STX_OP,USAGE,RESPONSE_TYPE,STX_CP,STX_OP,ACTUAL_SYMBOL,i_am,STX_CP,STX_CP,STX_CP,STX_OP,RESOLUTION,STX_OP,WHICH_PROCESS,STX_OP,GOAL,REQUEST_HANDLER,STX_CP,STX_OP,ACTUAL_PROCESS,fill_i_am,STX_CP,STX_CP,STX_CP,STX_CP,STX_CP);
+    spec_is_str_equal(t2s(t),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:RECOGNIZE)) (PROTOCOL_SEMANTICS) (INCLUSION (PNAME:REQUESTING) (LINKAGE (WHICH_ROLE (ROLE:REQUESTER) (ROLE:RECOGNIZER))) (LINKAGE (WHICH_ROLE (ROLE:RESPONDER) (ROLE:RECOGNIZEE))) (LINKAGE (WHICH_GOAL (GOAL:RESPONSE_HANDLER) (GOAL:RECOGNITION))) (RESOLUTION (WHICH_SYMBOL (USAGE:REQUEST_TYPE) (ACTUAL_SYMBOL:are_you))) (RESOLUTION (WHICH_SYMBOL (USAGE:RESPONSE_TYPE) (ACTUAL_SYMBOL:i_am))) (RESOLUTION (WHICH_PROCESS (GOAL:REQUEST_HANDLER) (ACTUAL_PROCESS:fill_i_am)))))");
     _t_free(t);
 
     // test building characters
@@ -609,33 +662,25 @@ void testTreeTemplate() {
     //! [testTreeTemplate]
 
     // test filling a value slot
-    T *template = _t_build(G_sem,0,PATTERN,SEMTREX_SYMBOL_LITERAL,SLOT,USAGE,REQUEST_DATA,SLOT_IS_VALUE_OF,SEMTREX_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
-    spec_is_str_equal(t2s(template),"(PATTERN (SEMTREX_SYMBOL_LITERAL (SLOT (USAGE:REQUEST_DATA) (SLOT_IS_VALUE_OF:SEMTREX_SYMBOL))))");
-    T *sem_map = _t_build(G_sem,0,SEMANTIC_MAP,SEMANTIC_LINK,USAGE,REQUEST_DATA,REPLACEMENT_VALUE,ACTUAL_SYMBOL,PING,NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
-    spec_is_str_equal(t2s(sem_map),"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:PING))))");
+    T *template = _t_parse(G_sem,0,"(PATTERN (SEMTREX_SYMBOL_LITERAL (SLOT (USAGE:REQUEST_TYPE) (SLOT_IS_VALUE_OF:SEMTREX_SYMBOL))))");
+    T *sem_map = _t_parse(G_sem,0,"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:REQUEST_TYPE) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:PING))))");
     _t_fill_template(template,sem_map);
     spec_is_str_equal(t2s(template),"(PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:PING)))");
     _t_free(template);
     _t_free(sem_map);
 
     // test filling a value slot of a non leaf node
-    template = _t_build(G_sem,0,REQUEST,SLOT,ROLE,RESPONDER,SLOT_IS_VALUE_OF,TO_ADDRESS,NULL_SYMBOL,SLOT,USAGE,REQUEST_DATA,NULL_SYMBOL,SLOT,USAGE,REQUEST_DATA,NULL_SYMBOL,NULL_SYMBOL);
-    spec_is_str_equal(t2s(template),"(process:REQUEST (SLOT (ROLE:RESPONDER) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (SLOT (USAGE:REQUEST_DATA)) (SLOT (USAGE:REQUEST_DATA)))");
-    sem_map = _t_build(G_sem,0,SEMANTIC_MAP,
-                       SEMANTIC_LINK,USAGE,REQUEST_DATA,REPLACEMENT_VALUE,ACTUAL_SYMBOL,PING,NULL_SYMBOL,NULL_SYMBOL,
-                       SEMANTIC_LINK,ROLE,RESPONDER,REPLACEMENT_VALUE,ACTUAL_RECEPTOR,RECEPTOR_ADDR,3,NULL_SYMBOL,NULL_SYMBOL,
-                       NULL_SYMBOL);
-    spec_is_str_equal(t2s(sem_map),"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:PING))) (SEMANTIC_LINK (ROLE:RESPONDER) (REPLACEMENT_VALUE (ACTUAL_RECEPTOR (RECEPTOR_ADDR:3)))))");
+    template = _t_build(G_sem,0,REQUEST,SLOT,ROLE,RESPONDER,SLOT_IS_VALUE_OF,TO_ADDRESS,NULL_SYMBOL,SLOT,USAGE,REQUEST_TYPE,NULL_SYMBOL,SLOT,USAGE,REQUEST_TYPE,NULL_SYMBOL,NULL_SYMBOL);
+    spec_is_str_equal(t2s(template),"(process:REQUEST (SLOT (ROLE:RESPONDER) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (SLOT (USAGE:REQUEST_TYPE)) (SLOT (USAGE:REQUEST_TYPE)))");
+    sem_map = _t_parse(G_sem,0,"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:REQUEST_TYPE) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:PING))) (SEMANTIC_LINK (ROLE:RESPONDER) (REPLACEMENT_VALUE (ACTUAL_RECEPTOR (RECEPTOR_ADDR:3)))))");
     _t_fill_template(template,sem_map);
     spec_is_str_equal(t2s(template),"(process:REQUEST (TO_ADDRESS (RECEPTOR_ADDR:3)) (PING) (PING))");
     _t_free(template);
     _t_free(sem_map);
 
     // test filling a structure slot
-    template = _t_build(G_sem,0,PATTERN,SEMTREX_SYMBOL_LITERAL,SLOT,USAGE,REQUEST_DATA,NULL_SYMBOL,NULL_SYMBOL);
-    spec_is_str_equal(t2s(template),"(PATTERN (SEMTREX_SYMBOL_LITERAL (SLOT (USAGE:REQUEST_DATA))))");
-    sem_map = _t_build(G_sem,0,SEMANTIC_MAP,SEMANTIC_LINK,USAGE,REQUEST_DATA,REPLACEMENT_VALUE,SEMTREX_SYMBOL,PING,NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
-    spec_is_str_equal(t2s(sem_map),"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (SEMTREX_SYMBOL:PING))))");
+    template = _t_parse(G_sem,0,"(PATTERN (SEMTREX_SYMBOL_LITERAL (SLOT (USAGE:REQUEST_TYPE))))");
+    sem_map = _t_parse(G_sem,0,"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:REQUEST_TYPE) (REPLACEMENT_VALUE (SEMTREX_SYMBOL:PING))))");
     _t_fill_template(template,sem_map);
     spec_is_str_equal(t2s(template),"(PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:PING)))");
 
@@ -643,15 +688,19 @@ void testTreeTemplate() {
     _t_free(sem_map);
 
     // test filling a slot that has specified children (which might also have SLOT)
-    template = _t_build(G_sem,0,SLOT,GOAL,REQUEST_HANDLER,SLOT_CHILDREN,TEST_INT_SYMBOL,1,SLOT,USAGE,REQUEST_DATA,NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
-    spec_is_str_equal(t2s(template),"(SLOT (GOAL:REQUEST_HANDLER) (SLOT_CHILDREN (TEST_INT_SYMBOL:1) (SLOT (USAGE:REQUEST_DATA))))");
-    sem_map = _t_build(G_sem,0,SEMANTIC_MAP,
-                       SEMANTIC_LINK,USAGE,REQUEST_DATA,REPLACEMENT_VALUE,TEST_INT_SYMBOL,32,NULL_SYMBOL,NULL_SYMBOL,
-                       SEMANTIC_LINK,GOAL,REQUEST_HANDLER,REPLACEMENT_VALUE,ACTUAL_PROCESS,ADD_INT,NULL_SYMBOL,NULL_SYMBOL,
-                       NULL_SYMBOL);
-    spec_is_str_equal(t2s(sem_map),"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (TEST_INT_SYMBOL:32))) (SEMANTIC_LINK (GOAL:REQUEST_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:ADD_INT))))");
+    template = _t_parse(G_sem,0,"(SLOT (GOAL:RESPONSE_HANDLER) (SLOT_CHILDREN (TEST_INT_SYMBOL:1) (SLOT (USAGE:REQUEST_TYPE))))");
+    sem_map = _t_parse(G_sem,0,"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:REQUEST_TYPE) (REPLACEMENT_VALUE (TEST_INT_SYMBOL:32))) (SEMANTIC_LINK (GOAL:RESPONSE_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:ADD_INT))))");
     _t_fill_template(template,sem_map);
     spec_is_str_equal(t2s(template),"(process:ADD_INT (TEST_INT_SYMBOL:1) (TEST_INT_SYMBOL:32))");
+
+    _t_free(template);
+    _t_free(sem_map);
+
+    // test filling a slot with nothing
+    template = _t_parse(G_sem,0,"(SLOT (GOAL:RESPONSE_HANDLER) (SLOT_CHILDREN (TEST_INT_SYMBOL:1) (SLOT (USAGE:REQUEST_TYPE)) (TEST_INT_SYMBOL:2)))");
+    sem_map = _t_parse(G_sem,0,"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:REQUEST_TYPE) (REPLACEMENT_VALUE (NULL_SYMBOL))) (SEMANTIC_LINK (GOAL:RESPONSE_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:ADD_INT))))");
+    _t_fill_template(template,sem_map);
+    spec_is_str_equal(t2s(template),"(process:ADD_INT (TEST_INT_SYMBOL:1) (TEST_INT_SYMBOL:2))");
 
     _t_free(template);
     _t_free(sem_map);
@@ -666,11 +715,13 @@ void testTreeStreamWrite() {
     stream = fmemopen(buffer, 500, "r+");
     Stream *st = _st_new_unix_stream(stream,1);
     T *t = _t_new_str(0,TEST_STR_SYMBOL,"fish\n");
-    _t_write(G_sem,t,st);
+    spec_is_equal(_t_write(G_sem,t,st),5);
+    spec_is_str_equal(buffer,"fish\n");
     _t_free(t);
 
     t = _t_new_str(0,LINE,"cow");
-    _t_write(G_sem,t,st);
+    spec_is_equal(_t_write(G_sem,t,st),4);
+    spec_is_str_equal(buffer,"fish\ncow\n");
     _t_free(t);
 
     t = _t_new_root(LINES);
@@ -695,6 +746,46 @@ void testTreeInt64() {
     _t_free(t);
 }
 
+void testTreeFindBySymbol() {
+    // many times we have symbols with structures that have optional items
+    // instead of using a semtrex search, this is a simply scan by symbol type
+    // find routine.  So for example expectations have optional semantic maps and
+    // conversation so this can be used to find one if it exists.
+
+    T *match = _t_newr(0,PATTERN);
+    _sl(match,TEST_INT_SYMBOL);
+    UUIDt cuuid = __uuid_gen();
+    T *cid = __cid_new(0,&cuuid,0);
+
+    T *t = __r_build_expectation(TEST_INT_SYMBOL,match,_t_newp(0,ACTION,NOOP),0,0,NULL,cid);
+
+    spec_is_ptr_equal(__t_find(t,CONVERSATION_IDENT,ExpectationOptionalsIdx),cid);
+    spec_is_ptr_equal(__t_find(t,SEMANTIC_MAP,ExpectationOptionalsIdx),NULL);
+
+    _t_free(t);
+}
+
+void testTreeParse() {
+    char *s = "( ) \n\t TEST_LABEL:1 1.2 .334 /) 'c'%\"string\" /1/2/3)";
+    T *t = __t_tokenize(s);
+    spec_is_str_equal(t2s(t),"(P_TOKENS (P_OP) (P_CP) (P_LABEL:TEST_LABEL) (P_COLON) (P_VAL_I:1) (P_VAL_F:1.200000) (P_VAL_F:0.334000) (P_VAL_PATH:/) (P_CP) (P_VAL_C:'c') (P_INTERPOLATE) (P_VAL_S:string) (P_VAL_PATH:/1/2/3) (P_CP))");
+
+    s = "(DO (SCOPE (TEST_INT_SYMBOL:1) (TEST_CHAR_SYMBOL:'x')% (TEST_STR_SYMBOL:\"fish\") (PARAM_REF:/1/2/3) (CARRIER:backnforth)))";
+    t = _t_parse(G_sem,0,s,_t_newc(0,ASCII_CHAR,'y'));
+    spec_is_str_equal(t2s(t),"(process:DO (SCOPE (TEST_INT_SYMBOL:1) (TEST_CHAR_SYMBOL:'x') (ASCII_CHAR:'y') (TEST_STR_SYMBOL:fish) (PARAM_REF:/1/2/3) (CARRIER:backnforth)))");
+    _t_free(t);
+
+    s = "(SIGNATURE_SYMBOL:NULL_SYMBOL)";
+    t = _t_parse(G_sem,0,s);
+    spec_is_str_equal(t2s(t),s);
+    _t_free(t);
+
+    s = "(NULL_SYMBOL)";
+    t = _t_parse(G_sem,0,s);
+    spec_is_str_equal(t2s(t),s);
+    _t_free(t);
+}
+
 void testTree() {
     testCreateTreeNodes();
     testTreeNewReceptor();
@@ -710,6 +801,7 @@ void testTree() {
     testTreePathDepth();
     testTreePathCopy();
     testTreePathSprint();
+    testTreePathWalk();
     testTreeClone();
     testTreeReplace();
     testTreeSwap();
@@ -726,4 +818,6 @@ void testTree() {
     testTreeTemplate();
     testTreeStreamWrite();
     testTreeInt64();
+    testTreeFindBySymbol();
+    testTreeParse();
 }

@@ -51,4 +51,7 @@ char * G_label;
 
 T *sT_(SemTable *sem,Symbol sym,int num_params,...);
 
+void load_contexts(SemTable *sem);
+void load_context(char *name, Receptor *parent);
+
 #endif

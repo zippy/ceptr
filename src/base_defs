@@ -133,6 +133,7 @@ Symbol: RECEPTOR_XADDR,XADDR;               An Xaddr that points to a receptor
 Declare: EXPECTATIONS,SIGNALS;
 Structure: ASPECT,(EXPECTATIONS,SIGNALS);
 Symbol: DEFAULT_ASPECT,ASPECT;
+#Symbol: CONTROL_ASPECT,ASPECT;
 Symbol: FLUX,[+%ASPECT];                    tree to hold all incoming and in process signals on the various aspects
 Symbol: SCAPE_SPEC,NULL_STRUCTURE;          @todo...
 Symbol: ASPECT_IDENT,SYMBOL;                when we get ranges, this should limit the surface symbol those defined as usages of ASPECT
@@ -142,8 +143,9 @@ Symbol: ASPECT_DEF,[(ASPECT_TYPE,ASPECT_LABEL)];   what else goes in the aspect 
 Symbol: ASPECTS,[+ASPECT_DEF];
 Symbol: CARRIER,SYMBOL;
 Symbol: BODY,TREE;                          orthogonal tree that holds message body
-Symbol: SIGNAL_UUID,UUID;
-Symbol: IN_RESPONSE_TO_UUID,UUID;
+Symbol: SIGNAL_UUID,UUID;           @todo change from UUID to hash link as per #132
+Symbol: IN_RESPONSE_TO_UUID,UUID;   @todo change from UUID to hash link as per #132
+Symbol: CONVERSATION_UUID,UUID;     @todo change from UUID to hash link as per #132
 Symbol: RECEPTOR_PATH,TREE_PATH;
 Symbol: RECEPTOR_PATHS,[+RECEPTOR_PATH];
 Symbol: RECEPTOR_ADDR,INTEGER;
@@ -151,27 +153,37 @@ Structure: RECEPTOR_ADDRESS,|{RECEPTOR_ADDR|RECEPTOR_PATH};
 Symbol: FROM_ADDRESS,RECEPTOR_ADDRESS;
 Symbol: TO_ADDRESS,RECEPTOR_ADDRESS;
 Declare: END_CONDITIONS;
-Symbol: ENVELOPE,[(FROM_ADDRESS,TO_ADDRESS,ASPECT_IDENT,CARRIER,SIGNAL_UUID,?|{END_CONDITIONS|IN_RESPONSE_TO_UUID})];
-Symbol: SIGNAL,[(ENVELOPE,BODY)];                        a signal on the flux.  It's first child is the contents of the signal
+Symbol: ENVELOPE,[(SIGNAL_UUID)];
+#Symbol: TOPIC,SYMBOL;    semantic identifier for a conversation
+#,?TOPIC
+Symbol: CONVERSATION_IDENT,[(CONVERSATION_UUID)];
+Symbol: HEAD,[(FROM_ADDRESS,TO_ADDRESS,ASPECT_IDENT,CARRIER,?CONVERSATION_IDENT,?|{END_CONDITIONS|IN_RESPONSE_TO_UUID})];
+Symbol: MESSAGE,[(HEAD,BODY)];              meta-data of a signal
+Symbol: SIGNAL,[(ENVELOPE,MESSAGE)];        a signal on the flux.  It's first child is the contents of the signal
 Symbol: SIGNALS,[*SIGNAL];                  list of signals on an aspect in the flux
-Symbol: PENDING_SIGNALS,[*SIGNAL];               list of signals pending to be sent by the SYS_RECEPTOR
+Symbol: PENDING_SIGNALS,[*SIGNAL];          list of signals pending to be sent by the SYS_RECEPTOR
 Symbol: CODE_PATH,TREE_PATH;
 Symbol: PROCESS_IDENT,INTEGER;
-Symbol: WAKEUP_REFERENCE,[(PROCESS_IDENT,CODE_PATH)];
-Symbol: PENDING_RESPONSE,[(SIGNAL_UUID,CARRIER,WAKEUP_REFERENCE,END_CONDITIONS)];
+Structure: CODE_REF,(PROCESS_IDENT,CODE_PATH);
+Symbol: WAKEUP_REFERENCE,CODE_REF;
+Symbol: PENDING_RESPONSE,[(SIGNAL_UUID,CARRIER,WAKEUP_REFERENCE,END_CONDITIONS,?CONVERSATION_IDENT)];
 Symbol: PENDING_RESPONSES,[*PENDING_RESPONSE];
 Symbol: RESPONSE_CARRIER,SYMBOL;            expected carrier for the response to a signal that "listen" to changes on the flux
 Symbol: PATTERN,SEMTREX_DEF;                expectation is a semtrex (thus has one child which is the first part of the semtrex)
 Symbol: ACTION,PROCESS;                     code tree_ID, which specifies the action to perform when an expectation's semtrex matches
 Declare: PARAMS,SEMANTIC_MAP;
-Symbol: EXPECTATION,[(CARRIER,PATTERN,ACTION,PARAMS,END_CONDITIONS,?SEMANTIC_MAP)];
+Symbol: EXPECTATION,[(CARRIER,PATTERN,ACTION,PARAMS,END_CONDITIONS,?SEMANTIC_MAP,?CONVERSATION_UUID)];
 Symbol: EXPECTATIONS,[*EXPECTATION];        list of carrier/expectation/action tress
+
+Declare: CONVERSATION;
+Symbol: CONVERSATIONS,[*CONVERSATION];
+Symbol: CONVERSATION,[(CONVERSATION_UUID,END_CONDITIONS,CONVERSATIONS,?WAKEUP_REFERENCE)];
 
 # process defintion symbols
 # ?the types of processes: transcode / (operate/compare) / (constrain/validate/range/enum) / flow / side-effect
-Symbol: TRANSCODER,NULL_STRUCTURE;
-Symbol: OPERATOR,NULL_STRUCTURE;
-Symbol: VALIDATOR,NULL_STRUCTURE;
+Symbol: TRANSCODER,NULL_STRUCTURE;   should be an enum value for process type
+Symbol: OPERATOR,NULL_STRUCTURE;     should be an enum value for process type
+Symbol: VALIDATOR,NULL_STRUCTURE;    should be an enum value for process type
 Symbol: PROCESS_OF_STRUCTURE,STRUCTURE;
 Symbol: PROCESS_OF_SYMBOL,SYMBOL;
 Symbol: PROCESS_OF_PROCESS,PROCESS;
@@ -194,13 +206,17 @@ Structure: SLOT_STRUCTURE,(SEMANTIC_REFERENCE,?SLOT_IS_VALUE_OF,?SLOT_CHILDREN);
 Symbol: SLOT,SLOT_STRUCTURE;
 Symbol: REPLACEMENT_VALUE,[!];        what to fill the slot with
 Symbol: SEMANTIC_LINK,[(SEMANTIC_REFERENCE,REPLACEMENT_VALUE)];   mapping between a semantic reference and replacement value, used for filling templates
-Symbol: SEMANTIC_MAP,[(+SEMANTIC_LINK)];
+Structure: SEMANTIC_LINKS,(+SEMANTIC_LINK);
+Symbol: SEMANTIC_MAP,SEMANTIC_LINKS;
+Symbol: PROTOCOL_DEFAULTS,SEMANTIC_LINKS;
 
 
 Symbol: SIGNATURE_LABEL,LABEL;
 Symbol: SIGNATURE_STRUCTURE,STRUCTURE;      the structure that would match
 Symbol: SIGNATURE_SYMBOL,SYMBOL;            the symbol that would match
 Symbol: SIGNATURE_PROCESS,SYMBOL;           the output signature of the process
+Symbol: SIGNATURE_RECEPTOR,RECEPTOR;        use of receptor in signature
+Symbol: SIGNATURE_PROTOCOL,PROTOCOL;        use of protocol in signature
 Symbol: SIGNATURE_PASSTHRU,NULL_STRUCTURE;
 Symbol: SIGNATURE_ANY,NULL_STRUCTURE;
 Symbol: SIGNATURE_OPTIONAL,NULL_STRUCTURE;
@@ -215,11 +231,15 @@ Symbol: TEMPLATE_SIGNATURE,[(*EXPECTED_SLOT)];
 Structure: PROCESS_FORM,(OUTPUT_SIGNATURE,*INPUT_SIGNATURE,*TEMPLATE_SIGNATURE);
 Symbol: PROCESS_SIGNATURE,PROCESS_FORM;
 
-Symbol: RUN_TREE,[(CODE,PARAMS,?CODE)];     think about this as a stack frame and its code and error handling code
+Symbol: RUN_TREE,[(CODE,PARAMS,?CODE,?PARAMS)];     think about this as a stack frame and its code and error handling code plus error params   
 Symbol: PARAM_REF,TREE_PATH;                used in a code tree as a reference to a parameter
 Symbol: SIGNAL_REF,TREE_PATH;               used in a code tree triggered by an expectation as a reference to a part of the signal that triggered the action.
 Symbol: PARAMS,[*!];
 Symbol: RESULT_SYMBOL,SYMBOL;
+Symbol: RESULT_STRUCTURE,STRUCTURE;
+Symbol: RESULT_PROCESS,PROCESS;
+Symbol: RESULT_RECEPTOR,RECEPTOR;
+Symbol: RESULT_PROTOCOL,PROTOCOL;
 Symbol: REDUCTION_ERROR_SYMBOL,SYMBOL;
 
 Symbol: ROLE,SYMBOL;  A role stands for an expected agent, thus the symbol stored in a ROLE must be limited to those of structure RECEPTOR_ADDRESS.
@@ -235,12 +255,13 @@ Symbol: INCLUSION,[(PNAME,+|{RESOLUTION|LINKAGE})];
 Structure: INTERACTION,(*EXPECT,*INITIATE);
 Symbol: WHICH_INTERACTION,SYMBOL;   the symbols stored in an WHICH_INTERACTION must be limited to those that are uses of the INTERACTION structure
 
+Declare: PROTOCOL_DEFINITION;
 Symbol: PROTOCOLS,[*PROTOCOL_DEFINITION];
 Symbol: ACTUAL_PROCESS,PROCESS;
 Symbol: ACTUAL_RECEPTOR,RECEPTOR_ADDRESS;
 Symbol: ACTUAL_SYMBOL,SYMBOL;
 Symbol: ACTUAL_PROTOCOL,PROTOCOL;
-Symbol: ACTUAL_VALUE,[!];  this really can't be anything, rather only something that's a SYMBOL semantic type
+Symbol: ACTUAL_VALUE,[!];  this really can't be an anything, rather only something that's a SYMBOL semantic type
 Symbol: WHICH_PROCESS,[(GOAL,ACTUAL_PROCESS)];
 Symbol: WHICH_RECEPTOR,[(ROLE,ACTUAL_RECEPTOR)];
 Symbol: WHICH_SYMBOL,[(USAGE,ACTUAL_SYMBOL)];
@@ -258,7 +279,7 @@ Symbol: PROTOCOL_BINDINGS,[+RESOLUTION];
 
 Symbol: PROTOCOL_LABEL,LABEL;
 Symbol: PROTOCOL_SEMANTICS,[(*ROLE,*GOAL,*USAGE,*WEAL)];
-Symbol: PROTOCOL_DEFINITION,[(PROTOCOL_LABEL,PROTOCOL_SEMANTICS,*%INTERACTION,*INCLUSION)];
+Symbol: PROTOCOL_DEFINITION,[(PROTOCOL_LABEL,PROTOCOL_SEMANTICS,*PROTOCOL_DEFAULTS,*%INTERACTION,*INCLUSION)];
 
 Symbol: SCAPES,[*%SCAPE];
 Symbol: MANIFEST_LABEL,CSTRING;           a label in the manifest to identify a binding
@@ -277,7 +298,7 @@ Structure: RECEPTOR_IDENTITY,RECEPTOR_LABEL,RECEPTOR_IDENTIFIER; placeholder str
 Symbol: RECEPTOR_DEFINITION,[(RECEPTOR_LABEL,DEFINITIONS)];
 Symbol: RECEPTORS,[*RECEPTOR_DEFINITION];
 
-Symbol: RECEPTOR_STATE,[(FLUX,PENDING_SIGNALS,PENDING_RESPONSES,RECEPTOR_ELAPSED_TIME)];
+Symbol: RECEPTOR_STATE,[(FLUX,PENDING_SIGNALS,PENDING_RESPONSES,CONVERSATIONS,RECEPTOR_ELAPSED_TIME)];
 Symbol: PARENT_CONTEXT_NUM,INTEGER;        identifies the semantic context of a receptors parent
 Symbol: CONTEXT_NUM,INTEGER;               identifies the semantic context of a receptor
 Symbol: INSTANCE_OF,RECEPTOR;              identifies the kind of receptor this is
@@ -301,11 +322,13 @@ Symbol: NOW,TIME;
 Structure: TIMESTAMP,TODAY,NOW;
 Symbol: TICK,TIMESTAMP;
 
-Symbol: DATE_DIVIDER,CSTRING;
+Symbol: DELIMITER,CSTRING;
 Symbol: US_SHORT_DATE,CSTRING;
+Symbol: SHORT_TIME,CSTRING;
 
 Symbol: ERROR_LOCATION,TREE_PATH;
-Structure: REDUCTION_ERROR,ERROR_LOCATION;
+Symbol: ERROR_DATA,[(!)];
+Structure: REDUCTION_ERROR,(ERROR_LOCATION,ERROR_DATA);
 Symbol: ZERO_DIVIDE_ERR,REDUCTION_ERROR;
 Symbol: TOO_FEW_PARAMS_ERR,REDUCTION_ERROR;
 Symbol: TOO_MANY_PARAMS_ERR,REDUCTION_ERROR;
@@ -318,6 +341,7 @@ Symbol: DEAD_STREAM_READ_ERR,REDUCTION_ERROR;
 Symbol: MISSING_SEMANTIC_MAP_ERR,REDUCTION_ERROR;
 Symbol: MISMATCH_SEMANTIC_MAP_ERR,REDUCTION_ERROR;
 Symbol: STRUCTURE_MISMATCH_ERR,REDUCTION_ERROR;
+#Symbol: CONVERSATION_COMPLETED_ERR,REDUCTION_ERROR;
 
 Symbol: WHICH_XADDR,XADDR;
 Symbol: NEW_TYPE,SYMBOL;
@@ -332,13 +356,20 @@ Symbol: EDGE_LISTENER,CPOINTER;
 
 Symbol: ITERATE_ON_SYMBOL,SYMBOL;
 Symbol: ITERATION_DATA,[!];    data to iterate over
-Symbol: BLOCK,[!];    set of processes for DO
+Symbol: SCOPE,[!];    set of processes for DO/CONVERSE
 
-Process: NOOP,0,"no-op","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"do",SIGNATURE_ANY,NULL_STRUCTURE,0;   this process reduces to its single "do" parameter.
-Process: NEW,0,"new instance","xaddr",SIGNATURE_SYMBOL,WHICH_XADDR,"what",SIGNATURE_SYMBOL,NEW_TYPE,"value",SIGNATURE_ANY,NULL_STRUCTURE,0; reduces to the xaddr of a newly created instance of type NEW_TYPE.  the structures of "what" and "value" must match, but not the symbols
-Process: GET,0,"get instance value","value",SIGNATURE_ANY,NULL_STRUCTURE,"what",SIGNATURE_SYMBOL,WHICH_XADDR,0;   reduces to the value of the instance at the xaddr of the "what" parameter
-Process: DEL,0,"delete instance","value",SIGNATURE_ANY,NULL_STRUCTURE,"what",SIGNATURE_SYMBOL,WHICH_XADDR,0;   reduces to the value of the deleted instance at the xaddr of the "what" parameter
-Process: DO,0,"do","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"actions",SIGNATURE_SYMBOL,BLOCK,0; execute a BLOCK of instructions for side-effects returning the value of the last one.  We do the BLOCK thing because we don't yet have variable sized arugments for processes.  I would like it better if the actions could just be the children of the DO process
+Process: NOOP,0,"no-op","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"do",SIGNATURE_ANY,NULL_STRUCTURE;   this process reduces to its single "do" parameter.
+
+Process: DEF_SYMBOL,0,"define a new symbol","symbol",SIGNATURE_SYMBOL,RESULT_SYMBOL,"def",SIGNATURE_SYMBOL,SYMBOL_DEFINITION;
+Process: DEF_STRUCTURE,0,"define a new structure","structure",SIGNATURE_STRUCTURE,RESULT_STRUCTURE,"def",SIGNATURE_SYMBOL,SYMBOL_DEFINITION;
+Process: DEF_PROCESS,0,"define a new process","process",SIGNATURE_PROCESS,RESULT_PROCESS,"def",SIGNATURE_SYMBOL,PROCESS_DEFINITION;
+Process: DEF_RECEPTOR,0,"define a new receptor","receptor",SIGNATURE_RECEPTOR,RESULT_RECEPTOR,"def",SIGNATURE_SYMBOL,RECEPTOR_DEFINITION;
+Process: DEF_PROTOCOL,0,"define a new protocol","protocol",SIGNATURE_PROTOCOL,RESULT_PROTOCOL,"def",SIGNATURE_SYMBOL,PROTOCOL_DEFINITION;
+
+Process: NEW,0,"new instance","xaddr",SIGNATURE_SYMBOL,WHICH_XADDR,"what",SIGNATURE_SYMBOL,NEW_TYPE,"value",SIGNATURE_ANY,NULL_STRUCTURE; reduces to the xaddr of a newly created instance of type NEW_TYPE.  the structures of "what" and "value" must match, but not the symbols
+Process: GET,0,"get instance value","value",SIGNATURE_ANY,NULL_STRUCTURE,"what",SIGNATURE_SYMBOL,WHICH_XADDR;   reduces to the value of the instance at the xaddr of the "what" parameter
+Process: DEL,0,"delete instance","value",SIGNATURE_ANY,NULL_STRUCTURE,"what",SIGNATURE_SYMBOL,WHICH_XADDR;   reduces to the value of the deleted instance at the xaddr of the "what" parameter
+Process: DO,0,"do","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"actions",SIGNATURE_SYMBOL,SCOPE; execute a SCOPE of instructions for side-effects returning the value of the last one.  I would like it better if the actions could just be the children of the DO process
 
 Symbol: PARAM_PATH,TREE_PATH;
 Symbol: PARAM_LABEL,[%CSTRING];
@@ -346,57 +377,65 @@ Symbol: PARAMETER_REFERENCE,[|{PARAM_PATH|PARAM_LABEL}];  a way of refering to t
 Symbol: RESULT_VALUE,NULL_STRUCTURE;
 Symbol: RESULT_LABEL,SYMBOL;
 Symbol: PARAMETER_RESULT,[|{RESULT_SYMBOL|RESULT_VALUE|RESULT_LABEL}]; if the value of PARAMETER_RESULT is RESULT_SYMBOL, PARAMETER will reduce to the parameter's symbol at the RESULT_SYMBOL symbol. If the value is RESULT_VALUE then PARAMETER will reduce to the parameter's value. If the value is RESULT_LABEL, then PARAMETER will reduce to the label of the symbol type stored in RESULT_LABEL (or the default if not found)
-Process: PARAMETER,0,"get parameter data","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"reference",SIGNATURE_SYMBOL,PARAMETER_REFERENCE,"as",SIGNATURE_SYMBOL,PARAMETER_RESULT,0;
-Process: DISSOLVE,0,"merge children into parent's children","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"tree",SIGNATURE_ANY,NULL_STRUCTURE,0; remove the root of the child, merging it's children into the parent's children at the process's spot
+Process: PARAMETER,0,"get parameter data","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"reference",SIGNATURE_SYMBOL,PARAMETER_REFERENCE,"as",SIGNATURE_SYMBOL,PARAMETER_RESULT;
+Process: DISSOLVE,0,"merge children into parent's children","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"tree",SIGNATURE_ANY,NULL_STRUCTURE; remove the root of the child, merging it's children into the parent's children at the process's spot
 
 Symbol: TRANSCODE_TO,SYMBOL;
 Symbol: TRANSCODE_PARAMS,[(TRANSCODE_TO,*!)];
 Symbol: TRANSCODE_ITEMS,[!];
 
-Process: TRANSCODE,0,"transform semantic type","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"using",SIGNATURE_SYMBOL,TRANSCODE_PARAMS,"convert",SIGNATURE_SYMBOL,TRANSCODE_ITEMS,0; transform the semantic types of a itemstree to a different type as specified in the parameters.  If TRANSCODE_ITEMS has multiple children DISSOLVE is implied
+Process: TRANSCODE,0,"transform semantic type","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"using",SIGNATURE_SYMBOL,TRANSCODE_PARAMS,"convert",SIGNATURE_SYMBOL,TRANSCODE_ITEMS; transform the semantic types of a itemstree to a different type as specified in the parameters.  If TRANSCODE_ITEMS has multiple children DISSOLVE is implied
 
 Symbol: LABEL_SYMBOL,SYMBOL;
 Symbol: LABEL_TYPE,SYMBOL;   should be limmited to symbols of type CSTRING by validator...
-Process: GET_LABEL,0,"get a symbol's label","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"of",SIGNATURE_SYMBOL,LABEL_SYMBOL,"type",SIGNATURE_SYMBOL,LABEL_TYPE,"as",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,RESULT_SYMBOL,0; 
+Process: GET_LABEL,0,"get a symbol's label","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"of",SIGNATURE_SYMBOL,LABEL_SYMBOL,"type",SIGNATURE_SYMBOL,LABEL_TYPE,"as",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,RESULT_SYMBOL; 
 
-#Symbol: COND_PAIR,[(!,!)];
-#Symbol: COND_ELSE,[!];
-#Symbol: CONDITIONS,[(*COND_PAIR,COND_ELSE)];
-#Process: COND,0,"cond","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"conditions",SIGNATURE_SYMBOL,CONDITIONS; this is a traditional lisp "cond" process that reduces conditionally to the COND_PAIR that evaluates to true, or to the COND_ELSE in none of them do.
-Process: IF,0,"if","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"condition",SIGNATURE_PROCESS,BOOLEAN,"then",SIGNATURE_ANY,NULL_STRUCTURE,"else",SIGNATURE_OPTIONAL,SIGNATURE_ANY,NULL_STRUCTURE,0;  this is a traditional "if" process that reduces conditionally to either the "then" or the "else" parameter depending on the value of the "condition" parameter.  Note: we may be replacing this with a more lispy COND process
-Process: ITERATE,0,"iterate a process","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"condtion",SIGNATURE_PROCESS,BOOLEAN,"do",SIGNATURE_ANY,NULL_STRUCTURE,0;                     this process checks the structure of the result of the "condition" param, if it's a BOOLEAN, it treats the iteration as a while loop and iterates until the BOOLEAN is false; if it's an INTEGER it treats the iteration as repeat loop and iterates as many times as the value of the INTEGER; if it's a ITERATE_ON_SYMBOL then it iterates on all the instances of that symbol type which get added into the PARAMS each time through
-Process: SAY,0,"send a message to a receptor","signal id",SIGNATURE_SYMBOL,SIGNAL_UUID,"to",SIGNATURE_SYMBOL,TO_ADDRESS,"on",SIGNATURE_SYMBOL,ASPECT_IDENT,"carrier",SIGNATURE_SYMBOL,CARRIER,"message",SIGNATURE_ANY,NULL_STRUCTURE,0;
-Process: REQUEST,0,"send a request to a receptor","response",SIGNATURE_ANY,NULL_STRUCTURE,"of",SIGNATURE_SYMBOL,TO_ADDRESS,"on",SIGNATURE_SYMBOL,ASPECT_IDENT,"carrier",SIGNATURE_SYMBOL,CARRIER,"message",SIGNATURE_ANY,NULL_STRUCTURE,"expect response on",SIGNATURE_SYMBOL,RESPONSE_CARRIER,"until",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,END_CONDITIONS,"callback",SIGNATURE_OPTIONAL,SIGNATURE_PROCESS,NULL_SYMBOL,0;  if there is no "callback" param, then this process will block until the result comes back or the "until" causes cleanup of pending request.
-Process: SELF_ADDR,0,"self address","address",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"as",SIGNATURE_SYMBOL,RESULT_SYMBOL,0;  reduces to current RECEPTOR_ADDRESS as a use of the as symbol
-Process: LISTEN,0,"plant a listener","error",SIGNATURE_SYMBOL,REDUCTION_ERROR_SYMBOL,"on",SIGNATURE_SYMBOL,ASPECT_IDENT,"for",SIGNATURE_SYMBOL,CARRIER,"match",SIGNATURE_SYMBOL,PATTERN,"do",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,ACTION,"with",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,PARAMS,"until",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,END_CONDITIONS,0;  If you don't provide an action, the assumption is that the LISTEN process will block and  will reduce to the SEMTREX_MATCH.  This will also force the END_CONDITIONS/REPETITIONS to COUNT:1.  If "for" carrier is NULL_SYMBOL the expectation will match on all carriers.
-Process: MATCH,0,"semtrex match","matched",SIGNATURE_SYMBOL,BOOLEAN,"pattern",SIGNATURE_STRUCTURE,SEMTREX,"against",SIGNATURE_ANY,NULL_STRUCTURE,"return match",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,BOOLEAN,0;
+Symbol: COND_PAIR,[(!,!)];
+Symbol: COND_ELSE,[!];
+Symbol: CONDITIONS,[(*COND_PAIR,COND_ELSE)];
+Process: COND,0,"cond","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"conditions",SIGNATURE_SYMBOL,CONDITIONS; this is a traditional lisp "cond" process that reduces conditionally to the COND_PAIR that evaluates to true, or to the COND_ELSE in none of them do.
+Process: IF,0,"if","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"condition",SIGNATURE_PROCESS,BOOLEAN,"then",SIGNATURE_ANY,NULL_STRUCTURE,"else",SIGNATURE_OPTIONAL,SIGNATURE_ANY,NULL_STRUCTURE;  this is a traditional "if" process that reduces conditionally to either the "then" or the "else" parameter depending on the value of the "condition" parameter.  Note: we may be replacing this with a more lispy COND process
+Process: ITERATE,0,"iterate a process","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"condtion",SIGNATURE_PROCESS,BOOLEAN,"do",SIGNATURE_ANY,NULL_STRUCTURE;                     this process checks the structure of the result of the "condition" param, if it's a BOOLEAN, it treats the iteration as a while loop and iterates until the BOOLEAN is false; if it's an INTEGER it treats the iteration as repeat loop and iterates as many times as the value of the INTEGER; if it's a ITERATE_ON_SYMBOL then it iterates on all the instances of that symbol type which get added into the PARAMS each time through
+Process: SAY,0,"send a message to a receptor","signal id",SIGNATURE_SYMBOL,SIGNAL_UUID,"to",SIGNATURE_SYMBOL,TO_ADDRESS,"on",SIGNATURE_SYMBOL,ASPECT_IDENT,"carrier",SIGNATURE_SYMBOL,CARRIER,"message",SIGNATURE_ANY,NULL_STRUCTURE;
+Process: REQUEST,0,"send a request to a receptor","response",SIGNATURE_ANY,NULL_STRUCTURE,"of",SIGNATURE_SYMBOL,TO_ADDRESS,"on",SIGNATURE_SYMBOL,ASPECT_IDENT,"carrier",SIGNATURE_SYMBOL,CARRIER,"message",SIGNATURE_ANY,NULL_STRUCTURE,"expect response on",SIGNATURE_SYMBOL,RESPONSE_CARRIER,"until",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,END_CONDITIONS,"callback",SIGNATURE_OPTIONAL,SIGNATURE_PROCESS,NULL_SYMBOL;  if there is no "callback" param, then this process will block until the result comes back or the "until" causes cleanup of pending request.
+Process: CONVERSE,0,"set up a conversation scope for signaling","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"do",SIGNATURE_PROCESS,NULL_SYMBOL,"until",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,END_CONDITIONS,"wait",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,BOOLEAN; Use "until" to specify when the system will terminate the conversation.  Use "wait" to specify whether the CONVERSE instruction should be paused when it goes out of scope waiting for the conversation to complete. If you use asynchronous REQUEST or LISTEN instructions in the scope the conversation and you don’t set "wait" to TRUE you will want to use the THIS_SCOPE instruction to get the conversation identifier so you can call the COMPLETE instruction someplace later or the conversation will never get cleaned up.
+Process: COMPLETE,0,"cause a conversation to come to completion","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"with",SIGNATURE_ANY,NULL_STRUCTURE,"conversation",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,CONVERSATION_UUID; Cleans up a conversation and causes the CONVERSE instruction to reduce to value of "with". If "conversation" provided, completes that conversation, otherwise assumes the value of THIS_SCOPE.  If the specified conversation doesn’t exist (i.e. because it was cleaned up by its end conditions) COMPLETE will invoke the error handler.  Note that it’s possible that the CONVERSE instruction was already reduced, in which case the value of with_someting will get ignored.  If the COMPLETE instruction is not inside a CONVERSE scope, it will be reduced to the value of "conversation"
+Process: THIS_SCOPE,0,"get the conversation id of the current scope","conversation",SIGNATURE_SYMBOL,CONVERSATION_UUID;    Reduces to the identifier of the current conversation. Executing THIS_SCOPE not somewhere inside a CONVERSE will invoke the error handler.
+Process: SELF_ADDR,0,"self address","address",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"as",SIGNATURE_SYMBOL,RESULT_SYMBOL;  reduces to current RECEPTOR_ADDRESS as a use of the as symbol
+Process: LISTEN,0,"plant a listener","error",SIGNATURE_SYMBOL,REDUCTION_ERROR_SYMBOL,"on",SIGNATURE_SYMBOL,ASPECT_IDENT,"for",SIGNATURE_SYMBOL,CARRIER,"match",SIGNATURE_SYMBOL,PATTERN,"do",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,ACTION,"with",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,PARAMS,"until",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,END_CONDITIONS;  If you don't provide an action, the assumption is that the LISTEN process will block and  will reduce to the SEMTREX_MATCH.  This will also force the END_CONDITIONS/REPETITIONS to COUNT:1.  If "for" carrier is NULL_SYMBOL the expectation will match on all carriers.
+Process: MATCH,0,"semtrex match","matched",SIGNATURE_SYMBOL,BOOLEAN,"pattern",SIGNATURE_STRUCTURE,SEMTREX,"against",SIGNATURE_ANY,NULL_STRUCTURE,"return match",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,BOOLEAN;
 
-Process: RESPOND,0,"respond to signal","response id",SIGNATURE_SYMBOL,SIGNAL_UUID,"respond on",SIGNATURE_SYMBOL,CARRIER,"response contents",SIGNATURE_ANY,NULL_STRUCTURE,0;
-Process: QUOTE,0,"quote a process so that it can be passed as a value","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"process",SIGNATURE_PROCESS,NULL_PROCESS,0;
-Process: FILL,0,"fill template from map","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"template",SIGNATURE_ANY,NULL_STRUCTURE,"map",SIGNATURE_SYMBOL,SEMANTIC_MAP,0;
-Process: FILL_FROM_MATCH,0,"fill template from match results","result",SIGNATURE_ANY,NULL_STRUCTURE,0;
-Process: RAISE,0,"raise reduction error","result",SIGNATURE_STRUCTURE,NULL_STRUCTURE,"error",SIGNATURE_SYMBOL,REDUCTION_ERROR_SYMBOL,0;   this process doesn't really return anything, because it triggers the handler for the error in the "error" parameter
-Process: STREAM_READ,0,"read from a stream","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"stream",SIGNATURE_SYMBOL,EDGE_STREAM,"into",SIGNATURE_SYMBOL,RESULT_SYMBOL,0;  the data on the stream will appear as the surface of the symbol type given by the "into" param. Clearly this could get ugly as there is no semantic checking that that's ok...
-Process: STREAM_WRITE,0,"write to a stream","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"stream",SIGNATURE_SYMBOL,EDGE_STREAM,"what",SIGNATURE_ANY,NULL_STRUCTURE,0;
-Process: STREAM_ALIVE,0,"test if stream is alive for reading","alive",SIGNATURE_SYMBOL,BOOLEAN,"stream",SIGNATURE_SYMBOL,EDGE_STREAM,0;
-Process: STREAM_CLOSE,0,"close a stream","true",SIGNATURE_SYMBOL,BOOLEAN,"stream",SIGNATURE_SYMBOL,EDGE_STREAM,0;
-Process: CONCAT_STR,0,"concatinate strings","concatenation",SIGNATURE_STRUCTURE,CSTRING,"into",SIGNATURE_SYMBOL,RESULT_SYMBOL,"str1",SIGNATURE_STRUCTURE,CSTRING,"str2",SIGNATURE_STRUCTURE,CSTRING,0;  concatenates two strings of any symbol type into an new symbol type specified by the "into" parameter
-Process: EXPAND_STR,0,"expand string","ascii tree",SIGNATURE_SYMBOL,ASCII_CHARS,"str",SIGNATURE_STRUCTURE,CSTRING,0;  converts a CSTRING into an ASCII_CHARS tree
-Process: CONTRACT_STR,0,"contract to string","string",SIGNATURE_STRUCTURE,CSTRING,"into",SIGNATURE_SYMBOL,RESULT_SYMBOL,0;  converts any number of chars or cstring into a single cstring of symbol type indicated by the into param
+Process: RESPOND,0,"respond to signal","response id",SIGNATURE_SYMBOL,SIGNAL_UUID,"respond on",SIGNATURE_SYMBOL,CARRIER,"response contents",SIGNATURE_ANY,NULL_STRUCTURE;
+Process: QUOTE,0,"quote a process so that it can be passed as a value","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"process",SIGNATURE_PROCESS,NULL_PROCESS;
+Process: FILL,0,"fill template from map","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"template",SIGNATURE_ANY,NULL_STRUCTURE,"map",SIGNATURE_SYMBOL,SEMANTIC_MAP;
+Process: FILL_FROM_MATCH,0,"fill template from match results","result",SIGNATURE_ANY,NULL_STRUCTURE;
+Process: RAISE,0,"raise reduction error","result",SIGNATURE_STRUCTURE,NULL_STRUCTURE,"error",SIGNATURE_SYMBOL,REDUCTION_ERROR_SYMBOL;   this process doesn't really return anything, because it triggers the handler for the error in the "error" parameter
+Process: STREAM_READ,0,"read from a stream","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"stream",SIGNATURE_SYMBOL,EDGE_STREAM,"into",SIGNATURE_SYMBOL,RESULT_SYMBOL;  the data on the stream will appear as the surface of the symbol type given by the "into" param. Clearly this could get ugly as there is no semantic checking that that's ok...
+Process: STREAM_WRITE,0,"write to a stream","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"stream",SIGNATURE_SYMBOL,EDGE_STREAM,"what",SIGNATURE_ANY,NULL_STRUCTURE;
+Process: STREAM_ALIVE,0,"test if stream is alive for reading","alive",SIGNATURE_SYMBOL,BOOLEAN,"stream",SIGNATURE_SYMBOL,EDGE_STREAM;
+Process: STREAM_CLOSE,0,"close a stream","true",SIGNATURE_SYMBOL,BOOLEAN,"stream",SIGNATURE_SYMBOL,EDGE_STREAM;
+Process: CONCAT_STR,0,"concatinate strings","concatenation",SIGNATURE_STRUCTURE,CSTRING,"into",SIGNATURE_SYMBOL,RESULT_SYMBOL,"str1",SIGNATURE_STRUCTURE,CSTRING,"str2",SIGNATURE_STRUCTURE,CSTRING;  concatenates two strings of any symbol type into an new symbol type specified by the "into" parameter
+Process: EXPAND_STR,0,"expand string","ascii tree",SIGNATURE_SYMBOL,ASCII_CHARS,"str",SIGNATURE_STRUCTURE,CSTRING;  converts a CSTRING into an ASCII_CHARS tree
+Process: CONTRACT_STR,0,"contract to string","string",SIGNATURE_STRUCTURE,CSTRING,"into",SIGNATURE_SYMBOL,RESULT_SYMBOL;  converts any number of chars or cstring into a single cstring of symbol type indicated by the into param
 Symbol: EQUALITY_TEST_SYMBOL,SYMBOL;  a symbol to use when testing the symbol equality
-Process: EQ_SYM,0,"test equality","equality",SIGNATURE_SYMBOL,BOOLEAN,"symbol1",SIGNATURE_STRUCTURE,SYMBOL,"symbol2",SIGNATURE_STRUCTURE,SYMBOL,0;  test the quality of two SYMBOL type parameters
-Process: ADD_INT,0,"addition","sum",SIGNATURE_STRUCTURE,INTEGER,"augend",SIGNATURE_STRUCTURE,INTEGER,"addend",SIGNATURE_STRUCTURE,INTEGER,0;
-Process: SUB_INT,0,"subtract","difference",SIGNATURE_STRUCTURE,INTEGER,"minuend",SIGNATURE_STRUCTURE,INTEGER,"subtrahend",SIGNATURE_STRUCTURE,INTEGER,0;
-Process: MULT_INT,0,"multiply","product",SIGNATURE_STRUCTURE,INTEGER,"multiplicand",SIGNATURE_STRUCTURE,INTEGER,"multiplier",SIGNATURE_STRUCTURE,INTEGER,0;
-Process: DIV_INT,0,"divide","quotient",SIGNATURE_STRUCTURE,INTEGER,"dividend",SIGNATURE_STRUCTURE,INTEGER,"divisor",SIGNATURE_STRUCTURE,INTEGER,0;
-Process: MOD_INT,0,"modulo","remainder",SIGNATURE_STRUCTURE,INTEGER,"dividend",SIGNATURE_STRUCTURE,INTEGER,"divisor",SIGNATURE_STRUCTURE,INTEGER,0;
-ProcessL: EQ_INT,0,"test equality",INTEGER,OPERATOR,"equality",SIGNATURE_SYMBOL,BOOLEAN,"int1",SIGNATURE_STRUCTURE,INTEGER,"int2",SIGNATURE_STRUCTURE,INTEGER,0;
-ProcessL: LT_INT,0,"test less than",INTEGER,OPERATOR,"result",SIGNATURE_SYMBOL,BOOLEAN,"int1",SIGNATURE_STRUCTURE,INTEGER,"int2",SIGNATURE_STRUCTURE,INTEGER,0;
-ProcessL: GT_INT,0,"test greater than",INTEGER,OPERATOR,"result",SIGNATURE_SYMBOL,BOOLEAN,"int1",SIGNATURE_STRUCTURE,INTEGER,"int2",SIGNATURE_STRUCTURE,INTEGER,0;
-ProcessL: LTE_INT,0,"test less than or equal",INTEGER,OPERATOR,"result",SIGNATURE_SYMBOL,BOOLEAN,"int1",SIGNATURE_STRUCTURE,INTEGER,"int2",SIGNATURE_STRUCTURE,INTEGER,0;
-ProcessL: GTE_INT,0,"test greater than or equal",INTEGER,OPERATOR,"result",SIGNATURE_SYMBOL,BOOLEAN,"int1",SIGNATURE_STRUCTURE,INTEGER,"int2",SIGNATURE_STRUCTURE,INTEGER,0;
-Process: INITIATE_PROTOCOL,0,"initiate the first step of a protocol","error",SIGNATURE_SYMBOL,REDUCTION_ERROR_SYMBOL,"protocol",SIGNATURE_SYMBOL,PNAME,"interaction",SIGNATURE_SYMBOL,WHICH_INTERACTION,"bindings",SIGNATURE_SYMBOL,PROTOCOL_BINDINGS,0;
-Process: MAGIC,0,"dark magic","result",SIGNATURE_ANY,NULL_STRUCTURE,0;   this process reduces to hardcoded special things as a scaffold for things we don't know how to build in ceptr yet.
+Process: EQ_SYM,0,"test equality","equality",SIGNATURE_SYMBOL,BOOLEAN,"symbol1",SIGNATURE_STRUCTURE,SYMBOL,"symbol2",SIGNATURE_STRUCTURE,SYMBOL;  test the quality of two SYMBOL type parameters
+Process: ADD_INT,0,"addition","sum",SIGNATURE_STRUCTURE,INTEGER,"augend",SIGNATURE_STRUCTURE,INTEGER,"addend",SIGNATURE_STRUCTURE,INTEGER;
+Process: SUB_INT,0,"subtract","difference",SIGNATURE_STRUCTURE,INTEGER,"minuend",SIGNATURE_STRUCTURE,INTEGER,"subtrahend",SIGNATURE_STRUCTURE,INTEGER;
+Process: MULT_INT,0,"multiply","product",SIGNATURE_STRUCTURE,INTEGER,"multiplicand",SIGNATURE_STRUCTURE,INTEGER,"multiplier",SIGNATURE_STRUCTURE,INTEGER;
+Process: DIV_INT,0,"divide","quotient",SIGNATURE_STRUCTURE,INTEGER,"dividend",SIGNATURE_STRUCTURE,INTEGER,"divisor",SIGNATURE_STRUCTURE,INTEGER;
+Process: MOD_INT,0,"modulo","remainder",SIGNATURE_STRUCTURE,INTEGER,"dividend",SIGNATURE_STRUCTURE,INTEGER,"divisor",SIGNATURE_STRUCTURE,INTEGER;
+ProcessL: EQ_INT,0,"test equality",INTEGER,OPERATOR,"equality",SIGNATURE_SYMBOL,BOOLEAN,"int1",SIGNATURE_STRUCTURE,INTEGER,"int2",SIGNATURE_STRUCTURE,INTEGER;
+ProcessL: LT_INT,0,"test less than",INTEGER,OPERATOR,"result",SIGNATURE_SYMBOL,BOOLEAN,"int1",SIGNATURE_STRUCTURE,INTEGER,"int2",SIGNATURE_STRUCTURE,INTEGER;
+ProcessL: GT_INT,0,"test greater than",INTEGER,OPERATOR,"result",SIGNATURE_SYMBOL,BOOLEAN,"int1",SIGNATURE_STRUCTURE,INTEGER,"int2",SIGNATURE_STRUCTURE,INTEGER;
+ProcessL: LTE_INT,0,"test less than or equal",INTEGER,OPERATOR,"result",SIGNATURE_SYMBOL,BOOLEAN,"int1",SIGNATURE_STRUCTURE,INTEGER,"int2",SIGNATURE_STRUCTURE,INTEGER;
+ProcessL: GTE_INT,0,"test greater than or equal",INTEGER,OPERATOR,"result",SIGNATURE_SYMBOL,BOOLEAN,"int1",SIGNATURE_STRUCTURE,INTEGER,"int2",SIGNATURE_STRUCTURE,INTEGER;
+Symbol: POP_COUNT,INTEGER;
+Process: POP_PATH,0,"pop values off a tree path","result",SIGNATURE_PASSTHRU,NULL_SYMBOL,"path",SIGNATURE_STRUCTURE,TREE_PATH,"as",SIGNATURE_SYMBOL,RESULT_SYMBOL,"count",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,POP_COUNT;
+Symbol: CONTINUE_LOCATION,TREE_PATH;
+Symbol: CONTINUE_VALUE,[!];
+Process: CONTINUE,0,"restart reduction at some parent","result",SIGNATURE_PASSTHRU,NULL_SYMBOL,"at",SIGNATURE_SYMBOL,CONTINUE_LOCATION,"with",SIGNATURE_SYMBOL,CONTINUE_VALUE;
+Process: INITIATE_PROTOCOL,0,"initiate the first step of a protocol","error",SIGNATURE_SYMBOL,REDUCTION_ERROR_SYMBOL,"protocol",SIGNATURE_SYMBOL,PNAME,"interaction",SIGNATURE_SYMBOL,WHICH_INTERACTION,"bindings",SIGNATURE_SYMBOL,PROTOCOL_BINDINGS;
+Process: MAGIC,0,"dark magic","result",SIGNATURE_ANY,NULL_STRUCTURE;   this process reduces to hardcoded special things as a scaffold for things we don't know how to build in ceptr yet.
 
 Symbol: STX_SL,NULL_STRUCTURE;
 Symbol: STX_OP,NULL_STRUCTURE;
@@ -461,46 +500,75 @@ Context: COMPOSITORY;
 # definitions in progress that only exist on a local machine
 Context: DEV_COMPOSITORY;
 
+Symbol: P_OP,NULL_STRUCTURE;
+Symbol: P_CP,NULL_STRUCTURE;
+Symbol: P_COLON,NULL_STRUCTURE;
+Symbol: P_INTERPOLATE,NULL_STRUCTURE;
+Symbol: P_LABEL,CSTRING;
+Symbol: P_VAL_S,CSTRING;
+Symbol: P_VAL_C,CHAR;
+Symbol: P_VAL_I,INTEGER;
+Symbol: P_VAL_F,FLOAT;
+Symbol: P_VAL_PATH,TREE_PATH;
+
+Symbol: P_TOKENS,[*|{P_OP|P_CP|P_COLON|P_LABEL|P_VAL_S|P_VAL_C|P_VAL_I|P_VAL_F|P_VAL_PATH}];
+
 Data: date2usshortdate_proc,(CONCAT_STR (RESULT_SYMBOL:US_SHORT_DATE) 
       (TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:ASCII_STR))
                  (TRANSCODE_ITEMS
                      (PARAM_REF:/2/1/2)
-                     (DATE_DIVIDER:"/")
+                     (DELIMITER:"/")
                      (PARAM_REF:/2/1/3)
-                     (DATE_DIVIDER:"/")
+                     (DELIMITER:"/")
                      (PARAM_REF:/2/1/1))));
-ProcessL: date2usshortdate,date2usshortdate_proc,"date to us short format date transcoder",DATE,TRANSCODER,"to",SIGNATURE_SYMBOL,US_SHORT_DATE,"from",SIGNATURE_STRUCTURE,DATE,0;
+ProcessL: date2usshortdate,date2usshortdate_proc,"date to us short format date transcoder",DATE,TRANSCODER,"to",SIGNATURE_SYMBOL,US_SHORT_DATE,"from",SIGNATURE_STRUCTURE,DATE;
+
+Data: time2shortime_proc,(CONCAT_STR (RESULT_SYMBOL:SHORT_TIME)
+      (TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:ASCII_STR))
+                 (TRANSCODE_ITEMS
+                     (PARAM_REF:/2/1/1)
+                     (DELIMITER:":")
+                     (PARAM_REF:/2/1/2)
+                     (DELIMITER:":")
+                     (PARAM_REF:/2/1/3))));
+ProcessL: time2shortime,time2shortime_proc,"time to short format date transcoder",TIME,TRANSCODER,"to",SIGNATURE_SYMBOL,SHORT_TIME,"from",SIGNATURE_STRUCTURE,TIME;
 
 ###### defs for an abstract requesting protocol
 Symbol: REQUESTER,RECEPTOR_ADDRESS;
 Symbol: RESPONDER,RECEPTOR_ADDRESS;
-Symbol: REQUEST_DATA,SYMBOL;
-Symbol: RESPONSE_DATA,SYMBOL;
+Symbol: REQUEST_TYPE,SYMBOL;
+Symbol: RESPONSE_TYPE,SYMBOL;
 Symbol: CHANNEL,SYMBOL;
-Symbol: RESPONSE_HANDLER,PROCESS;
 Symbol: REQUEST_HANDLER,PROCESS;
+Symbol: RESPONSE_HANDLER,PROCESS;
+Symbol: RESPONSE_HANDLER_PARAMETERS,SYMBOL;
 
 Symbol: backnforth,INTERACTION;
-Data: req_code,(SLOT (GOAL:REQUEST_HANDLER) (SLOT_CHILDREN (REQUEST (SLOT (ROLE:RESPONDER) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (SLOT (USAGE:CHANNEL) (SLOT_IS_VALUE_OF:ASPECT_IDENT)) (CARRIER:backnforth) (SLOT (USAGE:REQUEST_DATA)) (CARRIER:backnforth)))));
-Process: send_request,req_code,"send request","response",SIGNATURE_ANY,NULL_STRUCTURE,0;
 
-Data: resp_code,(RESPOND (SIGNAL_REF:/1/4) (SLOT (GOAL:RESPONSE_HANDLER)));
-Process: send_response,resp_code,"send response","response id",SIGNATURE_SYMBOL,SIGNAL_UUID,0;
+Data: req_code,(SLOT (GOAL:RESPONSE_HANDLER) (SLOT_CHILDREN (SLOT (USAGE:RESPONSE_HANDLER_PARAMETERS)) (REQUEST (SLOT (ROLE:RESPONDER) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (SLOT (USAGE:CHANNEL) (SLOT_IS_VALUE_OF:ASPECT_IDENT)) (CARRIER:backnforth) (SLOT (USAGE:REQUEST_TYPE)) (CARRIER:backnforth)))));
+Process: send_request,req_code,"send request","response",SIGNATURE_ANY,NULL_STRUCTURE;
+
+Data: resp_code,(RESPOND (SIGNAL_REF:/2/1/4) (SLOT (GOAL:REQUEST_HANDLER)));
+Process: send_response,resp_code,"send response","response id",SIGNATURE_SYMBOL,SIGNAL_UUID;
 
 Data: req_def,(PROTOCOL_DEFINITION
       (PROTOCOL_SEMANTICS
          (ROLE:REQUESTER)
          (ROLE:RESPONDER)
-         (GOAL:REQUEST_HANDLER)
          (GOAL:RESPONSE_HANDLER)
+         (GOAL:REQUEST_HANDLER)
          (USAGE:CHANNEL)
-         (USAGE:REQUEST_DATA)
-         (USAGE:RESPONSE_DATA))
+         (USAGE:REQUEST_TYPE)
+         (USAGE:RESPONSE_TYPE)
+         (USAGE:RESPONSE_HANDLER_PARAMETERS))
+      (PROTOCOL_DEFAULTS (SEMANTIC_LINK (USAGE:RESPONSE_HANDLER_PARAMETERS) (REPLACEMENT_VALUE (NULL_SYMBOL))))
       (backnforth
          (INITIATE (ROLE:REQUESTER) (DESTINATION (ROLE:RESPONDER)) (ACTION:send_request))
-         (EXPECT (ROLE:RESPONDER) (SOURCE (ROLE:REQUESTER)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SLOT (USAGE:REQUEST_DATA) (SLOT_IS_VALUE_OF:SEMTREX_SYMBOL)))) (ACTION:send_response))));
+         (EXPECT (ROLE:RESPONDER) (SOURCE (ROLE:REQUESTER)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SLOT (USAGE:REQUEST_TYPE) (SLOT_IS_VALUE_OF:SEMTREX_SYMBOL)))) (ACTION:send_response))));
 
 Protocol: REQUESTING,req_def;
+
+# @todo:  questions:  how did it get made explicit that the signature of the RESPONSE_HANDLER is of type RESPONSE_TYPE?  somehow when req_code got filled on the fly?  It's necessary to be able to figure this out for UI that would make visible what you can compose with REQUESTING.
 
 ##### defs for recognize protocol (like ping, only semantic)
 Symbol: RECOGNIZER,RECEPTOR_ADDRESS;
@@ -510,18 +578,18 @@ Symbol: are_you,SEMTREX;
 Symbol: i_am,RECEPTOR_IDENTITY;
 
 Data: iam_code,(NOOP (i_am (RECEPTOR_LABEL (ENGLISH_LABEL:"super cept")) (RECEPTOR_IDENTIFIER:314159)));
-Process: fill_i_am,iam_code,"fill i am","identity",SIGNATURE_STRUCTURE,RECEPTOR_IDENTITY,"pattern",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,are_you,0;
+Process: fill_i_am,iam_code,"fill i am","identity",SIGNATURE_STRUCTURE,RECEPTOR_IDENTITY,"pattern",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,are_you;
 
 Data: recog_def,(PROTOCOL_DEFINITION
       (PROTOCOL_SEMANTICS)
       (INCLUSION (PNAME:REQUESTING)
                  (LINKAGE (WHICH_ROLE (ROLE:REQUESTER) (ROLE:RECOGNIZER)))
                  (LINKAGE (WHICH_ROLE (ROLE:RESPONDER) (ROLE:RECOGNIZEE)))
-                 (LINKAGE (WHICH_GOAL (GOAL:REQUEST_HANDLER) (GOAL:RECOGNITION)))
-                 (RESOLUTION (WHICH_SYMBOL (USAGE:REQUEST_DATA) (ACTUAL_SYMBOL:are_you)))
-                 (RESOLUTION (WHICH_SYMBOL (USAGE:RESPONSE_DATA) (ACTUAL_SYMBOL:i_am)))
+                 (LINKAGE (WHICH_GOAL (GOAL:RESPONSE_HANDLER) (GOAL:RECOGNITION)))
+                 (RESOLUTION (WHICH_SYMBOL (USAGE:REQUEST_TYPE) (ACTUAL_SYMBOL:are_you)))
+                 (RESOLUTION (WHICH_SYMBOL (USAGE:RESPONSE_TYPE) (ACTUAL_SYMBOL:i_am)))
                  (RESOLUTION (WHICH_SYMBOL (USAGE:CHANNEL) (ACTUAL_SYMBOL:DEFAULT_ASPECT)))
-                 (RESOLUTION (WHICH_PROCESS (GOAL:RESPONSE_HANDLER) (ACTUAL_PROCESS:fill_i_am)))));
+                 (RESOLUTION (WHICH_PROCESS (GOAL:REQUEST_HANDLER) (ACTUAL_PROCESS:fill_i_am)))));
 
 Protocol: RECOGNIZE,recog_def;
 
@@ -547,7 +615,7 @@ Data: line_2_command_proc,(SAY
                 (CONTRACT_STR (RESULT_SYMBOL:VERB) (PARAM_REF:/2/1))
             ))
       );
-Process: line_2_command,line_2_command_proc,"parse a COMMAND from a LINE","signal id",SIGNATURE_SYMBOL,SIGNAL_UUID,0;
+Process: line_2_command,line_2_command_proc,"parse a COMMAND from a LINE","signal id",SIGNATURE_SYMBOL,SIGNAL_UUID;
 
 Data: cl_parser_def,
       (PROTOCOL_DEFINITION
@@ -562,9 +630,9 @@ Protocol: PARSE_COMMAND_FROM_LINE,cl_parser_def;
 Data: shell_def,(PROTOCOL_DEFINITION
       (PROTOCOL_SEMANTICS)
       (INCLUSION (PNAME:REQUESTING)
-                 (RESOLUTION (WHICH_SYMBOL (USAGE:REQUEST_DATA) (ACTUAL_SYMBOL:COMMAND)))
+                 (RESOLUTION (WHICH_SYMBOL (USAGE:REQUEST_TYPE) (ACTUAL_SYMBOL:COMMAND)))
 # we can't do this here because the code is too complicated be produced by the perl parser see shell.c for the actuall shell_handler code
-#                 (RESOLUTION (WHICH_PROCESS (GOAL:RESPONSE_HANDLER) (ACTUAL_PROCESS:shell_handler)))
+#                 (RESOLUTION (WHICH_PROCESS (GOAL:REQUEST_HANDLER) (ACTUAL_PROCESS:shell_handler)))
                  (RESOLUTION (WHICH_SYMBOL (USAGE:CHANNEL) (ACTUAL_SYMBOL:DEFAULT_ASPECT)))
                  ));
 Protocol: COMMAND_SHELL,shell_def;
@@ -576,8 +644,8 @@ Symbol: PING,NULL_STRUCTURE;
 Symbol: YUP,NULL_STRUCTURE;
 Symbol: HANDLER,PROCESS;
 
-Data: ping_resp,(RESPOND (SIGNAL_REF:/1/4) (YUP));
-Process: respond_with_yup,ping_resp,"respond with yup","response id",SIGNATURE_SYMBOL,SIGNAL_UUID,0;
+Data: ping_resp,(RESPOND (SIGNAL_REF:/2/1/4) (YUP));
+Process: respond_with_yup,ping_resp,"respond with yup","response id",SIGNATURE_SYMBOL,SIGNAL_UUID;
 Symbol: alive,INTERACTION;
 
 Data: alive_def,
@@ -594,22 +662,22 @@ Symbol: GROUP,RECEPTOR_ADDRESS;
 Symbol: MEMBER,RECEPTOR_ADDRESS;
 Symbol: enrollment,INTERACTION;
 Symbol: converse,INTERACTION;
-Symbol: MESSAGE,CSTRING;
+Symbol: MESSAGE_TEXT,CSTRING;
 
 Data: request_membership_code,(SAY (SLOT (ROLE:GROUP) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:enrollment) (YUP));   we could say anything, just using yup for now...
-Process: request_membership,request_membership_code,"request membership","result",SIGNATURE_SYMBOL,SIGNAL_UUID,0;
+Process: request_membership,request_membership_code,"request membership","result",SIGNATURE_SYMBOL,SIGNAL_UUID;
 
-Data: enroll_code,(NEW (NEW_TYPE:MEMBER) (SIGNAL_REF:/1/1));  /1/1 is the FROM_ADDRESS
-Process: enroll,enroll_code,"enroll client","result",SIGNATURE_STRUCTURE,NULL_STRUCTURE,0;
+Data: enroll_code,(NEW (NEW_TYPE:MEMBER) (SIGNAL_REF:/1/1/1));  /1/1/1 is the FROM_ADDRESS
+Process: enroll,enroll_code,"enroll client","result",SIGNATURE_STRUCTURE,NULL_STRUCTURE;
 
-Data: speak_code,(SAY (SLOT (ROLE:GROUP) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:converse) (SLOT (USAGE:MESSAGE)));
-Process: speak,speak_code,"speak","result",SIGNATURE_SYMBOL,SIGNAL_UUID,0;
+Data: speak_code,(SAY (SLOT (ROLE:GROUP) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:converse) (SLOT (USAGE:MESSAGE_TEXT)));
+Process: speak,speak_code,"speak","result",SIGNATURE_SYMBOL,SIGNAL_UUID;
 
 Data: group_listen_code,
-      (DO (BLOCK
-              (NEW (NEW_TYPE:MESSAGE) (PARAM_REF:/2/1))
-              (ITERATE (PARAMS) (ITERATE_ON_SYMBOL:MEMBER) (SAY (PARAM_REF:/1/1/2/1/1/1) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:converse) (PARAM_REF:/2/1)))));  we could also use SIGNAL_REF /2/0 as the contents of the BODY
-Process: group_listen,group_listen_code,"group_listen","result",SIGNATURE_SYMBOL,SIGNAL_UUID,0;
+      (DO (SCOPE
+              (NEW (NEW_TYPE:MESSAGE_TEXT) (PARAM_REF:/2/1))
+              (ITERATE (PARAMS) (ITERATE_ON_SYMBOL:MEMBER) (SAY (PARAM_REF:/1/1/2/1/1/1) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:converse) (PARAM_REF:/2/1)))));  we could also use SIGNAL_REF /1/2/0 as the contents of the BODY
+Process: group_listen,group_listen_code,"group_listen","result",SIGNATURE_SYMBOL,SIGNAL_UUID;
 
 Data: group1_def,
       (PROTOCOL_DEFINITION
@@ -618,8 +686,8 @@ Data: group1_def,
                 (EXPECT (ROLE:GROUP) (ROLE:MEMBER) (PATTERN (SEMTREX_SYMBOL_ANY)) (ACTION:enroll))
                 (INITIATE (ROLE:MEMBER) (ROLE:GROUP) (ACTION:request_membership)))
           (converse
-                (EXPECT (ROLE:GROUP) (ROLE:MEMBER) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:MESSAGE))) (ACTION:group_listen) (PARAMS (SLOT (USAGE:NULL_SYMBOL))))
-                (EXPECT (ROLE:MEMBER) (ROLE:GROUP) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:MESSAGE))) (SLOT (GOAL:HANDLER) (SLOT_IS_VALUE_OF:ACTION)))
+                (EXPECT (ROLE:GROUP) (ROLE:MEMBER) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:MESSAGE_TEXT))) (ACTION:group_listen) (PARAMS (SLOT (USAGE:NULL_SYMBOL))))
+                (EXPECT (ROLE:MEMBER) (ROLE:GROUP) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:MESSAGE_TEXT))) (SLOT (GOAL:HANDLER) (SLOT_IS_VALUE_OF:ACTION)))
                 (INITIATE (ROLE:MEMBER) (ROLE:GROUP) (ACTION:speak)))
                 );
                 
@@ -651,8 +719,8 @@ Symbol: TIME_TELLER,RECEPTOR_ADDRESS;
 Symbol: TIME_HEARER,RECEPTOR_ADDRESS;
 Symbol: CLOCK_TELL_TIME,NULL_STRUCTURE;
 Symbol: tell_time,INTERACTION;
-Data: time_req_code,(SLOT (GOAL:REQUEST_HANDLER) (SLOT_CHILDREN (REQUEST (SLOT (ROLE:TIME_TELLER) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:tell_time) (CLOCK_TELL_TIME) (RESPONSE_CARRIER:tell_time))));
-Process: time_request,time_req_code,"request current time","response",SIGNATURE_SYMBOL,TICK,0;
+Data: time_req_code,(SLOT (GOAL:RESPONSE_HANDLER) (SLOT_CHILDREN (REQUEST (SLOT (ROLE:TIME_TELLER) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:tell_time) (CLOCK_TELL_TIME) (RESPONSE_CARRIER:tell_time))));
+Process: time_request,time_req_code,"request current time","response",SIGNATURE_SYMBOL,TICK;
 
 # note: look for the clock protocol def in src/receptor.c#_r_defineClockReceptor
 #       currently we don't have a way to define xaddrs as "immediate" data which
@@ -660,10 +728,6 @@ Process: time_request,time_req_code,"request current time","response",SIGNATURE_
 
 ########################################################################################
 Context: STREAM_EDGE;
-
-# process used by the stream edge receptor
-Data: echo2stream_code,(STREAM_WRITE (PARAM_REF:/2/1) (PARAM_REF:/2/2));
-Process: echo2stream,echo2stream_code,"echo input to stream","result",SIGNATURE_SYMBOL,NULL_SYMBOL,"stream",SIGNATURE_SYMBOL,EDGE_STREAM,"value",SIGNATURE_ANY,NULL_STRUCTURE,0;
 
 ########################################################################################
 Context: INTERNET;
@@ -736,7 +800,7 @@ Data: meda_type_2_ascii_str_proc, (CONCAT_STR (RESULT_SYMBOL:ASCII_STR)
       (GET_LABEL (LABEL_SYMBOL:MEDIA_TYPE_SEPARATOR) (LABEL_TYPE:MEDIA_TYPE_LABEL))
       (GET_LABEL (PARAM_REF:/2/1/2) (LABEL_TYPE:MEDIA_TYPE_LABEL))
       );
-ProcessL: meda_type_2_ascii_str,meda_type_2_ascii_str_proc,"media type transcoder",MEDIA_TYPE,TRANSCODER,"output",SIGNATURE_SYMBOL,ASCII_STR,"input",SIGNATURE_STRUCTURE,MEDIA_TYPE,0;
+ProcessL: meda_type_2_ascii_str,meda_type_2_ascii_str_proc,"media type transcoder",MEDIA_TYPE,TRANSCODER,"output",SIGNATURE_SYMBOL,ASCII_STR,"input",SIGNATURE_STRUCTURE,MEDIA_TYPE;
 
 Data: content_type_2_line_proc, (CONCAT_STR (RESULT_SYMBOL:LINE)
       (PARAMETER (PARAMETER_REFERENCE (PARAM_PATH:/2/1)) (PARAMETER_RESULT (RESULT_LABEL:HTTP_HEADER_LABEL)))
@@ -744,17 +808,11 @@ Data: content_type_2_line_proc, (CONCAT_STR (RESULT_SYMBOL:LINE)
       (meda_type_2_ascii_str (PARAM_REF:/2/1))
       );
 
-ProcessL: content_type_2_line,content_type_2_line_proc,"content type transcoder",CONTENT_TYPE,TRANSCODER,"output",SIGNATURE_SYMBOL,LINE,"input",SIGNATURE_SYMBOL,CONTENT_TYPE,0;
+ProcessL: content_type_2_line,content_type_2_line_proc,"content type transcoder",CONTENT_TYPE,TRANSCODER,"output",SIGNATURE_SYMBOL,LINE,"input",SIGNATURE_SYMBOL,CONTENT_TYPE;
 
 Symbol: CONTENT_ENCODING,CSTRING;  cstring for now, add semantic later.
 
 # http defs
-Symbol: HTTP_REQUEST_METHOD,CSTRING;
-Symbol: HTTP_REQUEST_PATH,URI;
-Symbol: HTTP_REQUEST_VERSION,VERSION;
-Structure: HTTP_REQUEST_V09,(HTTP_REQUEST_VERSION,HTTP_REQUEST_METHOD,HTTP_REQUEST_PATH);
-Symbol: HTTP_REQUEST,HTTP_REQUEST_V09;
-Symbol: HTTP_REQUEST_HOST,CSTRING;
 
 Symbol: HEADER_KEY,CSTRING;
 Symbol: HEADER_VALUE,CSTRING;
@@ -765,11 +823,29 @@ Symbol: HTTP_RESPONSE_HEADER,HEADER;
 Symbol: HTTP_GENERAL_HEADER,HEADER;
 Symbol: HTTP_ENTITY_HEADER,[|{CONTENT_TYPE|CONTENT_ENCODING}];    @todo plus a few more see https://www.w3.org/Protocols/rfc2616/rfc2616-sec7.html#sec7.1
 
+Symbol: HTTP_REQUEST_HOST,CSTRING;  @todo, should actually be a "domain-name address:port"
+Symbol: HTTP_REQUEST_USER_AGENT,CSTRING;
+Symbol: HTTP_REQUEST_METHOD,CSTRING;
+Symbol: HTTP_REQUEST_PATH,URI;
+Symbol: HTTP_REQUEST_VERSION,VERSION;
+Symbol: HTTP_REQUEST_LINE,[(HTTP_REQUEST_VERSION,HTTP_REQUEST_METHOD,HTTP_REQUEST_PATH)];
+Symbol: HTTP_REQUEST_BODY,[!];
+Symbol: HTTP_REQUEST_HEADER,[|{HTTP_REQUEST_HOST|HTTP_REQUEST_USER_AGENT}];  @todo plus a bunch more see rfc2616 section 5.3
+Symbol: HTTP_REQUEST_HEADERS,[*|{HTTP_REQUEST_HEADER|HTTP_GENERAL_HEADER|HTTP_ENTITY_HEADER}];
+Symbol: HTTP_REQUEST,[(HTTP_REQUEST_LINE,HTTP_REQUEST_HEADERS,HTTP_REQUEST_BODY)];
+
 Symbol: HTTP_RESPONSE_BODY,[!];
 Symbol: HTTP_RESPONSE_STATUS,STATUS;
 Symbol: HTTP_HEADER,[|{HTTP_GENERAL_HEADER|HTTP_RESPONSE_HEADER|HTTP_ENTITY_HEADER}];
 Symbol: HTTP_HEADERS,[*HTTP_HEADER];
 Symbol: HTTP_RESPONSE,[(HTTP_RESPONSE_STATUS,HTTP_HEADERS,HTTP_RESPONSE_BODY)];
+
+Data: http_response_status_2_ascii_str_proc, (CONTRACT_STR (RESULT_SYMBOL:ASCII_STR)
+      (TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:ASCII_STR)) (TRANSCODE_ITEMS (PARAM_REF:/2/1/1)))
+      (ASCII_CHAR:' ')
+      (TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:ASCII_STR)) (TRANSCODE_ITEMS (PARAM_REF:/2/1/2)))
+      );
+ProcessL:  http_response_status_2_ascii_str, http_response_status_2_ascii_str_proc,"http response status transcoder",HTTP_RESPONSE_STATUS,TRANSCODER,"output",SIGNATURE_SYMBOL,ASCII_STR,"input",SIGNATURE_SYMBOL,HTTP_RESPONSE_STATUS;
 
 Data: http_response_2_lines_proc, (LINES
       (CONTRACT_STR (RESULT_SYMBOL:LINE) (ASCII_STR:"HTTP") (ASCII_CHAR:'/') (ASCII_STR:"1.1 ") (TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:ASCII_STR)) (TRANSCODE_ITEMS (PARAM_REF:/2/1/1)) (ASCII_CHAR:' ') (PARAM_REF:/2/1/2)))
@@ -778,7 +854,7 @@ Data: http_response_2_lines_proc, (LINES
       (TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:LINE)) (TRANSCODE_ITEMS (PARAM_REF:/2/1/3))))
       );
 
-ProcessL: http_response_2_lines,http_response_2_lines_proc,"http response transcoder",HTTP_RESPONSE,TRANSCODER,"output",SIGNATURE_SYMBOL,LINES,"input",SIGNATURE_SYMBOL,HTTP_RESPONSE,0;
+ProcessL: http_response_2_lines,http_response_2_lines_proc,"http response transcoder",HTTP_RESPONSE,TRANSCODER,"output",SIGNATURE_SYMBOL,LINES,"input",SIGNATURE_SYMBOL,HTTP_RESPONSE;
 
 # html defs
 Symbol: HTML_DOCUMENT,NULL_STRUCTURE; //@todo should be an optionality structure
@@ -815,9 +891,10 @@ Symbol: HTML_BUTTON,HTML_ELEMENT;
 
 GlobalData: http_req_example,
 (HTTP_REQUEST
+   (HTTP_REQUEST_LINE
    (HTTP_REQUEST_VERSION
       (VERSION_MAJOR:1)
-      (VERSION_MINOR:0))
+      (VERSION_MINOR:1))
    (HTTP_REQUEST_METHOD:"GET")
    (HTTP_REQUEST_PATH
       (HTTP_REQUEST_PATH_SEGMENTS
@@ -833,7 +910,10 @@ GlobalData: http_req_example,
                (PARAM_VALUE:"last_name"))
             (HTTP_REQUEST_PATH_QUERY_PARAM
                (PARAM_KEY:"page")
-               (PARAM_VALUE:"2"))))));    GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
+               (PARAM_VALUE:"2"))))))
+    (HTTP_REQUEST_HEADERS)           
+    (HTTP_REQUEST_BODY)
+               );    GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.1
 
 ##### defs for HTTP protocol
 Symbol: HTTP_CLIENT,RECEPTOR_ADDRESS;
@@ -845,19 +925,16 @@ Data: line_2_httpreq_proc, (SAY
       (SLOT (ROLE:LINE_SENDER) (SLOT_IS_VALUE_OF:TO_ADDRESS))
       (ASPECT_IDENT:DEFAULT_ASPECT)
       (CARRIER:LINE)
-      (DO (BLOCK
-          (REQUEST
+      (TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:LINES)) (TRANSCODE_ITEMS
+         (REQUEST
             (SLOT (ROLE:HTTP_SERVER) (SLOT_IS_VALUE_OF:TO_ADDRESS))
             (ASPECT_IDENT:HTTP_ASPECT)
             (CARRIER:backnforth)
             (PARAM_REF:/2/1)
-            (RESPONSE_CARRIER:backnforth))
-          (TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:LINES)) (TRANSCODE_ITEMS (PARAM_REF:/1/4/1/1)))
-          
+            (RESPONSE_CARRIER:backnforth))))
+      )));
 
-          )));
-
-Process: line_2_httpreq,line_2_httpreq_proc,"parse an HTTP_REQUEST from a LINE","signal id",SIGNATURE_SYMBOL,SIGNAL_UUID,0;
+Process: line_2_httpreq,line_2_httpreq_proc,"parse an HTTP_REQUEST from a LINE","signal id",SIGNATURE_SYMBOL,SIGNAL_UUID;
 
 Data: httpreq_parser_def,
       (PROTOCOL_DEFINITION
@@ -876,24 +953,11 @@ Data: ascii_chars_2_http_req_proc, (FILL_FROM_MATCH
       (PARAM_REF:/2/1)
       );
 
-ProcessL: ascii_chars_2_http_req,ascii_chars_2_http_req_proc,"http req transcoder",ASCII_CHARS,TRANSCODER,"output",SIGNATURE_SYMBOL,HTTP_REQUEST,"input",SIGNATURE_SYMBOL,ASCII_CHARS,0;
+ProcessL: ascii_chars_2_http_req,ascii_chars_2_http_req_proc,"http req transcoder",ASCII_CHARS,TRANSCODER,"output",SIGNATURE_SYMBOL,HTTP_REQUEST,"input",SIGNATURE_SYMBOL,ASCII_CHARS;
 
 
 Symbol: HTTP_ASPECT,ASPECT;
-Symbol: HTTP_RESPONSE_HANDLER,PROCESS;
+Symbol: HTTP_REQUEST_HANDLER,PROCESS;
 
-Data: httpresp_proc,(HTTP_RESPONSE (HTTP_RESPONSE_STATUS (STATUS_VALUE:200) (STATUS_TEXT:"OK")) (HTTP_HEADERS (CONTENT_TYPE (MEDIA_TYPE_IDENT:TEXT_MEDIA_TYPE) (MEDIA_SUBTYPE_IDENT:CEPTR_TEXT_MEDIA_SUBTYPE))) (HTTP_RESPONSE_BODY (SLOT (GOAL:HTTP_RESPONSE_HANDLER))));
-Process: httpresp,httpresp_proc,"build an HTTP_RESPONSE","response",SIGNATURE_SYMBOL,HTTP_RESPONSE,0;
-
-Data: http_def,(PROTOCOL_DEFINITION
-      (PROTOCOL_SEMANTICS (GOAL:HTTP_RESPONSE_HANDLER))
-      (INCLUSION (PNAME:REQUESTING)
-                 (LINKAGE (WHICH_ROLE (ROLE:REQUESTER) (ROLE:HTTP_CLIENT)))
-                 (LINKAGE (WHICH_ROLE (ROLE:RESPONDER) (ROLE:HTTP_SERVER)))
-                 (RESOLUTION (WHICH_SYMBOL (USAGE:REQUEST_DATA) (ACTUAL_SYMBOL:HTTP_REQUEST)))
-                 (RESOLUTION (WHICH_SYMBOL (USAGE:RESPONSE_DATA) (ACTUAL_SYMBOL:HTTP_RESPONSE)))
-                 (RESOLUTION (WHICH_SYMBOL (USAGE:CHANNEL) (ACTUAL_SYMBOL:HTTP_ASPECT)))
-                 (RESOLUTION (WHICH_PROCESS (GOAL:RESPONSE_HANDLER) (ACTUAL_PROCESS:httpresp)))
-                 ));
-
-Protocol: HTTP,http_def;
+Data: httpresp_proc,(HTTP_RESPONSE (HTTP_RESPONSE_STATUS (STATUS_VALUE:200) (STATUS_TEXT:"OK")) (HTTP_HEADERS (CONTENT_TYPE (MEDIA_TYPE_IDENT:TEXT_MEDIA_TYPE) (MEDIA_SUBTYPE_IDENT:CEPTR_TEXT_MEDIA_SUBTYPE))) (HTTP_RESPONSE_BODY (SLOT (GOAL:HTTP_REQUEST_HANDLER))));
+Process: httpresp,httpresp_proc,"build an HTTP_RESPONSE","response",SIGNATURE_SYMBOL,HTTP_RESPONSE;

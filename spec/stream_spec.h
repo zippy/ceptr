@@ -43,15 +43,18 @@ void testStreamAlive() {
 void testStreamScan() {
 
     Stream * s = __st_alloc_stream();
-    s->type = 99;
+    s->type = 99;       // typed doesn't matter, just testing scan.
     s->buf_size = 100;
 
+    // setup stream buffer as if three lines have been read in
     s->buf = "line1\ncat\ndog";
     s->bytes_used = strlen(s->buf);
 
+    // test initializing the scan state
     __st_init_scan(s);
     spec_is_equal(s->scan_state,StreamScanInitial);
 
+    // test how scans loads state data with offsets into the buffer for each unit
     __st_scan(s);
     spec_is_equal(s->scan_state,StreamScanSuccess);
     spec_is_equal(s->unit_start,0);
@@ -60,13 +63,15 @@ void testStreamScan() {
     spec_is_equal(s->scan_state,StreamScanSuccess);
     spec_is_equal(s->unit_start,6);
     spec_is_equal(s->unit_size,3);
+
+    // test how scan of unterminated data at end of buffer sets state to Partial
     __st_scan(s);
     spec_is_equal(s->scan_state,StreamScanPartial);
+    spec_is_equal(s->unit_start,10);
 
     // repeat calls to scan continue with Partial result
     __st_scan(s);
     spec_is_equal(s->scan_state,StreamScanPartial);
-
 
     // simulate reading in some extra bytes into the buffer (but not enough)
     s->buf = "line1\ncat\ndogg";  s->bytes_used = strlen(s->buf);
@@ -92,6 +97,20 @@ void testStreamScan() {
     __st_scan(s);
     spec_is_equal(s->scan_state,StreamScanComplete);
 
+    // test scanning with a multi-char delimiter
+    s->delim = DELIM_CRLF;
+    s->delim_len = 2;
+    s->buf = "line1\r\ncat\r\ndoggy\r\n";
+    s->bytes_used = strlen(s->buf);
+    __st_init_scan(s);
+    __st_scan(s);
+    spec_is_equal(s->scan_state,StreamScanSuccess);
+    spec_is_equal(s->unit_start,0);
+    spec_is_equal(s->unit_size,5);
+    __st_scan(s);
+    spec_is_equal(s->scan_state,StreamScanSuccess);
+    spec_is_equal(s->unit_start,7);
+    spec_is_equal(s->unit_size,3);
 
     _st_free(s);
 
@@ -101,7 +120,7 @@ void testStreamFileLoad() {
     FILE *input;
     //debug_enable(D_STREAM);
 
-    char data[] = "line1\nline2\n";
+    char data[] = "line1\nline2\nline3\n";
     input = fmemopen(data, strlen(data), "r");
     Stream *s = _st_new_unix_stream(input,false);
     // manually allocate a buffer for reading
@@ -109,7 +128,14 @@ void testStreamFileLoad() {
     s->buf_size = 99;
     memset(s->buf,0,100);
 
-    spec_is_equal(__st_unix_stream_load(s),strlen(data));
+    // start by loading line, by line
+    s->flags |= StreamLoadByLine;
+    spec_is_equal(__st_unix_stream_load(s),6);
+    spec_is_str_equal(s->buf,"line1\n");
+
+    // then just switch to slurp mode.
+    s->flags &= ~StreamLoadByLine;
+    spec_is_equal(__st_unix_stream_load(s),12);
     spec_is_str_equal(s->buf,data);
     spec_is_equal(s->bytes_used,strlen(data));
     spec_is_equal(errno,0);
@@ -139,7 +165,7 @@ void testStreamFileLoad() {
     spec_is_equal(errno,0);
     spec_is_equal(s->err,0);
 
-    spec_is_equal(__st_unix_stream_load(s),2);
+    spec_is_equal(__st_unix_stream_load(s),8);
     s->buf[s->bytes_used] = 0;
     spec_is_str_equal(s->buf,data);
     spec_is_false(__st_buf_full(s));
@@ -208,6 +234,7 @@ void testStreamRead(size_t rs) {
     if (rc) {
         raise_error("ERROR; return code from pthread_join() is %d\n", rc);
     }
+
     _st_free(s);
 }
 
@@ -215,15 +242,42 @@ void testStreamWrite() {
     char buffer[500] = "x";
     FILE *stream;
     stream = fmemopen(buffer, 500, "r+");
-    Stream *st = _st_new_unix_stream(stream,1);
 
-    spec_is_equal(_st_write(st,"fishy",6),6);
+    Stream *st = _st_new_unix_stream(stream,1);
+    spec_is_equal(_st_write(st,"fishy",5),5);
 
     char *expected_result = "fishy";
     spec_is_str_equal(buffer,expected_result);
 
+    spec_is_equal(_st_write(st," in the sea",11),11);
+    spec_is_str_equal(buffer,"fishy in the sea");
+
     _st_free(st);
 }
+
+void testStreamWriteLine() {
+    char buffer[500] = "x";
+    FILE *stream;
+    stream = fmemopen(buffer, 500, "r+");
+
+    Stream *st = _st_new_unix_stream(stream,1);
+    spec_is_equal(_st_writeln(st,"fishy"),6);
+
+    char *expected_result = "fishy\n";
+    spec_is_str_equal(buffer,expected_result);
+
+    spec_is_equal(_st_writeln(st,"in the sea"),11);
+    spec_is_str_equal(buffer,"fishy\nin the sea\n");
+
+    st->delim = DELIM_CRLF;
+    st->delim_len = 2;
+
+    spec_is_equal(_st_writeln(st,"not me"),8);
+    spec_is_str_equal(buffer,"fishy\nin the sea\nnot me\r\n");
+
+    _st_free(st);
+}
+
 
 void testSocketListernCallback(Stream *s,void *arg) {
     spec_is_true(s->flags&StreamReader);
@@ -247,7 +301,7 @@ void testStreamSocket() {
     //    debug_enable(D_SOCKET+D_STREAM);
 
     int arg = 31415;
-    SocketListener *l = _st_new_socket_listener(8888,testSocketListernCallback,&arg);
+    SocketListener *l = _st_new_socket_listener(8888,testSocketListernCallback,&arg,DELIM_LF);
     char *result = doSys("echo 'testing!\nfish\n' | nc localhost 8888");
     spec_is_str_equal(result,"fishy");
     free(result);
@@ -270,5 +324,6 @@ void testStream() {
     testStreamRead(10);
     testStreamRead(2);
     testStreamWrite();
+    testStreamWriteLine();
     testStreamSocket();
 }

@@ -44,6 +44,7 @@ T * __t_init(T *parent,Symbol symbol,bool is_run_node) {
     if (parent != NULL) {
         __t_append_child(parent,t);
     }
+    return t;
 }
 
 /**
@@ -174,7 +175,7 @@ T *__t_newr(T *parent,Symbol symbol,bool is_run_node) {
 /* create tree node whose surface is a specially allocated c structure,
    i.e. a receptor, scape, or stream, these nodes get cloned as references
    so the c-structure isn't double freed
- */
+*/
 T *__t_new_special(T *parent,Symbol symbol,void *s,int flag,bool is_run_node) {
     T *t = __t_init(parent,symbol,is_run_node);
     t->contents.surface = s;
@@ -301,7 +302,7 @@ void _t_detach_by_ptr(T *t,T *c) {
                 }
                 break;
             }
-            );
+        );
 
     if (c) c->structure.parent = 0;
 }
@@ -775,13 +776,13 @@ T *_t_build2(SemTable *sem,T *parent,...) {
     bool done = false;
     Structure st = NULL_STRUCTURE;
     char *stn;
-    T *def,*p;
-    int level = 0;
+    T *def;
     while(!done) {
         param = va_arg(ap,Symbol);
         if (semeq(param,STX_OP)) {
             node = va_arg(ap,Symbol);
-            type = _getBuildType(sem,node,&st,&def);
+            type = NULL_SYMBOL;
+            if (!semeq(node,NULL_SYMBOL)) type = _getBuildType(sem,node,&st,&def);
             if (semeq(type,STRUCTURE_SYMBOL) && semeq(*(Symbol *)_t_surface(def),NULL_SYMBOL)) {
                 debug(D_TREE,"building sys structure %s\n",_sem_get_name(sem,st));
                 if (semeq(st,PROCESS) || semeq(st,SYMBOL) || semeq(st,STRUCTURE) || semeq(st,PROTOCOL)) {
@@ -815,7 +816,7 @@ T *_t_build2(SemTable *sem,T *parent,...) {
             }
         }
         else if (semeq(param,STX_CP)) {
-            p = _t_parent(t);
+            T *p = _t_parent(t);
             if (p == parent) {done = true;break;}
             t = p;
         }
@@ -826,7 +827,186 @@ T *_t_build2(SemTable *sem,T *parent,...) {
     va_end(ap);
     return t;
 }
+#define test_buffer_overrun if (i == 999) raise_error("buf overrun\n");
 
+T *__t_tokenize(char *s) {
+    T *t = _t_new_root(P_TOKENS);
+    char buf[1000];
+    while(*s) {
+        int c = *s;
+        if (isspace(c)) {s++;continue;}
+        if (c == '(') _t_newr(t,P_OP);
+        else if (c == ')') _t_newr(t,P_CP);
+        else if (c == ':') _t_newr(t,P_COLON);
+        else if (c == '%') _t_newr(t,P_INTERPOLATE);
+        else if (c == '\'') {
+            c = *++s;
+            if (!c) raise_error("expecting char value, got end of string");
+            int x = *++s;
+            if (!x) raise_error("expecting ', got end of string");
+            if (x != '\'') raise_error("expecting ' got %c\n",x);
+            _t_newc(t,P_VAL_C,c);
+        }
+        else if (c == '"') {
+            int i = 0;
+            while((c=buf[i]=*++s) && c != '"' && i<999) i++;
+            test_buffer_overrun;
+            if (!c) raise_error("no closing quote found");
+            buf[i]=0;
+            _t_new_str(t,P_VAL_S,buf);
+        }
+        else if (isdigit(c) || c == '.') {
+            bool is_float = false;
+            int i = 0;
+            while((c=buf[i]=*s) && (isdigit(c) || (c =='.' && !is_float)) && i<999) {
+                if (c=='.') is_float = true;
+                i++; s++;
+            }
+            buf[i]=0;
+            if (is_float) {
+                float f = atof(buf);
+                _t_new(t,P_VAL_F,&f,sizeof(float));
+            }
+            else _t_newi(t,P_VAL_I,atoi(buf));
+            test_buffer_overrun;
+            if (c=='.') raise_error("unexpected . in number\n");
+            s--;
+
+        }
+        else if (c == '/') {
+            int j = 0;
+            int path[100];
+            while(c=='/') {
+                int i = 0;
+                s++;
+                while((c=buf[i]=*s) && isdigit(c) && i<999) {
+                    i++; s++;
+                }
+                test_buffer_overrun;
+                if (i==0 && c!=')') raise_error("expecting a number");
+                if (i) {
+                    buf[i]=0;
+                    path[j++] = atoi(buf);
+                    if (j==99) raise_error("path too deep in parse");
+                }
+            }
+            path[j++]=TREE_PATH_TERMINATOR;
+            _t_new(t,P_VAL_PATH,path,sizeof(int)*j);
+            s--;
+        }
+        else {
+            int i = 0;
+            while((c=buf[i]=*s) && (isalnum(c) || c =='_') && i<999) {i++; s++;}
+            test_buffer_overrun;
+            buf[i]=0;
+            _t_new_str(t,P_LABEL,buf);
+            s--;
+        }
+        s++;
+    }
+    return t;
+}
+
+/**
+ * convert a string to a semantic tree
+ *
+ * @param[in] sem the semantic context
+ * @param[in] parent the parent node under which to add the parsed tree (can be NULL)
+ * @param[in] s the string to be converted
+ * @param[in] ... any substitution tree nodes
+ * @returns tree
+ */
+T *_t_parse(SemTable *sem,T *parent,char *s,...) {
+    T *tokens = __t_tokenize(s);
+    T *t = parent;
+    int idx = 1;
+    T *tok;
+    va_list ap;
+    va_start (ap, s);
+    while ((tok = _t_child(tokens,idx++))) {
+        if (semeq(P_INTERPOLATE,_t_symbol(tok))) {
+            _t_add(t,va_arg(ap,T *));
+        }
+        // if we are opening a new tree node
+        else if (semeq(P_OP,_t_symbol(tok))) {
+            tok = _t_child(tokens,idx++);
+            if (!tok) raise_error("unexpected end of tokens!");
+            if (!semeq(P_LABEL,_t_symbol(tok)))
+                raise_error("expecting symbol LABEL");
+            char *label = (char *)_t_surface(tok);
+            SemanticID node;
+            if (!_sem_get_by_label(sem,label,&node)) {
+                raise_error("unknown semantic id:%s",label);
+            }
+
+            T *def;
+            Structure st;
+            Symbol type = NULL_SYMBOL;
+
+            if (!semeq(node,NULL_SYMBOL)) type = _getBuildType(sem,node,&st,&def);
+            // if the symbol is a structure type or has a NULL_SYMBOL as it's definitional
+            // surface then we know that we have a simple structure to build
+            if (semeq(type,STRUCTURE_SYMBOL) && semeq(*(Symbol *)_t_surface(def),NULL_SYMBOL)) {
+                tok = _t_child(tokens,idx++);
+                if (!tok) raise_error("unexpected end of tokens! expecting P_COLON");
+                if (!semeq(P_COLON,_t_symbol(tok)))
+                    raise_error("expecting P_COLON got %s",_t2s(sem,tok));
+                tok = _t_child(tokens,idx++);
+                if (!tok) raise_error("unexpected end of tokens! expecting a value token");
+                Symbol v = _t_symbol(tok);
+                if (!(semeq(v,P_VAL_S)||semeq(v,P_VAL_C)||semeq(v,P_VAL_I)||semeq(v,P_VAL_F)||semeq(v,P_VAL_PATH)||semeq(v,P_LABEL) )) raise_error("expecting value symbol got: %s",_t2s(sem,tok));
+
+                if (semeq(st,PROCESS) || semeq(st,SYMBOL) || semeq(st,STRUCTURE) || semeq(st,PROTOCOL)) {
+                    if (!semeq(v,P_LABEL)) raise_error("expecting a label for the value of a SemanticID");
+                    label = (char *)_t_surface(tok);
+                    if (!_sem_get_by_label(sem,label,&v)) {
+                        raise_error("unknown semantic id:%s",label);
+                    }
+                    t = _t_news(t,node,v);
+                }
+                else if (semeq(st,INTEGER) || semeq(st,BIT)) {
+                    if (!semeq(v,P_VAL_I)) raise_error("expecting a P_VAL_I got %s",_t2s(sem,tok));
+                    t = _t_newi(t,node,*(int *)_t_surface(tok));
+                }
+                else if (semeq(st,FLOAT)) {
+                    if (!semeq(v,P_VAL_F)) raise_error("expecting a P_VAL_F got %s",_t2s(sem,tok));
+                    t = _t_new(t,node,(float *)_t_surface(tok),sizeof(float));
+                }
+                else if (semeq(st,CSTRING)) {
+                    if (!semeq(v,P_VAL_S)) raise_error("expecting a P_VAL_S got %s",_t2s(sem,tok));
+                    t = _t_new_str(t,node,(char *)_t_surface(tok));
+                }
+                else if (semeq(st,CHAR)) {
+                    if (!semeq(v,P_VAL_C)) raise_error("expecting a P_VAL_C got %s",_t2s(sem,tok));
+                    int x = *(int *)_t_surface(tok);
+                    t = _t_newc(t,node,x);
+                }
+                else if (semeq(st,TREE_PATH)) {
+                    if (!semeq(v,P_VAL_PATH)) raise_error("expecting a P_VAL_PATH got %s",_t2s(sem,tok));
+                    t = _t_new(t,node,_t_surface(tok),_t_size(tok));
+                }
+                else {
+                    raise_error("unimplemented surface type:%s",_sem_get_name(sem,st));
+                }
+            }
+            else {
+                t = _t_newr(t,node);
+            }
+        }
+        else if (semeq(P_CP,_t_symbol(tok))) {
+            T *p = _t_parent(t);
+            if (p == parent) {break;}
+            t = p;
+        }
+        else {
+            raise_error("expecting open or close paren! got: %s\n",_t2s(sem,tok));
+        }
+    }
+    if (idx < _t_children(tokens)) raise_error("found ending close paren but some tokens still remain: %s",_t2s(sem,tokens));
+    _t_free(tokens);
+    va_end(ap);
+    return t;
+}
 
 
 #include "semtrex.h"
@@ -843,29 +1023,34 @@ T *__t_find_actual(T *sem_map,Symbol actual_kind,T *replacement_kind) {
     T *g = _t_news(x,SEMTREX_GROUP,actual_kind);
     x = _sl(g,actual_kind);
     T *mr;
+    debug(D_TREE,"   trying to find a %s in sem_map\n",t2s(replacement_kind));
     if (_t_matchr(stx,sem_map,&mr)) {
         result = _stx_get_matched_node(actual_kind,mr,sem_map,NULL);
         debug(D_TREE,"   re-mapping %s ->",t2s(replacement_kind));
         debug(D_TREE,"%s\n",t2s(result));
         _t_free(mr);
-    }
+    } else {debug(D_TREE,"   failed!\n");}
     _t_free(stx);
     return result;
-}
+};
 
 /**
  * replace SLOTS in a template with the replacement values from links in a SEMANTIC_MAP tree
- *
+ *;
  * @param[in,out] template the tree with SLOTs to be filled
  * @param[in] sem_map mappings used to fill the template
+ * @returns boolean indicating whether fill resulted in templates removal
  *
  * @note the template is modified in place, so the caller may need to clone a source template
  *
  * <b>Examples (from test suite):</b>
  * @snippet spec/tree_spec.h testTreeTemplate
-*/
-void __t_fill_template(T *template, T *sem_map,bool as_run_node) {
-    if (!template) return;
+ */
+bool __t_fill_template(T *template, T *sem_map,bool as_run_node) {
+    if (!template) return false;
+    debug(D_TREE,"filling template:\n%s\n",__t2s(G_sem,template,INDENT));
+    debug(D_TREE,"from sem_map:\n%s\n\n",__t2s(G_sem,sem_map,INDENT));
+
     bool is_run_node = (template->context.flags |= TFLAG_RUN_NODE) || as_run_node;
     if (semeq(_t_symbol(template),SLOT)) {
         T *t = _t_child(template,SlotSemanticRefIdx);
@@ -895,9 +1080,10 @@ void __t_fill_template(T *template, T *sem_map,bool as_run_node) {
         for(i=1;i<=c;i++) {
             T *m = _t_child(sem_map,i);
             T *ref = _t_child(m,SemanticMapSemanticRefIdx);
-            debug(D_TREE,"checking to see if sym:%s == _t_symbol(ref):%s\n",_sem_get_name(G_sem,sym),_sem_get_name(G_sem,_t_symbol(ref)));
+            debug(D_TREE,"(checking to see if sym:%s == _t_symbol(ref):%s\n",_sem_get_name(G_sem,sym),_sem_get_name(G_sem,_t_symbol(ref)));
             debug(D_TREE," and that valsym:%s == _t_surface(ref):%s\n",_sem_get_name(G_sem,valsym),_sem_get_name(G_sem,*(Symbol *)_t_surface(ref)));
             if (semeq(sym,_t_symbol(ref)) && semeq(valsym,*(Symbol *)_t_surface(ref))) {
+                debug(D_TREE," yes!)\n");
                 debug(D_TREE,"with %s\n",t2s(m));
                 T *r = NULL;
                 T *replacement_value = _t_child(_t_child(m,SemanticMapReplacementValIdx),1);
@@ -909,7 +1095,7 @@ void __t_fill_template(T *template, T *sem_map,bool as_run_node) {
                         }
                         else if (semeq(GOAL,p)) {
                             // if the replacement value is a goal, we need to look for
-                            // it's actual value in the map
+                            // it's actual process symbol in the map
                             T *x = __t_find_actual(sem_map,ACTUAL_PROCESS,replacement_value);
                             if (!x)
                                 raise_error("unable to find actual for %s",t2s(m));
@@ -925,8 +1111,8 @@ void __t_fill_template(T *template, T *sem_map,bool as_run_node) {
                 }
                 else {
                     SemanticID rsid = _t_symbol(replacement_value);
+                    debug(D_TREE,"replacement value: %s\n",t2s(replacement_value));
                     // if the replacement value is a kind try to re-resolve from the map
-                    T *x = NULL;
                     if (semeq(rsid,ROLE)) {
                         T *x = __t_find_actual(sem_map,ACTUAL_RECEPTOR,replacement_value);
                         if (x) replacement_value = x;
@@ -936,7 +1122,7 @@ void __t_fill_template(T *template, T *sem_map,bool as_run_node) {
                         if (x) replacement_value = x;
                     }
                     if (v) {
-                        // in the value case the replacement node is of the type specified in the template
+                        // in the value_of case the replacement node is of the type specified in the template
                         // and the "value" is either the surface of the "ACTUAL_X" or its children
                         if (_t_children(replacement_value)) {
                             if (is_run_node)
@@ -965,10 +1151,16 @@ void __t_fill_template(T *template, T *sem_map,bool as_run_node) {
                         else if (semeq(rsid,ACTUAL_VALUE)) {
                             replacement_value = _t_child(replacement_value,1);
                         }
-                        if (is_run_node)
-                            r = _t_rclone(replacement_value);
-                        else
-                            r = _t_clone(replacement_value);
+                        if (semeq(NULL_SYMBOL,_t_symbol(replacement_value))) {
+                            replacement_value = NULL;
+                        }
+                        if (replacement_value) {
+                            if (is_run_node)
+                                r = _t_rclone(replacement_value);
+                            else
+                                r = _t_clone(replacement_value);
+                        }
+                        else r = NULL;
                         if (temp) _t_free(temp);
                     }
                 }
@@ -978,14 +1170,29 @@ void __t_fill_template(T *template, T *sem_map,bool as_run_node) {
                         _t_add(r,t);
                     _t_free(children);
                 }
-                _t_replace_node(template,r);
+                if (r) _t_replace_node(template,r);
+                else {
+                    T *p = _t_parent(template);
+                    if (!p) raise_error("not expecting a root node!");
+                    _t_detach_by_ptr(p,template);
+                    _t_free(template);
+                    template = NULL;
+                }
                 break;
             }
+            else { debug(D_TREE," nope)\n");}
         }
     }
     else {
-        DO_KIDS(template,_t_fill_template(_t_child(template,i),sem_map));
+        int i;
+        for(i=1;i<=_t_children(template);i++) {
+            T *t = _t_child(template,i);
+            // if the fill resulted in deletion we need to decrease the count to not skip a child
+            if (_t_fill_template(t,sem_map)) i--;
+        }
     }
+    debug(D_TREE,"results in:\n%s\n\n",template ? __t2s(G_sem,template,INDENT) : "<nothing>");
+    return template == NULL;
 }
 
 /******************** Node data accessors */
@@ -1115,13 +1322,16 @@ T * _t_next_sibling(T *t) {
  * search the children of a tree for symbol matching sym
  * @param[in] t the tree
  * @param[in] sym the SemanticID to search for
+ * @param[in] start_child index of the child at which to start the search
  * @returns the found node or NULL
  */
-T *_t_find(T *t,SemanticID sym) {
+T *__t_find(T *t,SemanticID sym,int start_child) {
     T *p;
-    DO_KIDS(t,
-            if (semeq(_t_symbol(p=_t_child(t,i)),sym)) return p;
-            );
+    int i;
+    int c = _t_children(t);
+    for(i = start_child;i<=c;i++) {
+        if (semeq(_t_symbol(p=_t_child(t,i)),sym)) return p;
+    }
     return NULL;
 }
 
@@ -1305,11 +1515,88 @@ char * _t_sprint_path(int *fp,char *buf) {
             b += strlen(b);
         }
     }
-    else buf[0] = 0;
+    else {
+        buf[0] = '/';
+        buf[1] = 0;
+    }
 
     return buf;
 }
 
+/**
+ * walk a tree using a path as a "cursor"
+ *
+ * the initial call to _t_path_walk can pass in NULL as the pointer, in which case
+ * the routine will allocate a buffer of size indicated in *lenP which should be a multiple
+ * of sizeof(int).  Subsequent calls expect *lenP to be the current size of the buffer which
+ * will be reallocated if needed.
+ *
+ * @param[in] t the tree to walk
+ * @param[in,out] pathP the pointer to the path cursor to walk from (allocates buffer if non provided)
+ * @param[in,out] lenP the path buffer size (used to calculate whether a realloc is needed)
+ *
+ * @todo optimize reallocing
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/tree_spec.h testTreePathWalk
+ */
+T *_t_path_walk(T *t,int **pathP,int *lenP ) {
+    int *p,i;
+
+    if (*pathP == NULL) {
+
+        // if the pathP is NULL then this is the first call, so we can descend the left branch
+        // and malloc our path buffer based on how far we had to descend.
+        int d = 0;
+        while (_t_children(t)) {
+            t = _t_child(t,1);
+            d++;
+        }
+        *lenP = sizeof(int)*(d+1);
+        *pathP = p = malloc(*lenP);
+        for(i=0;i<d;i++) {p[i]=1;}
+        p[d]=TREE_PATH_TERMINATOR;
+        return t;
+    }
+    else {
+        // otherwise, figure out what we need to do by the context.
+        p = *pathP;
+        int d = _t_path_depth(p);
+
+        // if the current path is the root, then simply remain at the root because we are already done
+        // @todo how to signal this as an error?
+        if (d == 0) return NULL;
+
+        T *x = _t_get(t,p);
+        // the next node is always either the left descend of the current node's next sibling, or
+        // if it has no next sibling, then the parent
+        int cur_idx = p[d-1];
+        T* parent = _t_parent(x);
+        if (_t_children(parent) > cur_idx) {
+            // current node does have next siblings so next will be the left descend of the sibling
+            i = ++p[d-1];               // first adjust the path to be the next sibling
+            x = _t_child(parent,i);     // get the next sibling node
+            i = 0;
+            while (_t_children(x)) { // and do the left descend
+                x = _t_child(x,1);
+                i++;
+            }
+            // now check if we need to realloc
+            int new_depth_size = (i+d+1)*sizeof(int);
+            if ( new_depth_size > *lenP) {
+                *pathP = p = realloc(*pathP,*lenP=new_depth_size);
+            }
+            while(i--) p[d++]=1;
+            p[d]=TREE_PATH_TERMINATOR;
+            return x;
+        }
+        else {
+            // no next sibling so the next node is the parent
+            p[d-1] = TREE_PATH_TERMINATOR;
+            return parent;
+        }
+    }
+}
 
 /*****************  Tree hashing utilities */
 
@@ -1332,8 +1619,6 @@ TreeHash _t_hash(SemTable *sem,T *t) {
         void *surface = _t_surface(t);
         h.s = _t_symbol(t);
         //@todo fix this so we don't have keep doing this on the recursive calls...
-        T *symbols = _sem_get_defs(sem,h.s);
-        T *structures = _sem_get_defs(sem,h.s);
         size_t l = _d_get_symbol_size(sem,h.s,surface);
         if (l > 0)
             h.h = hashfn((char *)surface,l);
@@ -1512,7 +1797,7 @@ char * _t2rawjson(SemTable *sem,T *t,int level,char *buf) {
     buf+= strlen(buf);
     _add_sem(buf,s);
     buf+= strlen(buf);
-    if (is_symbol(s)) {
+    if (is_symbol(s) && !semeq(s,NULL_SYMBOL)) {
         Structure st = _sem_get_symbol_structure(sem,s);
 
         if (is_sys_structure(st)) {
@@ -1550,13 +1835,13 @@ char * _t2rawjson(SemTable *sem,T *t,int level,char *buf) {
             case PROCESS_ID:
             case PROTOCOL_ID:
             case RECEPTOR_ID:
-                {
-                    SemanticID sem =*(SemanticID *)_t_surface(t);
-                    sprintf(buf,",\"surface\":");
-                    buf+= strlen(buf);
-                    _add_sem(buf,sem);
-                }
-                break;
+            {
+                SemanticID sem =*(SemanticID *)_t_surface(t);
+                sprintf(buf,",\"surface\":");
+                buf+= strlen(buf);
+                _add_sem(buf,sem);
+            }
+            break;
             case TREE_PATH_ID:
                 sprintf(buf,",\"surface\":\"%s\"",_t_sprint_path((int *)_t_surface(t),b));
                 break;
@@ -1767,13 +2052,7 @@ char * _t2json(SemTable *sem,T *t,int level,char *buf) {
 int __t_writeln(T *t,Stream *stream) {
     int err = 0;
     char *str = _t_surface(t);
-    int len = strlen(str);
-    if (len) err = _st_write(stream,str,len);
-    if (!len || err > 0) {
-        err = _st_write(stream,"\n",1);
-        if (err > 0) err += err;
-    }
-    return err;
+    return _st_writeln(stream,str);
 }
 
 /**
@@ -1794,7 +2073,7 @@ int _t_write(SemTable *sem,T *t,Stream *stream) {
         DO_KIDS(t,
                 err = __t_writeln(_t_child(t,i),stream);
                 if (err == 0) return 0;
-                );
+            );
     }
     else {
         char *str;

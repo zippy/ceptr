@@ -181,7 +181,7 @@ Receptor *makeGroup(VMHost *v,char *label) {
     /* t = _t_newr(proc,RESPOND); */
     /* _t_news(t,RESPONSE_CARRIER,talking); */
 
-    //  T *e = __r_build_expectation(join,join_stx,join_process,0,0);
+    //  T *e = __r_build_expectation(join,join_stx,join_process,0,0,NULL,NULL);
 
 
     /* group { */

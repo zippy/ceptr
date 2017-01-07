@@ -49,8 +49,17 @@ void testSemGetSymbolStructure() {
 
 void testSemGetByLabel() {
     //! [testSemGetByLabel]
-    SemanticID s = _sem_get_by_label(G_sem,"DEFINITIONS",SYS_CONTEXT);
+    SemanticID s;
+
+    spec_is_true(__sem_get_by_label(G_sem,"DEFINITIONS",&s,SYS_CONTEXT));
     spec_is_sem_equal(s,DEFINITIONS);
+    spec_is_false(__sem_get_by_label(G_sem,"DEFINITIONS",&s,INTERNET_CONTEXT));
+
+    spec_is_true(_sem_get_by_label(G_sem,"OCTET_STREAM",&s));
+    spec_is_sem_equal(s,OCTET_STREAM);
+    spec_is_true(semeq(s,OCTET_STREAM));
+
+    spec_is_false(_sem_get_by_label(G_sem,"non existent symbol",&s));
 
     //! [testSemGetByLabel]
 }

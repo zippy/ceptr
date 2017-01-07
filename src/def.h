@@ -23,12 +23,14 @@
 // Note, that I tried that and it's hard!
 enum {ReceptorInstanceInstOfIdx=1,ReceptorInstanceContextNumIdx,ReceptorInstanceParentContextIdx,ReceptorInstanceStateIdx};
 enum {ReceptorDefinitionLabelIdx=1,ReceptorDefinitionDefsIdx};
-enum {ReceptorFluxIdx=1,ReceptorPendingSignalsIdx,ReceptorPendingResponsesIdx,ReceptorElapsedTimeIdx};
-enum {EnvelopeFromIdx=1,EnvelopeToIdx,EnvelopeAspectIdx,EnvelopeCarrierIdx,EnvelopeUUIDIdx,EnvelopeExtraIdx};
-enum {SignalEnvelopeIdx=1,SignalBodyIdx};
-enum {PendingResponseUUIDIdx=1,PendingResponseCarrierIdx,PendingResponseWakeupIdx,PendingResponseEndCondsIdx};
+enum {ReceptorFluxIdx=1,ReceptorPendingSignalsIdx,ReceptorPendingResponsesIdx,ReceptorConversationsIdx,ReceptorElapsedTimeIdx};
+enum {SignalEnvelopeIdx=1,SignalMessageIdx};
+enum {MessageHeadIdx=1,MessageBodyIdx};
+enum {HeadFromIdx=1,HeadToIdx,HeadAspectIdx,HeadCarrierIdx,HeadOptionalsIdx};
+enum {EnvelopeSignalUUIDIdx=1};
+enum {PendingResponseUUIDIdx=1,PendingResponseCarrierIdx,PendingResponseWakeupIdx,PendingResponseEndCondsIdx,PendingResponseConversationIdentIdx};
 enum {WakeupReferenceProcessIdentIdx=1,WakeupReferenceCodePathIdx};
-enum {ExpectationCarrierIdx=1,ExpectationPatternIdx,ExpectationActionIdx,ExpectationParamsIdx,ExpectationEndCondsIdx,ExpectationSemanticMapIdx};
+enum {ExpectationCarrierIdx=1,ExpectationPatternIdx,ExpectationActionIdx,ExpectationParamsIdx,ExpectationEndCondsIdx,ExpectationOptionalsIdx};
 enum DATEIndexes {dateYearIdx=1,dateMonthIdx,dateDayIdx};
 enum TIMEIndexes {timeHourIdx=1,timeMinuteIdx,timeSecondIdx};
 enum TIMESTAMPIndexes {timestampTodayIdx=1,timestampNowIdx};
@@ -37,11 +39,12 @@ enum {ExpectRoleIdx=1,ExpectSourceIdx,ExpectPatternIdx,ExpectActionIdx,ExpectPar
 enum {InitiateRoleIdx=1,InitiateDestinationIdx,InitiateActionIdx};
 enum {SourceRoleIdx=1};
 enum {DefLabelIdx=1,SymbolDefStructureIdx};
+enum {StructureDefLabelIdx=1,StructureDefDefIdx};
 enum {ProcessDefNameIdx=1,ProcessDefIntentionIdx,ProcessDefCodeIdx,ProcessDefSignatureIdx,ProcessDefLinkIdx};
 enum {SignatureOutputSigIdx=1};
 enum {InputSigLabelIdx=1,InputSigSemVariantsIdx,InputSigOptionalIdx};
-enum {ProtocolDefNameIdx=1,ProtocolDefSemanticsIdx};
-enum {RuntreeCodeIdx=1,RunTreeParamsIdx,RunTreeErrorCodeIdx};
+enum {ProtocolDefNameIdx=1,ProtocolDefSemanticsIdx,ProtocolDefOptionalsIdx};
+enum {RuntreeCodeIdx=1,RunTreeParamsIdx,RunTreeErrorCodeIdx,RunTreeErrorParamsIdx};
 enum {ResolutionWhichIdx=1};
 enum {ConnectionWhichIdx=1};
 enum {SemtrexMatchSymbolIdx=1,SemtrexMatchPathIdx,SemtrexMatchSibsIdx};
@@ -51,6 +54,10 @@ enum {SlotSemanticRefIdx=1,SlotValueOfIdx};
 enum {ParameterReferenceIdx=1,ParameterResultIdx=2};
 enum {InstanceStoreInstancesIdx=1,InstanceStoreTokensIdx=2};
 enum {InstanceTokensLastTokenIdx=1};
+enum {ConversationIdentIdx=1,ConversationUntilIdx,ConversationConversationsIdx,ConversationWakeupIdx};
+enum {ConversationIdentUUIDIdx=1,ConversationIdentOptionalsIdx};
+
+T *G_cursor; // used in _t_dump to highlight a particular node
 
 #define ST(r,name,num,...) name = _r_define_structure(r,"" #name "",num,__VA_ARGS__)
 #define SY(r,name,str) name = _r_define_symbol(r,str,"" #name "")
@@ -75,7 +82,8 @@ Protocol _d_define_protocol(SemTable *sem,T *def,Context c);
 T *_d_make_protocol_def(SemTable *sem,char *label,...);
 T * _d_build_def_semtrex(SemTable *sem,Symbol s,T *parent);
 size_t _sys_structure_size(int id,void *surface);
-SemanticID _d_define_receptor(SemTable *sem,char *label,T *def,Context c);
+SemanticID _d_define_receptor(SemTable *sem,char *label,T *definitions,Context c);
+SemanticID __d_define_receptor(SemTable *sem,T *def,Context c);
 Context _d_get_receptor_context(SemTable *sem,SemanticID r);
 
 enum{NO_INDENT=0,INDENT=-1};
@@ -93,7 +101,7 @@ char * __t_dump(SemTable *sem,T *t,int level,char *buf);
 
 #define spec_is_sem_equal(got, expected) spec_total++; if (semeq(expected,got)){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %d.%d.%d but was %d.%d.%d",__FUNCTION__,__LINE__,#got,(expected).context,(expected).semtype,(expected).id,(got).context,(got).semtype,(got).id);}
 
-void def_sys();
-void sys_free();
+SemTable *def_sys();
+void sys_free(SemTable *sem);
 #endif
 /** @}*/

@@ -19,7 +19,7 @@ void testVMHostCreate() {
     spec_is_equal(_t_children(_t_child(sem->stores[0].definitions,SEM_TYPE_SYMBOL)),NUM_SYS_SYMBOLS-1);
     spec_is_equal(_t_children(_t_child(sem->stores[0].definitions,SEM_TYPE_STRUCTURE)),NUM_SYS_STRUCTURES-1);
 
-    spec_is_str_equal(t2s(v->r->root),"(RECEPTOR_INSTANCE (INSTANCE_OF:SYS_RECEPTOR) (CONTEXT_NUM:0) (PARENT_CONTEXT_NUM:-1) (RECEPTOR_STATE (FLUX (DEFAULT_ASPECT (EXPECTATIONS) (SIGNALS))) (PENDING_SIGNALS) (PENDING_RESPONSES) (RECEPTOR_ELAPSED_TIME:0)))");
+    spec_is_str_equal(t2s(v->r->root),"(RECEPTOR_INSTANCE (INSTANCE_OF:SYS_RECEPTOR) (CONTEXT_NUM:0) (PARENT_CONTEXT_NUM:-1) (RECEPTOR_STATE (FLUX (DEFAULT_ASPECT (EXPECTATIONS) (SIGNALS))) (PENDING_SIGNALS) (PENDING_RESPONSES) (CONVERSATIONS) (RECEPTOR_ELAPSED_TIME:0)))");
 
     // test the installed receptors scape
     spec_is_sem_equal(v->installed_receptors->key_source,RECEPTOR_IDENTIFIER);
@@ -213,7 +213,7 @@ void testVMHostCreate() {
 /*     spec_is_str_equal(_dump_semtrex(G_sem,req,buf),"/(HTTP_REQUEST/.*,HTTP_REQUEST_HOST=helloworld.com)"); */
 /*     free(sv); */
 
-/*     _r_add_expectation(hello_r,DEFAULT_ASPECT,HTTP_REQUEST,expect,act,0,0); */
+/*     _r_add_expectation(hello_r,DEFAULT_ASPECT,HTTP_REQUEST,expect,act,0,0,0); */
 
 /*     // build up an HTTP_REQUEST tree that corresponds with a simple get for host helloworld.com */
 /*     T *s = _t_new_root(HTTP_REQUEST); */
@@ -327,7 +327,7 @@ void testVMHostShell() {
 
     makeShell(G_vm,input,output,&i_r,&o_r,&input_stream,&output_stream);
 
-    //   debug_enable(D_STREAM+D_SIGNALS+D_TREE+D_PROTOCOL);
+    // debug_enable(D_STREAM+D_SIGNALS+D_TREE+D_PROTOCOL+D_STEP);
     _v_start_vmhost(G_vm);
     sleep(1);
     debug_disable(D_STREAM+D_SIGNALS+D_TREE+D_PROTOCOL);

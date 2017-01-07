@@ -27,8 +27,8 @@ T *__r_make_definitions();
 T *_r_make_state();
 Receptor *_r_new(SemTable *sem,SemanticID r);
 Receptor *_r_new_receptor_from_package(SemTable *sem,Symbol s,T *p,T *bindings);
-T *__r_build_expectation(Symbol carrier,T *pattern,T *action,T *with,T *until,T *using);
-void _r_add_expectation(Receptor *r,Aspect aspect,Symbol carrier,T *pattern,T *action,T *with,T *until, T *using);
+T *__r_build_expectation(Symbol carrier,T *pattern,T *action,T *with,T *until,T *using,T *cid);
+void _r_add_expectation(Receptor *r,Aspect aspect,Symbol carrier,T *pattern,T *action,T *with,T *until, T *using,T *cid);
 void __r_add_expectation(Receptor *r,Aspect aspect,T *e);
 void _r_remove_expectation(Receptor *r,T *expectation);
 void _r_free(Receptor *r);
@@ -64,13 +64,18 @@ Receptor * _r_unserialize(SemTable *sem,void *surface);
 T *___r_make_addr(T *parent,Symbol type,ReceptorAddress addr,bool is_run_node);
 ReceptorAddress __r_get_addr(T *addr);
 
-T * __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,Symbol carrier,T *signal_contents,UUIDt *in_response_to,T* until);
-T *__r_build_wakeup_info(T *code_point,int process_id);
+T * __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,Symbol carrier,T *signal_contents,UUIDt *in_response_to,T* until,T *conversation);
 T* __r_send(Receptor *r,T *signal);
 T* _r_send(Receptor *r,T *signal);
-T* _r_request(Receptor *r,T *signal,Symbol response_carrier,T *code_point,int process_id);
+T* _r_request(Receptor *r,T *signal,Symbol response_carrier,T *code_point,int process_id,T *cid);
 void evaluateEndCondition(T *ec,bool *cleanup,bool *allow);
 void __r_test_expectation(Receptor *r,T *expectation,T *signal);
+bool __cid_equal(SemTable *sem,T *cid1,T*cid2);
+T *__cid_new(T *parent,UUIDt *c,T *topic);
+UUIDt *__cid_getUUID(T *cid);
+T * _r_add_conversation(Receptor *r,UUIDt *parent_u,UUIDt *u,T *until,T *wakeup);
+T *_r_find_conversation(Receptor *r, UUIDt *cuuid);
+T *__r_cleanup_conversation(Receptor *r, UUIDt *cuuid);
 Error _r_deliver(Receptor *r, T *signal);
 
 /******************  internal utilities */
@@ -101,8 +106,8 @@ Xaddr G_null_xaddr;
 
 /*****************  Built-in core and edge receptors */
 Receptor *_r_makeStreamEdgeReceptor(SemTable *sem);
-SocketListener *_r_addListener(Receptor *r,int port,ReceptorAddress to,Aspect aspect,Symbol carrier,Symbol result_symbol);
-void _r_addReader(Receptor *r,Stream *st,ReceptorAddress to,Aspect aspect,Symbol carrier,Symbol result_symbol);
+SocketListener *_r_addListener(Receptor *r,int port,T *code,T*params,T *err_handler,char *delim);
+void _r_addReader(Receptor *r,Stream *st,ReceptorAddress to,Aspect aspect,Symbol carrier,Symbol result_symbol,bool conversation);
 void _r_addWriter(Receptor *r,Stream *st,Aspect aspect);
 void _r_defineClockReceptor(SemTable *sem);
 Receptor *_r_makeClockReceptor(SemTable *sem);

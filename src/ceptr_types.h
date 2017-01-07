@@ -16,14 +16,14 @@ enum SemanticTypes {SEM_TYPE_STRUCTURE=1,SEM_TYPE_SYMBOL,SEM_TYPE_PROCESS,SEM_TY
 #define is_receptor(s) ((s).semtype == SEM_TYPE_RECEPTOR)
 
 typedef uint32_t Context;     // 4G types of receptors
-typedef uint8_t SemanticType; // 256 types of semantic things
+typedef uint16_t SemanticType; // 256 types of semantic things (but using 2 bytes for struct alignment!)
 typedef uint16_t SemanticAddr;// 64K types of symbols/structure per receptor
 
 typedef struct SemanticID {
     Context context;
     SemanticType semtype;
     SemanticAddr id;
-    uint8_t _reserved; // add an extra 8 bits to make this a 64bit structure.
+    //c    uint8_t _reserved; // add an extra 8 bits to make this a 64bit structure.
 } SemanticID;
 
 // creating aliases for SemanticIDs as hints for use.
@@ -155,6 +155,13 @@ typedef table_elem *LabelTable;
 // for now store instances in an INSTANCES semantic tree
 typedef T *Instances;
 
+typedef struct ConversationState ConversationState;
+struct ConversationState {
+    T *converse_pointer;    ///< pointer to the CONVERSE instruction in the run tree
+    T *cid;                 ///< pointer to CONVERSATION_IDENT in receptors CONVERSATIONS tree
+    ConversationState *next;
+};
+
 // ** types for processing
 // run-tree context
 typedef struct R R;
@@ -169,6 +176,7 @@ struct R {
     R *caller;        ///< a pointer to the context that invoked this run-tree/context
     R *callee;        ///< a pointer to the context we've invoked
     T *sem_map;       ///< semantic map in effect for this context
+    ConversationState *conversation;  ///< record of the conversation state active in this context frame
 };
 
 // ** structure to hold in process accounting
@@ -231,10 +239,11 @@ struct Receptor {
     Context parent;      ///< the context this receptor's definition lives in
     Context context;     ///< the context this receptor's definition creates
     ReceptorAddress addr;///< the address by which to get messages to this receptor instance
-    SemTable *sem;       ///< pointer back to the semantic table context where the receptor's running
+    SemTable *sem;       ///< pointer back to the genotype table for this receptor's vmhost instance
     T *flux;             ///< pointer for quick access to the flux
     T *pending_signals;
     T *pending_responses;
+    T *conversations;
     pthread_mutex_t pending_signals_mutex;
     pthread_mutex_t pending_responses_mutex;
     Instances instances; ///< the instances store

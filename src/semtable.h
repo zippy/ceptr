@@ -26,6 +26,7 @@ char *_sem_get_name(SemTable *sem,SemanticID s);
 T * _sem_get_label(SemTable *sem,SemanticID s,Symbol label_type);
 void _sem_add_label(SemTable *sem,SemanticID s,Symbol label_type,char *label);
 Structure _sem_get_symbol_structure(SemTable *sem,Symbol s);
-SemanticID _sem_get_by_label(SemTable *sem,char *label,Context ctx);
+bool __sem_get_by_label(SemTable *sem,char *label,SemanticID *s,Context ctx);
+bool _sem_get_by_label(SemTable *sem,char *label,SemanticID *s);
 
 #endif

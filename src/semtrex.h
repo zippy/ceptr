@@ -1,7 +1,7 @@
 /**
  * @defgroup semtrex Semantic Tree Regular Expressions
  *
- * @brief Semtrex provides a language for pattern matching on semantic trees
+ * @brief Semtrex provides a language for pattern matching on semantic trees similar to regular expressions for matching on text strings.
  * @{
 
  * @file semtrex.h
@@ -23,15 +23,14 @@ typedef int StateType;
  * The possible transitions in the match tree when advancing through states in the FSA.
  *
  * In an old fashioned regex, the transition is implicit because it's
- * always "NextCharacter" for semtrex we need to expand the possibilities.
+ * always "NextCharacter". For semtrex we need to expand the possibilities.
  * NOTE: the actual value stored in the SState structure may be a negative number less
  * than -1, because you can pop up multiple level, but you never pop down more than once
  */
-enum FSAStateTransitions {
-    TransitionNextChild=0,  ///< advance to next sibling in the match tree
-    TransitionUp=-1,        ///< move up the tree in the match tree
-    TransitionDown=1,        ///< move to child in the match tree
-};
+enum {TransitionDown=1,TransitionNone=0x8000};
+#define isTransitionPop(t) (t<0)
+#define isTransitionNext(t) (t==0)
+
 typedef int TransitionType;
 
 typedef struct SState SState;
@@ -77,21 +76,26 @@ typedef union STypeData
 } STypeData;
 
 /**
- * This struct holds the data for each state in of the FSA generated to match a tree
+ * This struct holds the data for each state of the FSA generated to match a tree
+ * NOTE: the transition MUST come right after the out value or it will break the trick
+ * in patch() which allows us to get the right popping value
  */
 struct SState {
-    StateType type;             ///< what type of state this is
     struct SState *out;         ///< which state to go to next
-    TransitionType transition;  ///< will be: TransitionNextChild=0,TransitionUp=-1,TransitionDown=1
+    TransitionType transition;  ///< will be: TransitionNextChild=0,TransitionDown=1, or a negative number which means pop up that many levels plus advance to next child.
+    StateType type;             ///< what type of state this is
     struct SState *out1;        ///< which alternate state to go to next in the case this is a Split state
+    TransitionType transition1; ///< will be: TransitionNextChild=0,TransitionUp=-1,TransitionDown=1
+    StateType type_;             ///< copy of state type needed for patch to grab (far too tricky)
+
     int _did;                   ///< used to hold a mark when freeing and printing out FSA to prevent looping.
     STypeData data;             ///< a union to hold the data for which ever type of SState this is
 };
+SState *G_cur_stx_state;  // global for highlighting the current state when doing an stx FSA dump
 
 SState * _stx_makeFA(T *s,int *statesP);
 void _stx_freeFA(SState *s);
 int _t_match(T *semtrex,T *t);
-T *G_ts,*G_te;
 int _t_matchr(T *semtrex,T *t,T **r);
 T *_stx_get_matched_node(Symbol s,T *match_results,T *match_tree,int *sibs);
 void _stx_replace(T *semtrex,T *t,T *replace);
@@ -127,4 +131,8 @@ T *__sl(T *p, bool not,int count, ...);
 
 #endif
 
+void __stx_dump(SState *s,char *buf);
+char * _stx_dump(SState *s,char *buf);
+void stx_dump(T *s);
+char G_stx_dump_buf[100000];
 /** @}*/
