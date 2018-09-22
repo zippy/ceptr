@@ -4,7 +4,7 @@ Ceptr provides a new computing stack for semantic self-describing data and proto
 
 ## Project Status
 
-It may look like the Ceptr project is on hiatus, but it is **alive and well**. We pulled out a small part of Ceptr (synchronization for multi-instance receptors) and are going head-to-head with blockchain as an alternative approach to building distributed sytems. That portion of of Ceptr is called [Holochain](https://github.com/metacurrency/holochain) and is quite active with new [distributed applications](https://github.com/holochain) being developed for it regularly.
+It may look like the Ceptr project is on hiatus, but it is **alive and well**. We pulled out a small part of Ceptr (synchronization for multi-instance receptors) and are going head-to-head with blockchain as an alternative approach to building distributed sytems. That portion of of Ceptr is called [Holochain](https://github.com/metacurrency/holochain) and is quite active with new [distributed applications](https://github.com/holochain/apps) being developed for it regularly.
 
 We will return to integrating the other parts of Ceptr (like low-level semantics and self-describing protocols for easy interoperability) soon. However, we may scrap this codebase in C and rebuild it Go. Holochain is getting a lot more traction in Go, than Ceptr got written in C.
 
