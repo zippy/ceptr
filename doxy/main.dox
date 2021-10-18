@@ -4,8 +4,20 @@
 
   @section secIntro Introduction
 
-  We describe Ceptr variously as: a recomposable medium for distributed social computing, a semantic self-describing protocol stack, and a cretor of fractal coherence contexts for biomimetic computing.
+  Ceptr provides a platform for developing distributed applications which are fully interoperable with each other. Ceptr uses patterns similar to how the cells in your body coordinate and interoperate on a massive scale in a fully distributed manner. Specifically, noteworthy characteristics are:
 
+   - Distributed Process wrapped around Holographic Storage (non-local / entangled -- decentralized akin to blockchain)
+   - Fractal layers of coherence with an ability to implant listeners for relational states (networked like a nervous system)
+   - Fundamental Interoperability (through low-level semantics and self-describing protocols)
+
+  Ceptr is built out of **RECEPTORS** (hence the name). A Receptor is a lightweight virtual machine. Receptors can contain other receptors, which is what enables the fractal layers of computing with Ceptr.
+
+  Each receptor can not only run processes, but store information. You can select holographic storage mechanisms which use cryptographic structures (such as hash chains and merkle trees) to enable non-local replication with ensured data integrity. To understand holographic storage, think about where the English language is stored -- in the minds of all speakers of the language. They don't hold identical versions, but parts (according to their domains of experience or expertise) and taken together they comprise the whole language. Similarly, data which is stored in a multi-instance receptor may be sharded across many non-local copies running on different people's computers. We leverage blockchain-like structures and Distributed Hash Tables to provide custom levels of assurance for data integrity.
+
+  The basic structure of memory in Ceptr is semantic trees. This means you cannot store just an integer, but a semantic use of the integer (specifying what it MEANS) such as a street address, age, or shoe size. Ceptr code is built on these basic DEFINITIONS of STRUCTURES (like Integer, Float, Boolean -- how to interpret a series of bits) and SYMBOLS (like age, address, hair color -- the meaning of the structure).
+  
+  Receptors run inside a Virtual Machine Host which system services to contained receptors interfacing with the operating system of the physical machine.
+  
   Here you will find the technical reference documentation, and detailed documentation of the C codebase.
 
   Other documentation and background information can be found here:
