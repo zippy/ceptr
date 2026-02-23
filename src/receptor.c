@@ -1172,7 +1172,7 @@ void _r_addWriter(Receptor *r,Stream *st,Aspect aspect) {
     _t_news(s,USAGE,NULL_SYMBOL);
 
     Symbol echo2stream;
-    _sem_get_by_label(G_sem,"echo2stream",&echo2stream);
+    _sem_get_by_label(r->sem,"echo2stream",&echo2stream);
 
     T *act = _t_newp(0,ACTION,echo2stream);
 
